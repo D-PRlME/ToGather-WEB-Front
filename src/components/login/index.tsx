@@ -10,10 +10,10 @@ const LogIn = () => {
       <_.LogInContainer>
         <_.LogInHeader>
           <_.LogInHeaderIn>
-            <__.LogInHeaderText>
+            <_.LogInHeaderText>
               <IoIosArrowBack size="22px" />
               돌아가기
-            </__.LogInHeaderText>
+            </_.LogInHeaderText>
           </_.LogInHeaderIn>
         </_.LogInHeader>
         <_.LogInWrap>
