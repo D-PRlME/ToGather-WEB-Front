@@ -5,6 +5,7 @@ import HomeLogo from "../../../assets/logo/home.svg";
 import SearchLogo from "../../../assets/logo/search.svg";
 import PostLogo from "../../../assets/logo/post.svg";
 import ProfileLogo from "../../../assets/logo/profile.svg";
+import { Link } from "react-router-dom";
 
 const HomeCategory = () => {
   return (
@@ -21,10 +22,12 @@ const HomeCategory = () => {
         <_.MenuLogo src={SearchLogo} />
         <_.MenuText>검색</_.MenuText>
       </_.MenuBlock>
-      <_.MenuBlock>
-        <_.MenuLogo src={PostLogo} />
-        <_.MenuText>글쓰기</_.MenuText>
-      </_.MenuBlock>
+      <Link to="/edit">
+        <_.MenuBlock>
+          <_.MenuLogo src={PostLogo} />
+          <_.MenuText>글쓰기</_.MenuText>
+        </_.MenuBlock>
+      </Link>
       <_.ProfileBlock>
         <_.MenuLogo src={ProfileLogo} />
         <_.MenuText>나</_.MenuText>
