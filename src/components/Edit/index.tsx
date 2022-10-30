@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import QuestionIcon from "../../assets/icon/question";
+import { ACCESS_TOKEN_KEY } from "../../constants/token/token.constant";
 import useFetch from "../../hooks/useFetch";
 import * as _ from "./style";
 
@@ -10,10 +11,12 @@ interface IEditFormStates {
 }
 function EditComponent() {
   const { register, handleSubmit } = useForm<IEditFormStates>();
-  const [fetchHandler, { data }] = useFetch("/users/edit");
+  const [fetchHandler, { data, loading, error }] = useFetch("/users/auth");
   const onVaild = (form: IEditFormStates) => {
-    fetchHandler({ method: "get" });
-    console.log(data);
+    fetchHandler({
+      method: "get",
+      headers: { Authentication: `Bearer ${ACCESS_TOKEN_KEY}` },
+    });
   };
   return (
     <_.Container onSubmit={handleSubmit(onVaild)}>

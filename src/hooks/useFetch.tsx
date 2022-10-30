@@ -7,18 +7,24 @@ type IFetchResponse = [
 ];
 interface IFetchingConfig {
   method: string;
+  headers?: {
+    [key: string]: string;
+  };
 }
 type fetchingType = (config: IFetchingConfig) => void;
 function useFetch(url: string): IFetchResponse {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [error, setError] = useState({});
-  const fetchHandler: fetchingType = ({ method }: IFetchingConfig) => {
-    axios({
+  const fetchHandler = ({ method, headers }: IFetchingConfig) => {
+    fetch("http://.24409.75.36:8080/posts", {
       method,
-      url: process.env.REACT_APP_BaseUrl + url,
+      headers,
     })
-      .then((res) => setData(res))
+      .then((res) => {
+        setData(res);
+        console.log(res);
+      })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   };
