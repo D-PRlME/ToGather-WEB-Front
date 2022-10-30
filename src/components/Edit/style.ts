@@ -22,9 +22,6 @@ export const Input = styled.input<{ height?: number }>`
   padding: 12px;
   background: #f7f7f7;
   resize: none;
-  &:first-child {
-    margin-top: 24px;
-  }
 `;
 export const BtnContainer = styled.div`
   display: flex;
