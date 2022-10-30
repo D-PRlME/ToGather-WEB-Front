@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import QuestionIcon from "../../assets/icon/question";
+import useFetch from "../../hooks/useFetch";
 import * as _ from "./style";
 
 interface IEditFormStates {
@@ -9,14 +10,24 @@ interface IEditFormStates {
 }
 function EditComponent() {
   const { register, handleSubmit } = useForm<IEditFormStates>();
+  const [fetchHandler, { data }] = useFetch("/users/edit");
+  const onVaild = (form: IEditFormStates) => {
+    fetchHandler({ method: "get" });
+    console.log(data);
+  };
   return (
-    <_.Container>
-      <_.Input placeholder="제목" style={{ marginTop: "24px" }} />
+    <_.Container onSubmit={handleSubmit(onVaild)}>
+      <_.Input
+        placeholder="제목"
+        style={{ marginTop: "24px" }}
+        {...register("title")}
+      />
       <div style={{ display: "flex", position: "relative" }}>
         <_.Input
           placeholder="연락받을 링크"
           disabled
           style={{ background: "#c8c8c8" }}
+          {...register("mainText")}
         />
         <QuestionIcon />
       </div>
