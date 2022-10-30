@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled.form`
   display: flex;
   flex-direction: column;
   height: 900px;
@@ -22,9 +22,6 @@ export const Input = styled.input<{ height?: number }>`
   padding: 12px;
   background: #f7f7f7;
   resize: none;
-  &:first-child {
-    margin-top: 24px;
-  }
 `;
 export const BtnContainer = styled.div`
   display: flex;
