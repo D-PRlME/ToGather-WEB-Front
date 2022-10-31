@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
 export const Container = styled.form`
@@ -36,4 +37,21 @@ export const Btn = styled.button<{ bgColor: string }>`
   height: 45px;
   font-weight: bold;
   font-size: 24px;
+`;
+
+export const QuestionModal = styled(motion.div)`
+  display: flex;
+  position: absolute;
+  width: 342px;
+  height: 58px;
+  background-color: white;
+  top: 55px;
+  right: 0px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19.2px;
+  padding-left: 11px;
+  align-items: center;
 `;
