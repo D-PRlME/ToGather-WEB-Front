@@ -14,10 +14,12 @@ const HomeCategory = () => {
         <_.HomePageLogo src={Logo}></_.HomePageLogo>
         <_.HomeText>ToGather</_.HomeText>
       </_.HomeLogoBlock>
-      <_.MenuBlock>
-        <_.MenuLogo src={HomeLogo} />
-        <_.MenuText>홈</_.MenuText>
-      </_.MenuBlock>
+      <Link to="/">
+        <_.MenuBlock>
+          <_.MenuLogo src={HomeLogo} />
+          <_.MenuText>홈</_.MenuText>
+        </_.MenuBlock>
+      </Link>
       <_.MenuBlock>
         <_.MenuLogo src={SearchLogo} />
         <_.MenuText>검색</_.MenuText>
@@ -28,10 +30,12 @@ const HomeCategory = () => {
           <_.MenuText>글쓰기</_.MenuText>
         </_.MenuBlock>
       </Link>
-      <_.ProfileBlock>
-        <_.MenuLogo src={ProfileLogo} />
-        <_.MenuText>나</_.MenuText>
-      </_.ProfileBlock>
+      <Link to="/mypage">
+        <_.ProfileBlock>
+          <_.MenuLogo src={ProfileLogo} />
+          <_.MenuText>나</_.MenuText>
+        </_.ProfileBlock>
+      </Link>
     </_.HomeCategoryContainer>
   );
 };
