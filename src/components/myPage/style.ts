@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
+// TODO: Text 래팩토링
 export const Container = styled.div`
   display: flex;
   flex-direction: column;

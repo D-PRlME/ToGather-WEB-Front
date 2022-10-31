@@ -30,7 +30,7 @@ const HomeCategory = () => {
           <_.MenuText>글쓰기</_.MenuText>
         </_.MenuBlock>
       </Link>
-      <Link to="/mypage">
+      <Link to="/mypage/home">
         <_.ProfileBlock>
           <_.MenuLogo src={ProfileLogo} />
           <_.MenuText>나</_.MenuText>
