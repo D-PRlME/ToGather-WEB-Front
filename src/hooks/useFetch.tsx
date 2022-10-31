@@ -15,7 +15,18 @@ interface IFetchingConfig {
     [key: string]: string | number;
   };
 }
+
 type IfetchHandler = (config: IFetchingConfig) => void;
+
+/**
+ * loading, error, data를 반환하는 Fetch Hook
+ * @param {string} url 통신할 url
+ * @return {[function, {any, boolean, object}]} [fetchHandler, {data, loading, error}]
+ * @return {function} fetchHandler : fetch 함수
+ * @return {any} data : response 데이터
+ * @return {boolean} loading : loading 중이면 true, 아니면 false
+ * @return {error} error : error
+ */
 function useFetch<T = any>(url: string): IFetchResponse<T> {
   const [state, setState] = useState<IFetchStates<T>>({
     data: undefined,
