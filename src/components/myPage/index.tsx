@@ -1,5 +1,51 @@
-import * as _ from "./MyPosts.style";
+import { Link } from "react-router-dom";
+import * as _ from "./myPosts/style";
 
+const BtnContainerMotion = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+const BtnMotion = {
+  hidden: {
+    x: 20,
+    opacity: 0,
+  },
+  visible: {
+    x: 0,
+    opacity: 1,
+  },
+};
+
+const TagContainerMotion = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.6,
+    },
+  },
+};
+
+const TagMotion = {
+  hidden: {
+    y: 20,
+    opacity: 0,
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
 function MyPageComponent() {
   return (
     <_.Container>
@@ -15,21 +61,55 @@ function MyPageComponent() {
             </_.Text>
           </_.ProfileTextContainer>
         </div>
-        <_.LogOutBtn>
+        <_.Btn color="#f7f7f7">
           <_.Text weight={500} size={24} height={29} color="black">
             로그아웃
           </_.Text>
-        </_.LogOutBtn>
+        </_.Btn>
       </_.ProfileContainer>
-      <_.TagContainer>
+      <_.TagContainer
+        variants={TagContainerMotion}
+        initial="hidden"
+        animate="visible"
+      >
         {[1, 2, 3, 4].map(() => (
-          <_.Tag>
+          <_.Tag variants={TagMotion}>
             <_.Text weight={700} size={18} height={30} color="black">
               TAG
             </_.Text>
           </_.Tag>
         ))}
       </_.TagContainer>
+      <_.BtnContainer
+        variants={BtnContainerMotion}
+        initial="hidden"
+        animate="visible"
+      >
+        <Link to="/mypage/profileEdit">
+          <_.Btn variants={BtnMotion}>
+            <_.Text weight={500} height={28.8} size={24}>
+              계정 정보 수정
+            </_.Text>
+          </_.Btn>
+        </Link>
+        <_.Btn variants={BtnMotion}>
+          <_.Text weight={500} height={28.8} size={24}>
+            비밀번호 변경
+          </_.Text>
+        </_.Btn>
+        <Link to="/mypage/posts">
+          <_.Btn variants={BtnMotion}>
+            <_.Text weight={500} height={28.8} size={24}>
+              내 게시글 보기
+            </_.Text>
+          </_.Btn>
+        </Link>
+        <_.Btn variants={BtnMotion}>
+          <_.Text weight={500} height={28.8} size={24}>
+            개발자들
+          </_.Text>
+        </_.Btn>
+      </_.BtnContainer>
     </_.Container>
   );
 }
