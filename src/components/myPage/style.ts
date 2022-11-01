@@ -60,7 +60,7 @@ export const UnderWrapper = styled.div`
 `;
 export const Profile = styled.img`
   border: 1px solid rgba(39, 39, 39, 0.15);
-  border-radius: 20px;
+  border-radius: 90px;
   width: 33px;
   height: 33px;
   margin-right: 8px;
