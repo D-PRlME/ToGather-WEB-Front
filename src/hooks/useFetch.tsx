@@ -9,10 +9,10 @@ interface IFetchStates<T> {
 interface IFetchingConfig {
   method: string;
   headers?: {
-    [key: string]: string;
+    [key: string]: any;
   };
   data?: {
-    [key: string]: string | number;
+    [key: string]: any;
   };
 }
 
