@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { customAxios } from "../../lib/axios";
 
 const useLogin = () => {
   const [loginData, setLoginData] = useState<{
@@ -20,7 +21,7 @@ const useLogin = () => {
 
   const onSubmitLogin = async () => {
     try {
-      const { data } = await axios.post("/users/auth", {
+      const { data } = await customAxios.post("/users/auth", {
         email: loginData.email,
         password: loginData.password,
       });
