@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HeartIcon from "../../../assets/icon/Heart";
 import SortArrowIcon from "../../../assets/icon/SortArrow";
 import * as _ from "../style";
@@ -40,28 +40,30 @@ function MyPostsComponent() {
         animate="visible"
       >
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-          <_.Board key={i} variants={BoardMotion}>
-            <_.BoardTitle>제목</_.BoardTitle>
-            <_.TagWrapper>
-              <_.Tag>Flutter</_.Tag>
-              <_.Tag>Javscript</_.Tag>
-            </_.TagWrapper>
-            <Line />
-            <_.UnderWrapper>
-              <div>
-                <_.Profile alt="none" />
-                <_.UserName>유저이름</_.UserName>
-              </div>
-              <_.UnderRightWrapper>
+          <Link to="/posts">
+            <_.Board key={i} variants={BoardMotion}>
+              <_.BoardTitle>제목</_.BoardTitle>
+              <_.TagWrapper>
+                <_.Tag>Flutter</_.Tag>
+                <_.Tag>Javscript</_.Tag>
+              </_.TagWrapper>
+              <Line />
+              <_.UnderWrapper>
                 <div>
-                  <HeartIcon />
-                  <_.GrayText style={{ marginLeft: "4px" }}>21</_.GrayText>
+                  <_.Profile alt="none" />
+                  <_.UserName>유저이름</_.UserName>
                 </div>
-                <SectionLine />
-                <_.GrayText>1시간전</_.GrayText>
-              </_.UnderRightWrapper>
-            </_.UnderWrapper>
-          </_.Board>
+                <_.UnderRightWrapper>
+                  <div>
+                    <HeartIcon />
+                    <_.GrayText style={{ marginLeft: "4px" }}>21</_.GrayText>
+                  </div>
+                  <SectionLine />
+                  <_.GrayText>1시간전</_.GrayText>
+                </_.UnderRightWrapper>
+              </_.UnderWrapper>
+            </_.Board>
+          </Link>
         ))}
       </_.BoardContainer>
     </_.Container>

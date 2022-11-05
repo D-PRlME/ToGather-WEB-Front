@@ -13,8 +13,8 @@ export const Container = styled.form`
   }
 `;
 
-export const Input = styled.input<{ height?: number }>`
-  width: 772px;
+export const Input = styled.input<{ height?: number; width?: number }>`
+  width: ${(props) => (props.width ? props.width : 772)}px;
   height: ${(props) => (props.height ? props.height : 48)}px;
   color: #787878;
   border: 1px solid rgba(39, 39, 39, 0.15);
@@ -54,4 +54,70 @@ export const QuestionModal = styled(motion.div)`
   line-height: 19.2px;
   padding-left: 11px;
   align-items: center;
+`;
+
+export const ModalContainer = styled(motion.div)`
+  position: absolute;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+`;
+export const ModalBg = styled.div`
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 0;
+`;
+
+export const Modal = styled(motion.div)`
+  position: relative;
+  width: 470px;
+  height: 622px;
+  background: #ffffff;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  z-index: 1;
+  padding: 20px;
+  justify-content: space-between;
+`;
+export const Text = styled.div<{
+  weight: number;
+  size: number;
+  height?: number;
+  color?: string;
+}>`
+  font-weight: ${(props) => props.weight};
+  font-size: ${(props) => props.size}px;
+  line-height: ${(props) => (props.height ? props.height : 10)}px;
+  color: ${(props) => (props ? props.color : "#FFFFFF")};
+`;
+
+export const TagWrapper = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 450px;
+  overflow: auto;
+`;
+
+export const Tag = styled(motion.div)`
+  height: 69px;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(39, 39, 39, 0.15);
+`;
+export const ModalBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: 48px;
+  background: #f7f7f7;
+  border: 2px solid rgba(39, 39, 39, 0.15);
+  border-radius: 6px;
 `;

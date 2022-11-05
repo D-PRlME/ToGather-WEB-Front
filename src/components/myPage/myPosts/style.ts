@@ -27,7 +27,7 @@ export const ProfileTextContainer = styled.div`
   margin-left: 12px;
   height: auto;
 `;
-export const Text = styled.div<{
+export const Text = styled(motion.div)<{
   weight: number;
   size: number;
   height: number;
