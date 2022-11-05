@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 type IFetchResponse<T> = [IfetchHandler, IFetchStates<T>];
 interface IFetchStates<T> {
@@ -27,6 +28,7 @@ type IfetchHandler = (config: IFetchingConfig) => void;
  * @return {boolean} loading : loading 중이면 true, 아니면 false
  * @return {error} error : error
  */
+
 function useFetch<T = any>(url: string): IFetchResponse<T> {
   const [state, setState] = useState<IFetchStates<T>>({
     data: undefined,
@@ -35,16 +37,16 @@ function useFetch<T = any>(url: string): IFetchResponse<T> {
   });
   const fetchHandler = ({ method, headers, data }: IFetchingConfig): void => {
     setState((current) => ({ ...current, loading: true }));
-    fetch(process.env.REACT_APP_BaseUrl + url, {
+    axios(url, {
       method,
       headers: {
-        "Content-Type": "application/json",
         ...headers,
       },
-      body: JSON.stringify(data),
+      data: JSON.stringify(data),
     })
-      .then((response) => response.json().catch(() => {}))
-      .then((data) => setState((prev) => ({ ...prev, data })))
+      .then((response) =>
+        setState((prev) => ({ ...prev, data: response.data }))
+      )
       .catch((error) => setState((current) => ({ ...current, error: error })))
       .finally(() => setState((current) => ({ ...current, loading: false })));
   };
