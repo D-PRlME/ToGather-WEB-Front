@@ -70,7 +70,6 @@ function MyPostsComponent() {
   );
 }
 
-// 단일성으로 사용할거 같아 컴포넌트 안에 선언
 function Line() {
   return (
     <svg

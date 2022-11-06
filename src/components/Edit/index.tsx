@@ -1,12 +1,11 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import QuestionIcon from "../../assets/icon/question";
-import useFetch from "../../hooks/useFetch";
 import * as _ from "./style";
 import axios, { AxiosResponse } from "axios";
 import { customAxios } from "../../lib/axios";
 import { ACCESS_TOKEN_KEY } from "../../constants/token/token.constant";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 interface IEditFormStates {
   title: string;
   content: string;
@@ -39,21 +38,9 @@ const TagMotion = {
 
 function EditComponent() {
   const { register, handleSubmit } = useForm<IEditFormStates>();
-  const [onQuestionModal, setOnQuestionModal] = useState(false);
+  // const [onQuestionModal, setOnQuestionModal] = useState(false);
   const [onModal, setOnModal] = useState(false);
   const [tags, setTags] = useState([]);
-  const [feching, { data }] = useFetch(
-    "http://3.35.113.190:8080/posts/tag/list"
-  );
-  useEffect(() => {
-    feching({
-      method: "get",
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN_KEY}`,
-      },
-    });
-    console.log(data);
-  }, []);
   const onValid = (form: IEditFormStates) => {
     customAxios("/posts", {
       method: "post",
@@ -83,7 +70,7 @@ function EditComponent() {
             animate="visible"
           >
             <_.ModalBg onClick={() => setOnModal(false)} />
-            <_.Modal>
+            <_.ModalWrapper>
               <_.Text weight={700} size={40} height={48} color={"black"}>
                 모든 태그 보기
               </_.Text>
@@ -158,9 +145,9 @@ function EditComponent() {
                 ))}
               </_.TagWrapper>
               <_.ModalBtn>
-                <_.Text weight={700} size={24} color={"#000000"}></_.Text>
+                <_.Text weight={700} size={24} color={"#000000"}>확인</_.Text>
               </_.ModalBtn>
-            </_.Modal>
+            </_.ModalWrapper>
           </_.ModalContainer>
         )}
       </AnimatePresence>

@@ -74,10 +74,11 @@ export const ModalContainer = styled(motion.div)`
 `;
 export const ModalBg = styled.div`
   position: absolute;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 0;
+  backdrop-filter: blur(6px);
 `;
 export const ModalWrapper = styled(motion.div)`
   position: relative;

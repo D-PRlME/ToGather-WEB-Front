@@ -10,7 +10,7 @@ export const Container = styled.div`
 export const BackBtnContainer = styled.div`
   display: flex;
   align-items: center;
-  margin: 22px;
+  margin: 20px;
   cursor: pointer;
 `;
 export const BackBtn = styled.button`
@@ -24,6 +24,7 @@ export const BoardContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding-left: 20px;
   overflow-y: scroll;
 `;
 export const Board = styled(motion.div)`
@@ -32,10 +33,10 @@ export const Board = styled(motion.div)`
   justify-content: space-between;
   height: 137px;
   width: auto;
-  margin-left: 20px;
   background: #f7f7f7;
   border-radius: 8px;
   padding: 12px;
+  z-index: -1;
 `;
 export const BoardTitle = styled.span`
   font-weight: 700;
