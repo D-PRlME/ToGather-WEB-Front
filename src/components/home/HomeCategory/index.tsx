@@ -20,10 +20,12 @@ const HomeCategory = () => {
           <_.MenuText>홈</_.MenuText>
         </_.MenuBlock>
       </Link>
-      <_.MenuBlock>
-        <_.MenuLogo src={SearchLogo} />
-        <_.MenuText>검색</_.MenuText>
-      </_.MenuBlock>
+      <Link to="/search">
+        <_.MenuBlock>
+          <_.MenuLogo src={SearchLogo} />
+          <_.MenuText>검색</_.MenuText>
+        </_.MenuBlock>
+      </Link>
       <Link to="/edit">
         <_.MenuBlock>
           <_.MenuLogo src={PostLogo} />
