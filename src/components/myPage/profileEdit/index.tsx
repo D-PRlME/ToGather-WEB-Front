@@ -27,17 +27,11 @@ function ProfileEditComponent() {
           <SortArrowIcon />
           <BackBtn>돌아가기</BackBtn>
         </BackBtnContainer>
-        <Profile
-          htmlFor="imgFile"
-          as="label"
-          style={{ width: "100px", height: "100px" }}
-        >
-          <Profile alt="none" style={{ border: 0 }} />
-        </Profile>
-        <input type="file" id="imgFile" style={{ display: "none" }} />
-        <_.Btn bgColor="#E1AD01" h={45} style={{ maxWidth: "150px" }}>
+        <Profile alt="none" style={{ border: 1 }} />
+        <_.Btn bgColor="#E1AD01" h={25} style={{ maxWidth: "150px" }} as="label" htmlFor="imgFile">
           이미지 변경
         </_.Btn>
+        <input type="file" id="imgFile" style={{display: "none"}}/>
         <_.Input {...register("name")} />
         <_.Input {...register("email")} style={{ color: "#787878" }} />
         <_.Input {...register("tag")} />
