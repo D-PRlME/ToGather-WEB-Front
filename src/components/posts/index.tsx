@@ -25,19 +25,7 @@ const BoardMotion = {
     opacity: 1,
   },
 };
-
-const BtnContainerMotion = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-function PostComponent() {
+가function PostComponent() {
   const navigate = useNavigate();
   return (
     <_.Container>
@@ -49,22 +37,11 @@ function PostComponent() {
           <SortArrowIcon />
           <BackBtn>돌아가기</BackBtn>
         </BackBtnContainer>
-        <_.Text
-          weight={700}
-          size={32}
-          height={38}
-          color="black"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+        <_.Text weight={700} size={32} height={38} color="black">
           제목
         </_.Text>
         <_.HeaderContainer>
-          <motion.div
-            style={{ display: "flex", alignItems: "center" }}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0, transition: { delay: 1 } }}
-          >
+          <div style={{ display: "flex", alignItems: "center" }}>
             <Profile
               htmlFor="imgFile"
               as="label"
@@ -76,12 +53,8 @@ function PostComponent() {
             <_.Text weight={500} size={20} height={24}>
               이름
             </_.Text>
-          </motion.div>
-          <motion.div
-            style={{ display: "flex", alignItems: "center" }}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0, transition: { delay: 1.3 } }}
-          >
+          </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <_.Text weight={500} size={20} color={"#787878"}>
               2022-08-22 12:12
             </_.Text>
@@ -89,7 +62,7 @@ function PostComponent() {
               <_.HeartText>21</_.HeartText>
               <Heart />
             </div>
-          </motion.div>
+          </div>
         </_.HeaderContainer>
         <div>
           <svg
@@ -121,35 +94,18 @@ function PostComponent() {
         </_.TagContainer>
         <_.Contents readOnly>내용들</_.Contents>
       </div>
-      <_.BtnContainer
-        variants={BtnContainerMotion}
-        initial="hidden"
-        animate="visible"
-      >
-        <_.Btn
-          bgColor="#E1AD01"
-          h={45}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0, transition: { delay: 1.5 } }}
-        >
+      <_.BtnContainer>
+        <_.Btn bgColor="#E1AD01" h={45}>
           연락하기
         </_.Btn>
-        <motion.div
-          style={{ display: "flex" }}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{
-            opacity: 1,
-            x: 0,
-            transition: { delay: 1.5, staggerChildren: 0.3 },
-          }}
-        >
+        <div style={{ display: "flex" }}>
           <_.Btn bgColor="#F7F7F7" h={45}>
             수정
           </_.Btn>
           <_.Btn bgColor="#FE3D3D" h={45}>
             삭제
           </_.Btn>
-        </motion.div>
+        </div>
       </_.BtnContainer>
     </_.Container>
   );
