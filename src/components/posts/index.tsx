@@ -25,7 +25,7 @@ const BoardMotion = {
     opacity: 1,
   },
 };
-가function PostComponent() {
+function PostComponent() {
   const navigate = useNavigate();
   return (
     <_.Container>
