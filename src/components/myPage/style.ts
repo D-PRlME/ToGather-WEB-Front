@@ -24,6 +24,7 @@ export const BoardContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  overflow-y: scroll;
 `;
 export const Board = styled(motion.div)`
   display: flex;
@@ -61,9 +62,10 @@ export const UnderWrapper = styled.div`
 export const Profile = styled.img`
   border: 1px solid rgba(39, 39, 39, 0.15);
   border-radius: 90px;
-  width: 33px;
-  height: 33px;
+  width: 100px;
+  height: 100px;
   margin-right: 8px;
+  background-color: black;
 `;
 export const UserName = styled.span`
   font-weight: 500;
