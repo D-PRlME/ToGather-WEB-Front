@@ -3,8 +3,7 @@ import EditPage from "../../pages/EditPage";
 import HomePage from "../../pages/HomePage";
 import LogInPage from "../../pages/LogInPage";
 import MyPage from "../../pages/MyPage";
-import PostsPage from "../../pages/PostsPage";
-import PostComponent from "../posts";
+import PostsPage from "../../pages/PostPage";
 import SearchPage from "../../pages/SearchPage";
 
 const Router = () => {
