@@ -5,7 +5,7 @@ import {
 } from "../../constants/token/token.constant";
 
 export const customAxios = axios.create({
-  baseURL: "http://44.209.75.36:8080",
+  baseURL: "http://3.35.113.190:8080/",
   headers: {
     [REQUEST_TOKEN_KEY]: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`,
   },

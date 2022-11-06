@@ -4,10 +4,8 @@ import { palette } from "../../styles/palette";
 export const LogInContainer = styled.div`
   width: 1000px;
   height: 900px;
-  // display: flex;
   justify-content: center;
   align-items: center;
-  // background-color: #333;
   margin: 0 auto;
 `;
 

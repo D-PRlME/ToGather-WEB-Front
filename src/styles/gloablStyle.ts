@@ -5,4 +5,8 @@ export const GlobalStyle = createGlobalStyle`
         color: black;
         text-decoration: none;
     }
+    button{
+        background-color: rgba(0, 0, 0, 0);
+        border: 0;
+    }
 `;
