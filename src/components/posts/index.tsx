@@ -1,6 +1,9 @@
+import axios from "axios";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SortArrowIcon from "../../assets/icon/SortArrow";
+import { IDetailPost } from "../home/HomePostList";
 import { BackBtn, BackBtnContainer, Profile } from "../myPage/style";
 import * as _ from "./style";
 
@@ -25,8 +28,22 @@ const BoardMotion = {
     opacity: 1,
   },
 };
+
 function PostComponent() {
   const navigate = useNavigate();
+  const params = useParams();
+  const [detailData, setDetailData] = useState<IDetailPost>({});
+  const token =
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc4NDEzODAsImlhdCI6MTY2NzgzNzc4MH0.fKjrK5-ykI90QoQAB8jTxVx3GaRBEmf8LHbJo9HxiMM";
+  useEffect(() => {
+    axios(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
+      method: "get",
+      headers: {
+        Authorization: token,
+      },
+    }).then((res) => setDetailData(res.data));
+  }, []);
+  console.log(detailData);
   return (
     <_.Container>
       <div>
@@ -38,7 +55,7 @@ function PostComponent() {
           <BackBtn>돌아가기</BackBtn>
         </BackBtnContainer>
         <_.Text weight={700} size={32} height={38} color="black">
-          제목
+          {detailData?.title}
         </_.Text>
         <_.HeaderContainer>
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -51,15 +68,15 @@ function PostComponent() {
             </Profile>
             <input type="file" id="imgFile" style={{ display: "none" }} />
             <_.Text weight={500} size={20} height={24}>
-              이름
+              {detailData?.user}
             </_.Text>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
             <_.Text weight={500} size={20} color={"#787878"}>
-              2022-08-22 12:12
+              {detailData?.created_at}
             </_.Text>
             <div style={{ position: "relative", display: "flex" }}>
-              <_.HeartText>21</_.HeartText>
+              <_.HeartText>{detailData?.like_count}</_.HeartText>
               <Heart />
             </div>
           </div>
@@ -86,9 +103,9 @@ function PostComponent() {
           initial="hidden"
           animate="visible"
         >
-          {[1, 2, 3, 4, 5].map((i) => (
-            <_.Tag key={i} variants={BoardMotion}>
-              TAG
+          {detailData?.tags.map((tag) => (
+            <_.Tag key={tag.name} variants={BoardMotion}>
+              {tag.name}
             </_.Tag>
           ))}
         </_.TagContainer>
