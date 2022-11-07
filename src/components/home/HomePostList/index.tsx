@@ -43,22 +43,52 @@ interface TagListResponse{
     },
   ]
 }
+
+interface PostsListResponse{
+  "post_list" : [
+      {
+        "post_id" : number
+        "title" : string;
+        "user" : {
+          "user_id" : number;
+          "user_name" : string;
+          "profile_image_url" : string;
+        },
+        "created_at" : string
+        "tags" : [
+          {
+            "name" : string,
+            "image_url" : string
+          }
+        ],
+        "is_finished" : boolean,
+        "like_count":number
+      }
+    ]
+}
 function Loading(){
   return (
     <h1>로딩중입니다....</h1>
   )
 }
 const HomePostList = () => {
-   const [data, setData] = useState<TagListResponse>()
+  const [tagsData, setTagsData] = useState<TagListResponse>()
+  const [postsData, setPostsData] = useState<PostsListResponse>()
+  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc4MjA5ODYsImlhdCI6MTY2NzgxNzM4Nn0.PzJFBlCV0HcKo5qYE-vMLtvde-NRauoTGvEDYMLG3-M"
   useEffect(()=>{
-    axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res)=>setData(res.data))
+    axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res)=>setTagsData(res.data))
+    axios(process.env.REACT_APP_BaseUrl + "/posts", {
+        headers: {
+            Authorization: token
+        }
+    }).then((res) => setPostsData(res.data))
   },[])
   return (
     <>
       <_.HomePostListContainer>
         <_.HomePostSkillHeader>
           <Suspense fallback={<Loading/>}>
-          {data?.tags.map((tag) => (
+          {tagsData?.tags.map((tag) => (
             <_.Skill key={tag.name}>
               <_.SkillLogo src={tag.image_url} alt={"loading"}/>
               <_.SkillText>{tag.name}</_.SkillText>
@@ -71,27 +101,28 @@ const HomePostList = () => {
           initial="hidden"
           animate="visible"
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-            <Link to="/posts">
-              <s.Board key={i} variants={BoardMotion}>
-                <s.BoardTitle>제목</s.BoardTitle>
+          {postsData?.post_list.map((post) => (
+            <Link to={`/posts/${post.user.user_id}`}>
+              <s.Board key={post.post_id} variants={BoardMotion}>
+                <s.BoardTitle>{post.title}</s.BoardTitle>
                 <s.TagWrapper>
-                  <s.Tag>Flutter</s.Tag>
-                  <s.Tag>Javscript</s.Tag>
+                  {post.tags.map((tag)=> (
+                    <s.Tag>{tag.name}</s.Tag>
+                  ))}
                 </s.TagWrapper>
                 <Line />
                 <s.UnderWrapper>
                   <div>
-                    <s.Profile alt="none" />
-                    <s.UserName>유저이름</s.UserName>
+                    <s.Profile alt="none" src={post.user.profile_image_url}/>
+                    <s.UserName>{post.user.user_name}</s.UserName>
                   </div>
                   <s.UnderRightWrapper>
                     <div>
                       <HeartIcon />
-                      <s.GrayText style={{ marginLeft: "4px" }}>21</s.GrayText>
+                      <s.GrayText style={{ marginLeft: "4px" }}>{post.like_count}</s.GrayText>
                     </div>
                     <SectionLine />
-                    <s.GrayText>1시간전</s.GrayText>
+                    <s.GrayText>{post.created_at}</s.GrayText>
                   </s.UnderRightWrapper>
                 </s.UnderWrapper>
               </s.Board>
@@ -112,7 +143,7 @@ function Line() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line y1="0.5" x2="759" y2="0.5" stroke="#272727" strokeOpacity="0.15" />
+      <line y1="0.5" x2="790" y2="0.5" stroke="#272727" strokeOpacity="0.15" />
     </svg>
   );
 }
@@ -126,7 +157,7 @@ function SectionLine() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="M1 0L1 7.5L1 15" stroke="#272727" stroke-opacity="0.15" />
+      <path d="M1 0L1 7.5L1 15" stroke="#272727" strokeOpacity="0.15" />
     </svg>
   );
 }
