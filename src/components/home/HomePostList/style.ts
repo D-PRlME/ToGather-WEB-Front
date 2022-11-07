@@ -4,7 +4,7 @@ export const HomePostSkillHeader = styled.div`
   display: flex;
   align-items: center;
   width: 785px;
-  height: 200px;
+  height: 100px;
   margin-left: 20px;
   padding-left: 20px;
   border-radius: 8px;
