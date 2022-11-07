@@ -1,9 +1,6 @@
 import React, { useEffect, useState, Suspense } from "react";
 import * as _ from "./style";
-import * as s from "../../myPage/style"
-import flutter from "../../../assets/logo/skill/flutter.svg";
-import UserLogo from "../../../assets/logo/user.svg";
-import PostLike from "../../../assets/logo/like.svg";
+import * as s from "../../myPage/style";
 import { Link } from "react-router-dom";
 import HeartIcon from "../../../assets/icon/Heart";
 import useFetch from "../../../hooks/useFetch";
@@ -30,70 +27,82 @@ const BoardMotion = {
     x: 0,
     opacity: 1,
     transition: {
-      bounce: 0.2
-    }
+      bounce: 0.2,
+    },
   },
 };
 
-interface TagListResponse{
-  "tags": [
+interface TagListResponse {
+  tags: [
     {
-      "name": string;
-      "image_url": string;
-    },
-  ]
+      name: string;
+      image_url: string;
+    }
+  ];
 }
 
-interface PostsListResponse{
-  "post_list" : [
-      {
-        "post_id" : number
-        "title" : string;
-        "user" : {
-          "user_id" : number;
-          "user_name" : string;
-          "profile_image_url" : string;
-        },
-        "created_at" : string
-        "tags" : [
-          {
-            "name" : string,
-            "image_url" : string
-          }
-        ],
-        "is_finished" : boolean,
-        "like_count":number
-      }
-    ]
+interface PostsListResponse {
+  post_list: [
+    {
+      post_id: number;
+      title: string;
+      user: {
+        user_id: number;
+        user_name: string;
+        profile_image_url: string;
+      };
+      created_at: string;
+      tags: [
+        {
+          name: string;
+          image_url: string;
+        }
+      ];
+      is_finished: boolean;
+      like_count: number;
+    }
+  ];
 }
-function Loading(){
-  return (
-    <h1>로딩중입니다....</h1>
-  )
+function Loading() {
+  return <h1>로딩중입니다....</h1>;
 }
 const HomePostList = () => {
-  const [tagsData, setTagsData] = useState<TagListResponse>()
-  const [postsData, setPostsData] = useState<PostsListResponse>()
-  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc4MjA5ODYsImlhdCI6MTY2NzgxNzM4Nn0.PzJFBlCV0HcKo5qYE-vMLtvde-NRauoTGvEDYMLG3-M"
-  useEffect(()=>{
-    axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res)=>setTagsData(res.data))
+  const [tagsData, setTagsData] = useState<TagListResponse>();
+  const [postsData, setPostsData] = useState<PostsListResponse>();
+  const tagOnValid = (tags: string) => {
+    const i = tags.indexOf(".");
+    const copyTags = tags.replace(".", "_").toUpperCase();
+    axios(process.env.REACT_APP_BaseUrl + "/posts/tag", {
+      method: "GET",
+      headers: { Authorization: token },
+      params: {
+        tag: copyTags,
+      },
+    }).then((res) => setPostsData(res.data));
+  };
+  const token =
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc4NDEzODAsImlhdCI6MTY2NzgzNzc4MH0.fKjrK5-ykI90QoQAB8jTxVx3GaRBEmf8LHbJo9HxiMM";
+  useEffect(() => {
+    axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res) =>
+      setTagsData(res.data)
+    );
     axios(process.env.REACT_APP_BaseUrl + "/posts", {
-        headers: {
-            Authorization: token
-        }
-    }).then((res) => setPostsData(res.data))
-  },[])
+      headers: {
+        Authorization: token,
+      },
+    }).then((res) => setPostsData(res.data));
+  }, []);
   return (
     <>
       <_.HomePostListContainer>
         <_.HomePostSkillHeader>
-          <Suspense fallback={<Loading/>}>
-          {tagsData?.tags.map((tag) => (
-            <_.Skill key={tag.name}>
-              <_.SkillLogo src={tag.image_url} alt={"loading"}/>
-              <_.SkillText>{tag.name}</_.SkillText>
-            </_.Skill>
-          ))}
+          <Suspense fallback={<Loading />}>
+            {tagsData?.tags.map((tag) => (
+              <_.Skill key={tag.name} onClick={() => tagOnValid(tag.name)}>
+                <_.SkillLogo src={tag.image_url} alt={"loading"} />
+                <_.SkillText>{tag.name}</_.SkillText>
+              </_.Skill>
+            ))}
           </Suspense>
         </_.HomePostSkillHeader>
         <s.BoardContainer
@@ -106,20 +115,22 @@ const HomePostList = () => {
               <s.Board key={post.post_id} variants={BoardMotion}>
                 <s.BoardTitle>{post.title}</s.BoardTitle>
                 <s.TagWrapper>
-                  {post.tags.map((tag)=> (
+                  {post.tags.map((tag) => (
                     <s.Tag>{tag.name}</s.Tag>
                   ))}
                 </s.TagWrapper>
                 <Line />
                 <s.UnderWrapper>
                   <div>
-                    <s.Profile alt="none" src={post.user.profile_image_url}/>
+                    <s.Profile alt="none" src={post.user.profile_image_url} />
                     <s.UserName>{post.user.user_name}</s.UserName>
                   </div>
                   <s.UnderRightWrapper>
                     <div>
                       <HeartIcon />
-                      <s.GrayText style={{ marginLeft: "4px" }}>{post.like_count}</s.GrayText>
+                      <s.GrayText style={{ marginLeft: "4px" }}>
+                        {post.like_count}
+                      </s.GrayText>
                     </div>
                     <SectionLine />
                     <s.GrayText>{post.created_at}</s.GrayText>
