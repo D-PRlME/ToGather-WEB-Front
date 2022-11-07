@@ -21,7 +21,7 @@ export const HomePostListContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-   //background-color: yellow;
+  //background-color: yellow;
 `;
 
 export const Skill = styled.div`
@@ -41,4 +41,5 @@ export const SkillLogo = styled.img`
 
 export const SkillText = styled.div`
   height: 20px;
+  font-weight: bold;
 `;
