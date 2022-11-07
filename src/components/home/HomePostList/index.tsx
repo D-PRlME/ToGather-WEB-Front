@@ -32,7 +32,7 @@ const BoardMotion = {
   },
 };
 
-interface TagListResponse {
+export interface TagListResponse {
   tags: [
     {
       name: string;
@@ -40,28 +40,26 @@ interface TagListResponse {
     }
   ];
 }
-
-interface PostsListResponse {
-  post_list: [
+export interface IDetailPost {
+  post_id: number;
+  title: string;
+  user: {
+    user_id: number;
+    user_name: string;
+    profile_image_url: string;
+  };
+  created_at: string;
+  tags: [
     {
-      post_id: number;
-      title: string;
-      user: {
-        user_id: number;
-        user_name: string;
-        profile_image_url: string;
-      };
-      created_at: string;
-      tags: [
-        {
-          name: string;
-          image_url: string;
-        }
-      ];
-      is_finished: boolean;
-      like_count: number;
+      name: string;
+      image_url: string;
     }
   ];
+  is_finished: boolean;
+  like_count: number;
+}
+interface PostsListResponse {
+  post_list: IDetailPost[];
 }
 function Loading() {
   return <h1>로딩중입니다....</h1>;
