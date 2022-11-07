@@ -24,8 +24,8 @@ const BoardMotion = {
     x: 0,
     opacity: 1,
     transition: {
-      bounce: 0.2
-    }
+      bounce: 0.2,
+    },
   },
 };
 
