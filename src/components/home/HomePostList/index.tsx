@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import * as _ from "./style";
 import * as s from "../../myPage/style"
 import flutter from "../../../assets/logo/skill/flutter.svg";
@@ -6,6 +6,8 @@ import UserLogo from "../../../assets/logo/user.svg";
 import PostLike from "../../../assets/logo/like.svg";
 import { Link } from "react-router-dom";
 import HeartIcon from "../../../assets/icon/Heart";
+import useFetch from "../../../hooks/useFetch";
+import axios from "axios";
 
 const BoardContainerMotion = {
   hidden: {
@@ -27,20 +29,42 @@ const BoardMotion = {
   visible: {
     x: 0,
     opacity: 1,
+    transition: {
+      bounce: 0.2
+    }
   },
 };
 
+interface TagListResponse{
+  "tags": [
+    {
+      "name": string;
+      "image_url": string;
+    },
+  ]
+}
+function Loading(){
+  return (
+    <h1>로딩중입니다....</h1>
+  )
+}
 const HomePostList = () => {
+   const [data, setData] = useState<TagListResponse>()
+  useEffect(()=>{
+    axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res)=>setData(res.data))
+  },[])
   return (
     <>
       <_.HomePostListContainer>
         <_.HomePostSkillHeader>
-          {[1,2,3,4,5,6,7,8,9,10,11,12,13].map((i) => (
-            <_.Skill>
-              <_.SkillLogo src={flutter} />
-              <_.SkillText>flutter</_.SkillText>
+          <Suspense fallback={<Loading/>}>
+          {data?.tags.map((tag) => (
+            <_.Skill key={tag.name}>
+              <_.SkillLogo src={tag.image_url} alt={"loading"}/>
+              <_.SkillText>{tag.name}</_.SkillText>
             </_.Skill>
           ))}
+          </Suspense>
         </_.HomePostSkillHeader>
         <s.BoardContainer
           variants={BoardContainerMotion}
