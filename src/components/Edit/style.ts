@@ -55,7 +55,6 @@ export const QuestionModal = styled(motion.div)`
   padding-left: 11px;
   align-items: center;
 `;
-
 export const Tag = styled(motion.div)`
   height: 69px;
   background-color: rgba(0, 0, 0, 0);
