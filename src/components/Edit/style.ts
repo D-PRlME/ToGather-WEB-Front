@@ -60,6 +60,7 @@ export const Tag = styled(motion.div)`
   background-color: rgba(0, 0, 0, 0);
   display: flex;
   align-items: center;
+  justify-content: left;
   border-bottom: 1px solid rgba(39, 39, 39, 0.15);
 `;
 export const ModalContainer = styled(motion.div)`
