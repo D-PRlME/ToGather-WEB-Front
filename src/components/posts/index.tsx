@@ -58,7 +58,7 @@ function PostComponent() {
   const [detailData, setDetailData] = useState<DetailPostResponse>();
   const [isLiked, setIsLiked] = useState(false);
   const token =
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MjEwMTMsImlhdCI6MTY2NzkxNzQxM30.QJIhbVhnAoO-nhY8CKbT0lKaDoDATkjznH5JM0p83g0";
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MzA3NDQsImlhdCI6MTY2NzkyNzE0NH0.vrPtz4ZzCaSTPS-w3B6bUt7nU1uBo5H4GPn7e1zZtYY.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MjcwNjEsImlhdCI6MTY2NzkyMzQ2MX0.wyOZVxYlzz20m43-owznlEv_PgPCzz7U7eko6FFXgFU";
   useEffect(() => {
     // 상세 페이지 불러오기
     axios(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {

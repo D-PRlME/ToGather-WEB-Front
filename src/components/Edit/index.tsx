@@ -7,6 +7,8 @@ import { ACCESS_TOKEN_KEY } from "../../constants/token/token.constant";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ISelectTags, TagListResponse } from "../home/HomePostList";
+import { useNavigate } from "react-router-dom";
+
 interface IEditFormStates {
   title: string;
   content: string;
@@ -43,24 +45,28 @@ function EditComponent() {
   const [onModal, setOnModal] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [tagData, setTagsData] = useState<TagListResponse>();
+  const navigate = useNavigate();
   const onValid = (form: IEditFormStates) => {
-    // customAxios("/posts", {
-    //   method: "post",
-    //   headers: {
-    //     Authorization: `Bearer ${ACCESS_TOKEN_KEY}`,
-    //   },
-    //   data: {
-    //     title: form.title,
-    //     content: form.content,
-    //     tags: ["PYTHON"],
-    //   },
-    // })
-    //   .then((response: AxiosResponse) => {
-    //     console.log(JSON.stringify(response.data));
-    //   })
-    //   .catch((error: any) => {
-    //     console.log(error);
-    //   });
+    // TODO : 401 에러고치기
+    // TODO : 버튼 스타일 조정
+    customAxios("/posts", {
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${ACCESS_TOKEN_KEY}`,
+      },
+      data: {
+        title: form.title,
+        content: form.content,
+        tags: tags,
+      },
+    })
+      .then((response: AxiosResponse) => {
+        console.log(response.data);
+        navigate("/");
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
     console.log(form);
   };
   const onChangeTag = (tag: string) => {
@@ -73,7 +79,7 @@ function EditComponent() {
   console.log(tags);
   useEffect(() => {
     const token =
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MjEwMTMsImlhdCI6MTY2NzkxNzQxM30.QJIhbVhnAoO-nhY8CKbT0lKaDoDATkjznH5JM0p83g0";
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MzEzMDUsImlhdCI6MTY2NzkyNzcwNX0.0DwZapHsYHW0yCkp6_SxtH6Q3z-yC1GhHPUKLIMlh74";
     customAxios("posts/tag/list", {
       method: "get",
       headers: {
@@ -135,11 +141,6 @@ function EditComponent() {
                   </_.Tag>
                 ))}
               </_.TagWrapper>
-              <_.ModalBtn>
-                <_.Text weight={700} size={24} color={"#000000"}>
-                  확인
-                </_.Text>
-              </_.ModalBtn>
             </_.ModalWrapper>
           </_.ModalContainer>
         )}
@@ -180,10 +181,29 @@ function EditComponent() {
         {...register("content")}
       />
       <_.BtnContainer>
-        <_.Btn bgColor="#E1AD01">글쓰기</_.Btn>
-        <_.Btn bgColor="#F7F7F7" onClick={() => setOnModal(true)} type="button">
-          모든 태그 보기
+        <_.Btn bgColor="#E1AD01" type="submit">
+          글쓰기
         </_.Btn>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div style={{ display: "flex", gap: "10px" }}>
+            {tags.map((tag) => (
+              <_.SelectTag>{tag}</_.SelectTag>
+            ))}
+          </div>
+          <_.Btn
+            bgColor="#F7F7F7"
+            onClick={() => setOnModal(true)}
+            type="button"
+            style={{ width: "200px" }}
+          >
+            모든 태그 보기
+          </_.Btn>
+        </div>
       </_.BtnContainer>
     </_.Container>
   );
@@ -191,7 +211,7 @@ function EditComponent() {
 
 function CheckIcon() {
   return (
-    <div style={{ backgroundColor: "rgba(0,0,0,0.3)", position: "absolute" }}>
+    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}>
       <svg
         width="29"
         height="29"
@@ -204,4 +224,5 @@ function CheckIcon() {
     </div>
   );
 }
+
 export default EditComponent;
