@@ -73,16 +73,18 @@ function EditComponent() {
   console.log(tags);
   useEffect(() => {
     const token =
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MTk1NDMsImlhdCI6MTY2NzkxNTk0M30.GzpqXvpdr9nS_-HVG4g28837kMN5964n1iyAzZjH2H8";
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MjEwMTMsImlhdCI6MTY2NzkxNzQxM30.QJIhbVhnAoO-nhY8CKbT0lKaDoDATkjznH5JM0p83g0";
     customAxios("posts/tag/list", {
       method: "get",
       headers: {
         Authorization: token,
       },
-    }).then((res) => {
-      setTagsData(res.data);
-      console.log(res.data);
-    });
+    })
+      .then((res) => {
+        setTagsData(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => alert(err.message));
   }, []);
   return (
     <_.Container onSubmit={handleSubmit(onValid)}>

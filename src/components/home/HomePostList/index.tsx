@@ -92,7 +92,7 @@ const HomePostList = () => {
     }).then((res) => setPostsData(res.data));
   };
   const token =
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MTU4MzAsImlhdCI6MTY2NzkxMjIzMH0.uwpWHItwNJOVAmSZp7qL2rRa7zKehbRKYoxbEKSluzY";
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MjEwMTMsImlhdCI6MTY2NzkxNzQxM30.QJIhbVhnAoO-nhY8CKbT0lKaDoDATkjznH5JM0p83g0";
   useEffect(() => {
     axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res) =>
       setTagsData(res.data)
@@ -101,7 +101,9 @@ const HomePostList = () => {
       headers: {
         Authorization: token,
       },
-    }).then((res) => setPostsData(res.data));
+    })
+      .then((res) => setPostsData(res.data))
+      .catch((err) => alert(err.message));
   }, []);
   return (
     <_.HomePostListContainer>
