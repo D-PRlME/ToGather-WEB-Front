@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SortArrowIcon from "../../assets/icon/SortArrow";
-import { IDetailPost } from "../home/HomePostList";
 import { BackBtn, BackBtnContainer, Profile } from "../myPage/style";
 import * as _ from "./style";
 
@@ -29,12 +28,34 @@ const BoardMotion = {
   },
 };
 
+interface DetailPostResponse {
+  post_id: number;
+  title: string;
+  user: {
+    user_id: number;
+    user_name: string;
+    profile_image_url: string;
+  };
+  created_at: string;
+  tag: [
+    {
+      name: string;
+      image_url: string;
+    }
+  ];
+  content: string;
+  is_mine: boolean;
+  is_completed: boolean;
+  is_liked: number;
+  like_count: number;
+}
+
 function PostComponent() {
   const navigate = useNavigate();
   const params = useParams();
-  const [detailData, setDetailData] = useState<IDetailPost>({});
+  const [detailData, setDetailData] = useState<DetailPostResponse>();
   const token =
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc4NDEzODAsImlhdCI6MTY2NzgzNzc4MH0.fKjrK5-ykI90QoQAB8jTxVx3GaRBEmf8LHbJo9HxiMM";
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MDQwOTIsImlhdCI6MTY2NzkwMDQ5Mn0.gTf4ynVZY_DwzkUXEkXcjYHX1MI2nJ6JF3SEpckDyEY";
   useEffect(() => {
     axios(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
       method: "get",
@@ -43,7 +64,7 @@ function PostComponent() {
       },
     }).then((res) => setDetailData(res.data));
   }, []);
-  console.log(detailData);
+  const onValidLike = () => {};
   return (
     <_.Container>
       <div>
@@ -68,7 +89,7 @@ function PostComponent() {
             </Profile>
             <input type="file" id="imgFile" style={{ display: "none" }} />
             <_.Text weight={500} size={20} height={24}>
-              {detailData?.user}
+              {/* {detailData?.user.user_name} */}
             </_.Text>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -103,7 +124,7 @@ function PostComponent() {
           initial="hidden"
           animate="visible"
         >
-          {detailData?.tags.map((tag) => (
+          {detailData?.tag.map((tag) => (
             <_.Tag key={tag.name} variants={BoardMotion}>
               {tag.name}
             </_.Tag>
@@ -115,14 +136,16 @@ function PostComponent() {
         <_.Btn bgColor="#E1AD01" h={45}>
           연락하기
         </_.Btn>
-        <div style={{ display: "flex" }}>
-          <_.Btn bgColor="#F7F7F7" h={45}>
-            수정
-          </_.Btn>
-          <_.Btn bgColor="#FE3D3D" h={45}>
-            삭제
-          </_.Btn>
-        </div>
+        {detailData?.is_mine && (
+          <div style={{ display: "flex" }}>
+            <_.Btn bgColor="#F7F7F7" h={45}>
+              수정
+            </_.Btn>
+            <_.Btn bgColor="#FE3D3D" h={45}>
+              삭제
+            </_.Btn>
+          </div>
+        )}
       </_.BtnContainer>
     </_.Container>
   );
