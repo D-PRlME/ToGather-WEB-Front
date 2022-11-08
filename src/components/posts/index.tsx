@@ -50,21 +50,68 @@ interface DetailPostResponse {
   like_count: number;
 }
 
+// TODO : customaxios로 바꾸기
+// TODO ; 좋아요 기능 구현하다 말음(500 error)
 function PostComponent() {
   const navigate = useNavigate();
   const params = useParams();
   const [detailData, setDetailData] = useState<DetailPostResponse>();
+  const [isLiked, setIsLiked] = useState(false);
   const token =
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MDQwOTIsImlhdCI6MTY2NzkwMDQ5Mn0.gTf4ynVZY_DwzkUXEkXcjYHX1MI2nJ6JF3SEpckDyEY";
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MTcwNzAsImlhdCI6MTY2NzkxMzQ3MH0.kXm_EbBo8WjXgaCoT0bMSqk3CfsW7yKON0kd8Dw7_nE";
   useEffect(() => {
+    // 상세 페이지 불러오기
     axios(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
       method: "get",
       headers: {
         Authorization: token,
       },
-    }).then((res) => setDetailData(res.data));
+    })
+      .then((res) => setDetailData(res.data))
+      .catch((err) => alert(err.message));
+    if (detailData?.is_liked) {
+      setIsLiked(detailData?.like_count > 0 ? true : false);
+      console.log(isLiked);
+    }
   }, []);
-  const onValidLike = () => {};
+  const onValidLike = () => {
+    console.log(isLiked);
+    if (isLiked) {
+      // 좋아요 보내기
+      axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
+        method: "post",
+        headers: {
+          Authorization: token,
+        },
+      })
+        .then(() => console.log("좋아요 보냄"))
+        .catch(() => alert("좋아요 보내기 실패.."));
+    } else {
+      // 좋아요 삭제
+      axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
+        method: "delete",
+        headers: {
+          Authorization: token,
+        },
+      })
+        .then(() => {})
+        .catch(() => alert("좋아요 취소 실패.."));
+    }
+  };
+  const onValidDelete = () => {
+    axios
+      .get(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
+        method: "delete",
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(() => {
+        alert("삭제 성공!");
+        navigate("/");
+      })
+      .catch(() => alert("삭제 실패..."));
+  };
   return (
     <_.Container>
       <div>
@@ -89,14 +136,17 @@ function PostComponent() {
             </Profile>
             <input type="file" id="imgFile" style={{ display: "none" }} />
             <_.Text weight={500} size={20} height={24}>
-              {/* {detailData?.user.user_name} */}
+              {detailData?.user.user_name}
             </_.Text>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
             <_.Text weight={500} size={20} color={"#787878"}>
               {detailData?.created_at}
             </_.Text>
-            <div style={{ position: "relative", display: "flex" }}>
+            <div
+              style={{ position: "relative", display: "flex" }}
+              onClick={onValidLike}
+            >
               <_.HeartText>{detailData?.like_count}</_.HeartText>
               <Heart />
             </div>
@@ -115,7 +165,7 @@ function PostComponent() {
               x2="772"
               y2="0.5"
               stroke="#272727"
-              stroke-opacity="0.15"
+              strokeOpacity="0.15"
             />
           </svg>
         </div>
@@ -124,13 +174,13 @@ function PostComponent() {
           initial="hidden"
           animate="visible"
         >
-          {detailData?.tag.map((tag) => (
+          {/* {detailData?.tag.map((tag) => (
             <_.Tag key={tag.name} variants={BoardMotion}>
               {tag.name}
             </_.Tag>
-          ))}
+          ))} */}
         </_.TagContainer>
-        <_.Contents readOnly>내용들</_.Contents>
+        <_.Contents value={detailData?.content}></_.Contents>
       </div>
       <_.BtnContainer>
         <_.Btn bgColor="#E1AD01" h={45}>
@@ -141,7 +191,7 @@ function PostComponent() {
             <_.Btn bgColor="#F7F7F7" h={45}>
               수정
             </_.Btn>
-            <_.Btn bgColor="#FE3D3D" h={45}>
+            <_.Btn bgColor="#FE3D3D" h={45} onClick={onValidDelete}>
               삭제
             </_.Btn>
           </div>
@@ -164,7 +214,7 @@ function Heart() {
       <path
         d="M10.9312 5.01982L12.9155 2.9978C12.9155 2.9978 16.2228 -0.372247 19.5301 2.9978C22.8374 6.36784 19.5301 9.73789 19.5301 9.73789L10.9312 18.5L2.62619 9.73789C2.62619 9.73789 -0.828082 6.21806 2.33221 2.9978C5.4925 -0.222467 8.94678 2.9978 8.94678 2.9978L10.9312 5.01982Z"
         stroke="#787878"
-        stroke-width="2"
+        strokeWidth="2"
       />
     </svg>
   );
