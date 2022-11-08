@@ -1,5 +1,7 @@
+import axios from "axios";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SortArrowIcon from "../../assets/icon/SortArrow";
 import { BackBtn, BackBtnContainer, Profile } from "../myPage/style";
 import * as _ from "./style";
@@ -25,8 +27,44 @@ const BoardMotion = {
     opacity: 1,
   },
 };
+
+interface DetailPostResponse {
+  post_id: number;
+  title: string;
+  user: {
+    user_id: number;
+    user_name: string;
+    profile_image_url: string;
+  };
+  created_at: string;
+  tag: [
+    {
+      name: string;
+      image_url: string;
+    }
+  ];
+  content: string;
+  is_mine: boolean;
+  is_completed: boolean;
+  is_liked: number;
+  like_count: number;
+}
+
 function PostComponent() {
   const navigate = useNavigate();
+  const params = useParams();
+  const [detailData, setDetailData] = useState<DetailPostResponse>();
+  const token =
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MDQwOTIsImlhdCI6MTY2NzkwMDQ5Mn0.gTf4ynVZY_DwzkUXEkXcjYHX1MI2nJ6JF3SEpckDyEY";
+  useEffect(() => {
+    axios(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
+      method: "get",
+      headers: {
+        Authorization: token,
+      },
+    }).then((res) => setDetailData(res.data));
+  }, []);
+  const onValidLike = () => {};
   return (
     <_.Container>
       <div>
@@ -38,7 +76,7 @@ function PostComponent() {
           <BackBtn>돌아가기</BackBtn>
         </BackBtnContainer>
         <_.Text weight={700} size={32} height={38} color="black">
-          제목
+          {detailData?.title}
         </_.Text>
         <_.HeaderContainer>
           <div style={{ display: "flex", alignItems: "center" }}>
@@ -51,15 +89,15 @@ function PostComponent() {
             </Profile>
             <input type="file" id="imgFile" style={{ display: "none" }} />
             <_.Text weight={500} size={20} height={24}>
-              이름
+              {/* {detailData?.user.user_name} */}
             </_.Text>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
             <_.Text weight={500} size={20} color={"#787878"}>
-              2022-08-22 12:12
+              {detailData?.created_at}
             </_.Text>
             <div style={{ position: "relative", display: "flex" }}>
-              <_.HeartText>21</_.HeartText>
+              <_.HeartText>{detailData?.like_count}</_.HeartText>
               <Heart />
             </div>
           </div>
@@ -86,9 +124,9 @@ function PostComponent() {
           initial="hidden"
           animate="visible"
         >
-          {[1, 2, 3, 4, 5].map((i) => (
-            <_.Tag key={i} variants={BoardMotion}>
-              TAG
+          {detailData?.tag.map((tag) => (
+            <_.Tag key={tag.name} variants={BoardMotion}>
+              {tag.name}
             </_.Tag>
           ))}
         </_.TagContainer>
@@ -98,14 +136,16 @@ function PostComponent() {
         <_.Btn bgColor="#E1AD01" h={45}>
           연락하기
         </_.Btn>
-        <div style={{ display: "flex" }}>
-          <_.Btn bgColor="#F7F7F7" h={45}>
-            수정
-          </_.Btn>
-          <_.Btn bgColor="#FE3D3D" h={45}>
-            삭제
-          </_.Btn>
-        </div>
+        {detailData?.is_mine && (
+          <div style={{ display: "flex" }}>
+            <_.Btn bgColor="#F7F7F7" h={45}>
+              수정
+            </_.Btn>
+            <_.Btn bgColor="#FE3D3D" h={45}>
+              삭제
+            </_.Btn>
+          </div>
+        )}
       </_.BtnContainer>
     </_.Container>
   );

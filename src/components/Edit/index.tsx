@@ -32,7 +32,7 @@ const TagMotion = {
   visible: {
     x: 0,
     opacity: 1,
-    transition: { type: "spring", bounce: 0.2 },
+    transition: { bounce: 0.2 },
   },
 };
 

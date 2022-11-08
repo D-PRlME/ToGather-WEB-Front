@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import * as _ from "./style";
-import * as s from "../../myPage/style"
-import flutter from "../../../assets/logo/skill/flutter.svg";
-import UserLogo from "../../../assets/logo/user.svg";
-import PostLike from "../../../assets/logo/like.svg";
+import * as s from "../../myPage/style";
 import { Link } from "react-router-dom";
 import HeartIcon from "../../../assets/icon/Heart";
+import useFetch from "../../../hooks/useFetch";
+import axios from "axios";
 
 const BoardContainerMotion = {
   hidden: {
@@ -27,47 +26,169 @@ const BoardMotion = {
   visible: {
     x: 0,
     opacity: 1,
+    transition: {
+      bounce: 0.2,
+    },
   },
 };
 
+export interface TagListResponse {
+  tags: [
+    {
+      name: string;
+      image_url: string;
+    }
+  ];
+}
+export interface IDetailPost {
+  post_id: number;
+  title: string;
+  user: {
+    user_id: number;
+    user_name: string;
+    profile_image_url: string;
+  };
+  created_at: string;
+  tags: [
+    {
+      name: string;
+      image_url: string;
+    }
+  ];
+  is_finished: boolean;
+  like_count: number;
+}
+<<<<<<< Updated upstream
+interface PostsListResponse {
+  post_list: IDetailPost[];
+=======
+<<<<<<< HEAD
+interface ISelectTags{
+  [key:string]: 'SPRING_BOOT' | 'MYSQL' | 'BACKEND' | 'NODE_JS' | 'REACT' | 'FRONTED' | 'VUE_JS' | 'SWIFT' | 'JAVA' | 'JAVASCRIPT'
+>>>>>>> Stashed changes
+}
+function Loading() {
+  return <h1>로딩중입니다....</h1>;
+}
 const HomePostList = () => {
+<<<<<<< Updated upstream
+=======
+  const [tagsData, setTagsData] = useState<TagListResponse>()
+  const [postsData, setPostsData] = useState<PostsListResponse>()
+  const [selectTags, setSelectTags] = useState<ISelectTags>();
+  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc4MjA5ODYsImlhdCI6MTY2NzgxNzM4Nn0.PzJFBlCV0HcKo5qYE-vMLtvde-NRauoTGvEDYMLG3-M"
+  useEffect(()=>{
+    (async () => {
+      await axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res)=>setTagsData(res.data))
+      await axios(process.env.REACT_APP_BaseUrl + "/posts", {
+        headers: {
+          Authorization: token
+        }
+      }).then((res) => setPostsData(res.data))
+    })()
+  },[])
+  const onValidTags = (tag: any) => {
+    const upperTag = tag.toString().toLocaleUpperCase()
+    const i = upperTag.indexOf(".");
+    const newTag = upperTag.splice(i, 1, "_");
+    setSelectTags((current) => ({ ...current, tag: newTag }))
+  }
+=======
+interface PostsListResponse {
+  post_list: IDetailPost[];
+}
+function Loading() {
+  return <h1>로딩중입니다....</h1>;
+}
+const HomePostList = () => {
+>>>>>>> Stashed changes
+  const [tagsData, setTagsData] = useState<TagListResponse>();
+  const [postsData, setPostsData] = useState<PostsListResponse>();
+  const tagOnValid = (tags: string) => {
+    const i = tags.indexOf(".");
+    const copyTags = tags.replace(".", "_").toUpperCase();
+    axios(process.env.REACT_APP_BaseUrl + "/posts/tag", {
+      method: "GET",
+      headers: { Authorization: token },
+      params: {
+        tag: copyTags,
+      },
+    }).then((res) => setPostsData(res.data));
+  };
+  const token =
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc4NDEzODAsImlhdCI6MTY2NzgzNzc4MH0.fKjrK5-ykI90QoQAB8jTxVx3GaRBEmf8LHbJo9HxiMM";
+  useEffect(() => {
+    axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res) =>
+      setTagsData(res.data)
+    );
+    axios(process.env.REACT_APP_BaseUrl + "/posts", {
+      headers: {
+        Authorization: token,
+      },
+    }).then((res) => setPostsData(res.data));
+  }, []);
+<<<<<<< Updated upstream
+=======
+>>>>>>> MainPage
+>>>>>>> Stashed changes
   return (
     <>
       <_.HomePostListContainer>
         <_.HomePostSkillHeader>
-          {[1,2,3,4,5,6,7,8,9,10,11,12,13].map((i) => (
-            <_.Skill>
-              <_.SkillLogo src={flutter} />
-              <_.SkillText>flutter</_.SkillText>
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+          <Suspense fallback={<Loading/>}>
+          {tagsData?.tags.map((tag) => (
+            <_.Skill key={tag.name} onClick={() => onValidTags(tag.name)}>
+              <_.SkillLogo src={tag.image_url} alt={"loading"}/>
+              <_.SkillText>{tag.name}</_.SkillText>
             </_.Skill>
           ))}
+=======
+>>>>>>> Stashed changes
+          <Suspense fallback={<Loading />}>
+            {tagsData?.tags.map((tag) => (
+              <_.Skill key={tag.name} onClick={() => tagOnValid(tag.name)}>
+                <_.SkillLogo src={tag.image_url} alt={"loading"} />
+                <_.SkillText>{tag.name}</_.SkillText>
+              </_.Skill>
+            ))}
+<<<<<<< Updated upstream
+=======
+>>>>>>> MainPage
+>>>>>>> Stashed changes
+          </Suspense>
         </_.HomePostSkillHeader>
         <s.BoardContainer
           variants={BoardContainerMotion}
           initial="hidden"
           animate="visible"
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-            <Link to="/posts">
-              <s.Board key={i} variants={BoardMotion}>
-                <s.BoardTitle>제목</s.BoardTitle>
+          {postsData?.post_list.map((post) => (
+            <Link to={`/posts/${post.user.user_id}`}>
+              <s.Board key={post.post_id} variants={BoardMotion}>
+                <s.BoardTitle>{post.title}</s.BoardTitle>
                 <s.TagWrapper>
-                  <s.Tag>Flutter</s.Tag>
-                  <s.Tag>Javscript</s.Tag>
+                  {post.tags.map((tag) => (
+                    <s.Tag>{tag.name}</s.Tag>
+                  ))}
                 </s.TagWrapper>
                 <Line />
                 <s.UnderWrapper>
                   <div>
-                    <s.Profile alt="none" />
-                    <s.UserName>유저이름</s.UserName>
+                    <s.Profile alt="none" src={post.user.profile_image_url} />
+                    <s.UserName>{post.user.user_name}</s.UserName>
                   </div>
                   <s.UnderRightWrapper>
                     <div>
                       <HeartIcon />
-                      <s.GrayText style={{ marginLeft: "4px" }}>21</s.GrayText>
+                      <s.GrayText style={{ marginLeft: "4px" }}>
+                        {post.like_count}
+                      </s.GrayText>
                     </div>
                     <SectionLine />
-                    <s.GrayText>1시간전</s.GrayText>
+                    <s.GrayText>{post.created_at}</s.GrayText>
                   </s.UnderRightWrapper>
                 </s.UnderWrapper>
               </s.Board>
@@ -88,7 +209,7 @@ function Line() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line y1="0.5" x2="759" y2="0.5" stroke="#272727" strokeOpacity="0.15" />
+      <line y1="0.5" x2="790" y2="0.5" stroke="#272727" strokeOpacity="0.15" />
     </svg>
   );
 }
@@ -102,7 +223,7 @@ function SectionLine() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="M1 0L1 7.5L1 15" stroke="#272727" stroke-opacity="0.15" />
+      <path d="M1 0L1 7.5L1 15" stroke="#272727" strokeOpacity="0.15" />
     </svg>
   );
 }
