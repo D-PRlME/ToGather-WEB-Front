@@ -58,6 +58,42 @@ export interface IDetailPost {
   is_finished: boolean;
   like_count: number;
 }
+<<<<<<< Updated upstream
+interface PostsListResponse {
+  post_list: IDetailPost[];
+=======
+<<<<<<< HEAD
+interface ISelectTags{
+  [key:string]: 'SPRING_BOOT' | 'MYSQL' | 'BACKEND' | 'NODE_JS' | 'REACT' | 'FRONTED' | 'VUE_JS' | 'SWIFT' | 'JAVA' | 'JAVASCRIPT'
+>>>>>>> Stashed changes
+}
+function Loading() {
+  return <h1>로딩중입니다....</h1>;
+}
+const HomePostList = () => {
+<<<<<<< Updated upstream
+=======
+  const [tagsData, setTagsData] = useState<TagListResponse>()
+  const [postsData, setPostsData] = useState<PostsListResponse>()
+  const [selectTags, setSelectTags] = useState<ISelectTags>();
+  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc4MjA5ODYsImlhdCI6MTY2NzgxNzM4Nn0.PzJFBlCV0HcKo5qYE-vMLtvde-NRauoTGvEDYMLG3-M"
+  useEffect(()=>{
+    (async () => {
+      await axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res)=>setTagsData(res.data))
+      await axios(process.env.REACT_APP_BaseUrl + "/posts", {
+        headers: {
+          Authorization: token
+        }
+      }).then((res) => setPostsData(res.data))
+    })()
+  },[])
+  const onValidTags = (tag: any) => {
+    const upperTag = tag.toString().toLocaleUpperCase()
+    const i = upperTag.indexOf(".");
+    const newTag = upperTag.splice(i, 1, "_");
+    setSelectTags((current) => ({ ...current, tag: newTag }))
+  }
+=======
 interface PostsListResponse {
   post_list: IDetailPost[];
 }
@@ -65,6 +101,7 @@ function Loading() {
   return <h1>로딩중입니다....</h1>;
 }
 const HomePostList = () => {
+>>>>>>> Stashed changes
   const [tagsData, setTagsData] = useState<TagListResponse>();
   const [postsData, setPostsData] = useState<PostsListResponse>();
   const tagOnValid = (tags: string) => {
@@ -90,10 +127,26 @@ const HomePostList = () => {
       },
     }).then((res) => setPostsData(res.data));
   }, []);
+<<<<<<< Updated upstream
+=======
+>>>>>>> MainPage
+>>>>>>> Stashed changes
   return (
     <>
       <_.HomePostListContainer>
         <_.HomePostSkillHeader>
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+          <Suspense fallback={<Loading/>}>
+          {tagsData?.tags.map((tag) => (
+            <_.Skill key={tag.name} onClick={() => onValidTags(tag.name)}>
+              <_.SkillLogo src={tag.image_url} alt={"loading"}/>
+              <_.SkillText>{tag.name}</_.SkillText>
+            </_.Skill>
+          ))}
+=======
+>>>>>>> Stashed changes
           <Suspense fallback={<Loading />}>
             {tagsData?.tags.map((tag) => (
               <_.Skill key={tag.name} onClick={() => tagOnValid(tag.name)}>
@@ -101,6 +154,10 @@ const HomePostList = () => {
                 <_.SkillText>{tag.name}</_.SkillText>
               </_.Skill>
             ))}
+<<<<<<< Updated upstream
+=======
+>>>>>>> MainPage
+>>>>>>> Stashed changes
           </Suspense>
         </_.HomePostSkillHeader>
         <s.BoardContainer
