@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import HeartIcon from "../../../assets/icon/Heart";
 import useFetch from "../../../hooks/useFetch";
 import axios from "axios";
+import Token from "../../../lib/token";
 
 const BoardContainerMotion = {
   hidden: {
@@ -89,26 +90,27 @@ const HomePostList = () => {
     const copyTags = tags.replace(".", "_").toUpperCase();
     axios(process.env.REACT_APP_BaseUrl + "/posts/tag", {
       method: "GET",
-      headers: { Authorization: token },
+      headers: { Authorization: Token.getToken('token') },
       params: {
         tag: copyTags,
       },
     }).then((res) => setPostsData(res.data));
   };
-  const token =
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MjcwNjEsImlhdCI6MTY2NzkyMzQ2MX0.wyOZVxYlzz20m43-owznlEv_PgPCzz7U7eko6FFXgFU";
+  // TODO : localToken으로 변경해야함
   useEffect(() => {
     axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res) =>
       setTagsData(res.data)
     );
     axios(process.env.REACT_APP_BaseUrl + "/posts", {
       headers: {
-        Authorization: token,
+        Authorization:
+        Token.getToken('token'),
       },
     })
       .then((res) => setPostsData(res.data))
       .catch((err) => alert(err.message));
   }, []);
+
   return (
     <_.HomePostListContainer>
       <_.HomePostSkillHeader>
@@ -127,8 +129,8 @@ const HomePostList = () => {
         animate="visible"
       >
         {postsData?.post_list.map((post) => (
-          <Link to={`/posts/${post.post_id}`}>
-            <s.Board key={post.post_id} variants={BoardMotion}>
+          <Link to={`/posts/${post.post_id}`} key={post.post_id}>
+            <s.Board variants={BoardMotion}>
               <s.BoardTitle>{post.title}</s.BoardTitle>
               <s.TagWrapper>
                 {post.tags.map((tag) => (

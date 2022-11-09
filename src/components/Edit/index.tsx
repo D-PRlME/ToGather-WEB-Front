@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
 import QuestionIcon from "../../assets/icon/question";
 import * as _ from "./style";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { customAxios } from "../../lib/axios";
 import { ACCESS_TOKEN_KEY } from "../../constants/token/token.constant";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ISelectTags, TagListResponse } from "../home/HomePostList";
 import { useNavigate } from "react-router-dom";
+import Token from "../../lib/token";
 
 interface IEditFormStates {
   title: string;
@@ -40,6 +41,7 @@ const TagMotion = {
 };
 
 function EditComponent() {
+  // TODO : localToken으로 변경해야함
   const { register, handleSubmit } = useForm<IEditFormStates>();
   // const [onQuestionModal, setOnQuestionModal] = useState(false);
   const [onModal, setOnModal] = useState(false);
@@ -48,11 +50,13 @@ function EditComponent() {
   const navigate = useNavigate();
   const onValid = (form: IEditFormStates) => {
     // TODO : 401 에러고치기
-    // TODO : 버튼 스타일 조정
+    // TODO : Style 태그 버튼 중앙 정렬
+    // TODO : Style 태그 6개 이상 추가시 정렬 흐트러 지는 오류 수정
+    // TODO : Style 태그 추가시 버튼 위로 올라가는거 수정
     customAxios("/posts", {
       method: "post",
       headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN_KEY}`,
+        Authorization: Token.getToken('token'),
       },
       data: {
         title: form.title,
@@ -61,13 +65,12 @@ function EditComponent() {
       },
     })
       .then((response: AxiosResponse) => {
-        console.log(response.data);
         navigate("/");
       })
-      .catch((error: any) => {
-        console.log(error);
+      .catch((error: AxiosError) => {
+        alert(error.message)
+        console.log(error)
       });
-    console.log(form);
   };
   const onChangeTag = (tag: string) => {
     if (tags.includes(tag)) {
@@ -76,21 +79,33 @@ function EditComponent() {
       setTags((current) => [...current, tag]);
     }
   };
-  console.log(tags);
   useEffect(() => {
-    const token =
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MzEzMDUsImlhdCI6MTY2NzkyNzcwNX0.0DwZapHsYHW0yCkp6_SxtH6Q3z-yC1GhHPUKLIMlh74";
     customAxios("posts/tag/list", {
       method: "get",
       headers: {
-        Authorization: token,
+        Authorization: Token.getToken('token'),
       },
     })
       .then((res) => {
-        setTagsData(res.data);
-        console.log(res.data);
+        const upperTags = res.data.tags.map((tag:{
+          image_url: string,
+          name: string
+        }) => ({
+          image_url: tag.image_url,
+          name: tag.name.replace('.', '_').toUpperCase()
+        }))
+        const newTags = {
+          tags: [
+            ...upperTags
+          ]
+        }
+        setTagsData(newTags);
+
       })
-      .catch((err) => alert(err.message));
+      .catch((err: AxiosError) => {
+        alert(err.message);
+        console.log(err)
+      });
   }, []);
   return (
     <_.Container onSubmit={handleSubmit(onValid)}>
@@ -117,10 +132,10 @@ function EditComponent() {
                 initial="hidden"
                 animate="visible"
               >
-                {tagData?.tags?.map((tag) => (
+                {tagData?.tags.map((tag) => (
                   <_.Tag
                     variants={TagMotion}
-                    key={Math.random()}
+                    key={tag.name}
                     onClick={() => onChangeTag(tag?.name)}
                   >
                     {tags.includes(tag.name) && <CheckIcon />}
@@ -192,7 +207,7 @@ function EditComponent() {
         >
           <div style={{ display: "flex", gap: "10px" }}>
             {tags.map((tag) => (
-              <_.SelectTag>{tag}</_.SelectTag>
+              <_.SelectTag key={tag}>{tag}</_.SelectTag>
             ))}
           </div>
           <_.Btn
@@ -219,7 +234,7 @@ function CheckIcon() {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path d="M5 13.8065L11.1277 20L23 8" stroke="white" stroke-width="3" />
+        <path d="M5 13.8065L11.1277 20L23 8" stroke="white" strokeWidth="3" />
       </svg>
     </div>
   );

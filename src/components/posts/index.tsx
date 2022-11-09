@@ -5,6 +5,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SortArrowIcon from "../../assets/icon/SortArrow";
 import { BackBtn, BackBtnContainer, Profile } from "../myPage/style";
 import * as _ from "./style";
+import Token from "../../lib/token";
 
 const BoardContainerMotion = {
   hidden: {
@@ -57,14 +58,13 @@ function PostComponent() {
   const params = useParams();
   const [detailData, setDetailData] = useState<DetailPostResponse>();
   const [isLiked, setIsLiked] = useState(false);
-  const token =
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MzA3NDQsImlhdCI6MTY2NzkyNzE0NH0.vrPtz4ZzCaSTPS-w3B6bUt7nU1uBo5H4GPn7e1zZtYY.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc5MjcwNjEsImlhdCI6MTY2NzkyMzQ2MX0.wyOZVxYlzz20m43-owznlEv_PgPCzz7U7eko6FFXgFU";
+  // TODO : localToken으로 변경해야함
   useEffect(() => {
     // 상세 페이지 불러오기
     axios(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
       method: "get",
       headers: {
-        Authorization: token,
+        Authorization: Token.getToken('token'),
       },
     })
       .then((res) => setDetailData(res.data))
@@ -75,13 +75,12 @@ function PostComponent() {
     }
   }, []);
   const onValidLike = () => {
-    console.log(isLiked);
     if (isLiked) {
       // 좋아요 보내기
       axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
         method: "post",
         headers: {
-          Authorization: token,
+          Authorization: Token.getToken('token'),
         },
       })
         .then(() => console.log("좋아요 보냄"))
@@ -91,7 +90,7 @@ function PostComponent() {
       axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
         method: "delete",
         headers: {
-          Authorization: token,
+          Authorization: Token.getToken('token'),
         },
       })
         .then(() => {})
@@ -103,7 +102,7 @@ function PostComponent() {
       .get(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
         method: "delete",
         headers: {
-          Authorization: token,
+          Authorization: Token.getToken('token'),
         },
       })
       .then(() => {
