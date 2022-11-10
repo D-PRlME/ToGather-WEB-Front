@@ -1,14 +1,14 @@
 import { useForm } from "react-hook-form";
 import QuestionIcon from "../../assets/icon/question";
 import * as _ from "./style";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { customAxios } from "../../lib/axios";
 import { ACCESS_TOKEN_KEY } from "../../constants/token/token.constant";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ISelectTags, TagListResponse } from "../home/HomePostList";
 import { useNavigate } from "react-router-dom";
-import Token from "../../lib/token";
+import token from "../../lib/token";
 
 interface IEditFormStates {
   title: string;
@@ -56,7 +56,7 @@ function EditComponent() {
     customAxios("/posts", {
       method: "post",
       headers: {
-        Authorization: Token.getToken('token'),
+        Authorization: token.getToken("token"),
       },
       data: {
         title: form.title,
@@ -68,8 +68,8 @@ function EditComponent() {
         navigate("/");
       })
       .catch((error: AxiosError) => {
-        alert(error.message)
-        console.log(error)
+        alert(error.message);
+        console.log(error);
       });
   };
   const onChangeTag = (tag: string) => {
@@ -83,28 +83,24 @@ function EditComponent() {
     customAxios("posts/tag/list", {
       method: "get",
       headers: {
-        Authorization: Token.getToken('token'),
+        Authorization: token.getToken("token"),
       },
     })
       .then((res) => {
-        const upperTags = res.data.tags.map((tag:{
-          image_url: string,
-          name: string
-        }) => ({
-          image_url: tag.image_url,
-          name: tag.name.replace('.', '_').toUpperCase()
-        }))
+        const upperTags = res.data.tags.map(
+          (tag: { image_url: string; name: string }) => ({
+            image_url: tag.image_url,
+            name: tag.name.replace(".", "_").toUpperCase(),
+          })
+        );
         const newTags = {
-          tags: [
-            ...upperTags
-          ]
-        }
+          tags: [...upperTags],
+        };
         setTagsData(newTags);
-
       })
       .catch((err: AxiosError) => {
         alert(err.message);
-        console.log(err)
+        console.log(err);
       });
   }, []);
   return (
@@ -224,7 +220,7 @@ function EditComponent() {
   );
 }
 
-function CheckIcon() {
+export function CheckIcon() {
   return (
     <div style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}>
       <svg
