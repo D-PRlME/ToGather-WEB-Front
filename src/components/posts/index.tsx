@@ -6,6 +6,7 @@ import SortArrowIcon from "../../assets/icon/SortArrow";
 import { BackBtn, BackBtnContainer, Profile } from "../myPage/style";
 import * as _ from "./style";
 import Token from "../../lib/token";
+import { customAxios } from "../../lib/axios";
 
 const BoardContainerMotion = {
   hidden: {
@@ -61,10 +62,10 @@ function PostComponent() {
   // TODO : localToken으로 변경해야함
   useEffect(() => {
     // 상세 페이지 불러오기
-    axios(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
+    customAxios(`/posts/${params["*"]}`, {
       method: "get",
       headers: {
-        Authorization: Token.getToken('token'),
+        Authorization: Token.getToken("token"),
       },
     })
       .then((res) => setDetailData(res.data))
@@ -76,35 +77,34 @@ function PostComponent() {
   }, []);
   const onValidLike = () => {
     if (isLiked) {
-      // 좋아요 보내기
-      axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
-        method: "post",
-        headers: {
-          Authorization: Token.getToken('token'),
-        },
-      })
-        .then(() => console.log("좋아요 보냄"))
-        .catch(() => alert("좋아요 보내기 실패.."));
-    } else {
       // 좋아요 삭제
       axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
         method: "delete",
         headers: {
-          Authorization: Token.getToken('token'),
+          Authorization: Token.getToken("token"),
         },
       })
         .then(() => {})
         .catch(() => alert("좋아요 취소 실패.."));
+    } else {
+      // 좋아요 보내기
+      axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
+        method: "post",
+        headers: {
+          Authorization: Token.getToken("token"),
+        },
+      })
+        .then(() => console.log("좋아요 보냄"))
+        .catch(() => alert("좋아요 보내기 실패.."));
     }
   };
   const onValidDelete = () => {
-    axios
-      .get(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
-        method: "delete",
-        headers: {
-          Authorization: Token.getToken('token'),
-        },
-      })
+    axios(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
+      method: "delete",
+      headers: {
+        Authorization: Token.getToken("token"),
+      },
+    })
       .then(() => {
         alert("삭제 성공!");
         navigate("/");
@@ -129,6 +129,7 @@ function PostComponent() {
             <Profile
               htmlFor="imgFile"
               as="label"
+              src={detailData?.user.profile_image_url}
               style={{ width: "40px", height: "40px" }}
             >
               <Profile alt="none" style={{ border: 0 }} />
