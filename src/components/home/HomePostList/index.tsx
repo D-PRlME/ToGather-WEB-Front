@@ -3,9 +3,9 @@ import * as _ from "./style";
 import * as s from "../../myPage/style";
 import { Link } from "react-router-dom";
 import HeartIcon from "../../../assets/icon/Heart";
-import useFetch from "../../../hooks/useFetch";
 import axios from "axios";
 import Token from "../../../lib/token";
+import { customAxios } from "../../../lib/axios";
 
 const BoardContainerMotion = {
   hidden: {
@@ -60,7 +60,7 @@ export interface IDetailPost {
   like_count: number;
 }
 
-interface PostsListResponse {
+export interface PostsListResponse {
   post_list: IDetailPost[];
 }
 
@@ -89,8 +89,10 @@ const HomePostList = () => {
   const tagOnValid = (tags: string) => {
     const copyTags = tags.replace(".", "_").toUpperCase();
     axios(process.env.REACT_APP_BaseUrl + "/posts/tag", {
-      method: "GET",
-      headers: { Authorization: Token.getToken('token') },
+      method: "get",
+      headers: {
+        Authorization: Token.getToken("token"),
+      },
       params: {
         tag: copyTags,
       },
@@ -98,13 +100,20 @@ const HomePostList = () => {
   };
   // TODO : localToken으로 변경해야함
   useEffect(() => {
-    axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res) =>
-      setTagsData(res.data)
-    );
-    axios(process.env.REACT_APP_BaseUrl + "/posts", {
+    customAxios("posts/tag/list", {
+      method: "get",
       headers: {
-        Authorization:
-        Token.getToken('token'),
+        Authorization: Token.getToken("token"),
+      },
+    })
+      .then((res) => setTagsData(res.data))
+      .catch((err) => {
+        alert(err.message);
+      });
+    customAxios("posts", {
+      method: "GET",
+      headers: {
+        Authorization: Token.getToken("token"),
       },
     })
       .then((res) => setPostsData(res.data))
