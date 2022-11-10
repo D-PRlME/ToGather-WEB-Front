@@ -3,7 +3,7 @@ import { BackBtn, BackBtnContainer, Profile } from "../style";
 import SortArrowIcon from "../../../assets/icon/SortArrow";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-경import { customAxios } from "../../../lib/axios";
+import { customAxios } from "../../../lib/axios";
 import { useEffect, useState } from "react";
 import Token from "../../../lib/token";
 import token from "../../../lib/token";

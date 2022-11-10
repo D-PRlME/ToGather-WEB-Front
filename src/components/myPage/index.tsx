@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import * as _ from "./myPosts/style";
+import { useEffect, useState } from "react";
+import { customAxios } from "../../lib/axios";
+import token from "../../lib/token";
 
 const TagContainerMotion = {
   hidden: {
@@ -25,6 +28,19 @@ const TagMotion = {
 };
 
 function MyPageComponent() {
+  const [myProfileData, setMyProfileData] = useState();
+  useEffect(()=>{
+    customAxios("users", {
+      method: "get",
+      headers:{
+        Authorization: token.getToken("token"),
+      },
+    })
+      .then((res)=>
+        setMyProfileData(res.data))
+      .catch((err)=>
+        alert(err.message))
+  },[])
   return (
     <_.Container>
       <_.ProfileContainer>
@@ -32,7 +48,7 @@ function MyPageComponent() {
           <_.Profile alt="none" />
           <_.ProfileTextContainer>
             <_.Text weight={700} size={28} height={33}>
-              이름
+              {}
             </_.Text>
             <_.Text weight={500} size={20} height={24}>
               yeemail666@dsm.hs.kr
@@ -68,11 +84,13 @@ function MyPageComponent() {
             </_.Text>
           </_.Btn>
         </Link>
-        <_.Btn>
+        <Link to="/mypage/delete">
+          <_.Btn>
           <_.Text weight={500} height={28.8} size={24}>
             비밀번호 변경
           </_.Text>
         </_.Btn>
+        </Link>
         <Link to="/mypage/posts">
           <_.Btn>
             <_.Text weight={500} height={28.8} size={24}>
