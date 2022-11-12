@@ -4,6 +4,7 @@ import { HomeContainer } from "../components/home/style";
 import MyPageComponent from "../components/myPage";
 import MyPostsComponent from "../components/myPage/myPosts";
 import ProfileEditComponent from "../components/myPage/profileEdit";
+import DeleteUserPage from "./DeleteUserPage";
 
 function MyPage() {
   return (
@@ -13,6 +14,7 @@ function MyPage() {
         <Route path="home" element={<MyPageComponent />} />
         <Route path="posts" element={<MyPostsComponent />} />
         <Route path="profileEdit" element={<ProfileEditComponent />} />
+        <Route path="delete" element={<DeleteUserPage/>}/>
       </Routes>
     </HomeContainer>
   );

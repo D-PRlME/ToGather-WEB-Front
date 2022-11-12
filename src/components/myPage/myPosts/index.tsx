@@ -1,6 +1,10 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HeartIcon from "../../../assets/icon/Heart";
 import SortArrowIcon from "../../../assets/icon/SortArrow";
+import { customAxios } from "../../../lib/axios";
+import Token from "../../../lib/token";
+import { PostsListResponse } from "../../home/HomePostList";
 import * as _ from "../style";
 
 const BoardContainerMotion = {
@@ -31,6 +35,18 @@ const BoardMotion = {
 
 function MyPostsComponent() {
   const navigate = useNavigate();
+  const [myPostsData, setMyPostsData] = useState<PostsListResponse>();
+
+  useEffect(() => {
+    customAxios("posts/my", {
+      method: "get",
+      headers: {
+        Authorization: Token.getToken("token"),
+      },
+    }).then((res) => {
+      setMyPostsData(res.data);
+    });
+  }, []);
   return (
     <_.Container>
       <_.BackBtnContainer onClick={() => navigate(-1)}>
@@ -42,27 +58,30 @@ function MyPostsComponent() {
         initial="hidden"
         animate="visible"
       >
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-          <Link to="/posts">
-            <_.Board key={i} variants={BoardMotion}>
-              <_.BoardTitle>제목</_.BoardTitle>
+        {myPostsData?.post_list.map((post) => (
+          <Link to={`/posts/${post.post_id}`} key={post.post_id}>
+            <_.Board variants={BoardMotion}>
+              <_.BoardTitle>{post.title}</_.BoardTitle>
               <_.TagWrapper>
-                <_.Tag>Flutter</_.Tag>
-                <_.Tag>Javscript</_.Tag>
+                {post.tags.map((tag) => (
+                  <_.Tag key={tag.name}>{tag.name}</_.Tag>
+                ))}
               </_.TagWrapper>
               <Line />
               <_.UnderWrapper>
                 <div>
                   <_.Profile alt="none" />
-                  <_.UserName>유저이름</_.UserName>
+                  <_.UserName>{post.user.user_name}</_.UserName>
                 </div>
                 <_.UnderRightWrapper>
                   <div>
                     <HeartIcon />
-                    <_.GrayText style={{ marginLeft: "4px" }}>21</_.GrayText>
+                    <_.GrayText style={{ marginLeft: "4px" }}>
+                      {post.like_count}
+                    </_.GrayText>
                   </div>
                   <SectionLine />
-                  <_.GrayText>1시간전</_.GrayText>
+                  <_.GrayText>{post.created_at}</_.GrayText>
                 </_.UnderRightWrapper>
               </_.UnderWrapper>
             </_.Board>
