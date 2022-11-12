@@ -3,8 +3,9 @@ import * as _ from "./style";
 import * as s from "../../myPage/style";
 import { Link } from "react-router-dom";
 import HeartIcon from "../../../assets/icon/Heart";
-import useFetch from "../../../hooks/useFetch";
 import axios from "axios";
+import Token from "../../../lib/token";
+import { customAxios } from "../../../lib/axios";
 
 const BoardContainerMotion = {
   hidden: {
@@ -58,145 +59,115 @@ export interface IDetailPost {
   is_finished: boolean;
   like_count: number;
 }
-<<<<<<< Updated upstream
-interface PostsListResponse {
+
+export interface PostsListResponse {
   post_list: IDetailPost[];
-=======
-<<<<<<< HEAD
-interface ISelectTags{
-  [key:string]: 'SPRING_BOOT' | 'MYSQL' | 'BACKEND' | 'NODE_JS' | 'REACT' | 'FRONTED' | 'VUE_JS' | 'SWIFT' | 'JAVA' | 'JAVASCRIPT'
->>>>>>> Stashed changes
 }
+
+export interface ISelectTags {
+  [key: string]:
+    | "SPRING_BOOT"
+    | "MYSQL"
+    | "BACKEND"
+    | "NODE_JS"
+    | "REACT"
+    | "FRONTED"
+    | "VUE_JS"
+    | "SWIFT"
+    | "JAVA"
+    | "JAVASCRIPT";
+}
+
 function Loading() {
   return <h1>로딩중입니다....</h1>;
 }
+
 const HomePostList = () => {
-<<<<<<< Updated upstream
-=======
-  const [tagsData, setTagsData] = useState<TagListResponse>()
-  const [postsData, setPostsData] = useState<PostsListResponse>()
-  const [selectTags, setSelectTags] = useState<ISelectTags>();
-  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc4MjA5ODYsImlhdCI6MTY2NzgxNzM4Nn0.PzJFBlCV0HcKo5qYE-vMLtvde-NRauoTGvEDYMLG3-M"
-  useEffect(()=>{
-    (async () => {
-      await axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res)=>setTagsData(res.data))
-      await axios(process.env.REACT_APP_BaseUrl + "/posts", {
-        headers: {
-          Authorization: token
-        }
-      }).then((res) => setPostsData(res.data))
-    })()
-  },[])
-  const onValidTags = (tag: any) => {
-    const upperTag = tag.toString().toLocaleUpperCase()
-    const i = upperTag.indexOf(".");
-    const newTag = upperTag.splice(i, 1, "_");
-    setSelectTags((current) => ({ ...current, tag: newTag }))
-  }
-=======
-interface PostsListResponse {
-  post_list: IDetailPost[];
-}
-function Loading() {
-  return <h1>로딩중입니다....</h1>;
-}
-const HomePostList = () => {
->>>>>>> Stashed changes
   const [tagsData, setTagsData] = useState<TagListResponse>();
   const [postsData, setPostsData] = useState<PostsListResponse>();
+  // TODO : customaxios로 바꾸기
   const tagOnValid = (tags: string) => {
-    const i = tags.indexOf(".");
     const copyTags = tags.replace(".", "_").toUpperCase();
     axios(process.env.REACT_APP_BaseUrl + "/posts/tag", {
-      method: "GET",
-      headers: { Authorization: token },
+      method: "get",
+      headers: {
+        Authorization: Token.getToken("token"),
+      },
       params: {
         tag: copyTags,
       },
     }).then((res) => setPostsData(res.data));
   };
-  const token =
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njc4NDEzODAsImlhdCI6MTY2NzgzNzc4MH0.fKjrK5-ykI90QoQAB8jTxVx3GaRBEmf8LHbJo9HxiMM";
+  // TODO : localToken으로 변경해야함
   useEffect(() => {
-    axios(process.env.REACT_APP_BaseUrl + "/posts/tag/list").then((res) =>
-      setTagsData(res.data)
-    );
-    axios(process.env.REACT_APP_BaseUrl + "/posts", {
+    customAxios("posts/tag/list", {
+      method: "get",
       headers: {
-        Authorization: token,
+        Authorization: Token.getToken("token"),
       },
-    }).then((res) => setPostsData(res.data));
+    })
+      .then((res) => setTagsData(res.data))
+      .catch((err) => {
+        alert(err.message);
+      });
+    customAxios("posts", {
+      method: "GET",
+      headers: {
+        Authorization: Token.getToken("token"),
+      },
+    })
+      .then((res) => setPostsData(res.data))
+      .catch((err) => alert(err.message));
   }, []);
-<<<<<<< Updated upstream
-=======
->>>>>>> MainPage
->>>>>>> Stashed changes
+
   return (
-    <>
-      <_.HomePostListContainer>
-        <_.HomePostSkillHeader>
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-          <Suspense fallback={<Loading/>}>
+    <_.HomePostListContainer>
+      <_.HomePostSkillHeader>
+        <Suspense fallback={<Loading />}>
           {tagsData?.tags.map((tag) => (
-            <_.Skill key={tag.name} onClick={() => onValidTags(tag.name)}>
-              <_.SkillLogo src={tag.image_url} alt={"loading"}/>
+            <_.Skill key={tag.name} onClick={() => tagOnValid(tag.name)}>
+              <_.SkillLogo src={tag.image_url} alt={"loading"} />
               <_.SkillText>{tag.name}</_.SkillText>
             </_.Skill>
           ))}
-=======
->>>>>>> Stashed changes
-          <Suspense fallback={<Loading />}>
-            {tagsData?.tags.map((tag) => (
-              <_.Skill key={tag.name} onClick={() => tagOnValid(tag.name)}>
-                <_.SkillLogo src={tag.image_url} alt={"loading"} />
-                <_.SkillText>{tag.name}</_.SkillText>
-              </_.Skill>
-            ))}
-<<<<<<< Updated upstream
-=======
->>>>>>> MainPage
->>>>>>> Stashed changes
-          </Suspense>
-        </_.HomePostSkillHeader>
-        <s.BoardContainer
-          variants={BoardContainerMotion}
-          initial="hidden"
-          animate="visible"
-        >
-          {postsData?.post_list.map((post) => (
-            <Link to={`/posts/${post.user.user_id}`}>
-              <s.Board key={post.post_id} variants={BoardMotion}>
-                <s.BoardTitle>{post.title}</s.BoardTitle>
-                <s.TagWrapper>
-                  {post.tags.map((tag) => (
-                    <s.Tag>{tag.name}</s.Tag>
-                  ))}
-                </s.TagWrapper>
-                <Line />
-                <s.UnderWrapper>
+        </Suspense>
+      </_.HomePostSkillHeader>
+      <s.BoardContainer
+        variants={BoardContainerMotion}
+        initial="hidden"
+        animate="visible"
+      >
+        {postsData?.post_list.map((post) => (
+          <Link to={`/posts/${post.post_id}`} key={post.post_id}>
+            <s.Board variants={BoardMotion}>
+              <s.BoardTitle>{post.title}</s.BoardTitle>
+              <s.TagWrapper>
+                {post.tags.map((tag) => (
+                  <s.Tag>{tag.name}</s.Tag>
+                ))}
+              </s.TagWrapper>
+              <Line />
+              <s.UnderWrapper>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <s.Profile alt="none" src={post.user.profile_image_url} />
+                  <s.UserName>{post.user.user_name}</s.UserName>
+                </div>
+                <s.UnderRightWrapper>
                   <div>
-                    <s.Profile alt="none" src={post.user.profile_image_url} />
-                    <s.UserName>{post.user.user_name}</s.UserName>
+                    <HeartIcon />
+                    <s.GrayText style={{ marginLeft: "4px" }}>
+                      {post.like_count}
+                    </s.GrayText>
                   </div>
-                  <s.UnderRightWrapper>
-                    <div>
-                      <HeartIcon />
-                      <s.GrayText style={{ marginLeft: "4px" }}>
-                        {post.like_count}
-                      </s.GrayText>
-                    </div>
-                    <SectionLine />
-                    <s.GrayText>{post.created_at}</s.GrayText>
-                  </s.UnderRightWrapper>
-                </s.UnderWrapper>
-              </s.Board>
-            </Link>
-          ))}
-        </s.BoardContainer>
-      </_.HomePostListContainer>
-    </>
+                  <SectionLine />
+                  <s.GrayText>{post.created_at}</s.GrayText>
+                </s.UnderRightWrapper>
+              </s.UnderWrapper>
+            </s.Board>
+          </Link>
+        ))}
+      </s.BoardContainer>
+    </_.HomePostListContainer>
   );
 };
 

@@ -31,6 +31,7 @@ export const Skill = styled.div`
   height: 80px;
   // background-color: aqua;
   border-radius: 10px;
+  cursor: pointer;
   // padding-top: 16px;
 `;
 
