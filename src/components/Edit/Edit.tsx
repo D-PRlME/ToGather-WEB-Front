@@ -1,14 +1,14 @@
 import { useForm } from "react-hook-form";
-import QuestionIcon from "../../assets/icon/question";
 import * as _ from "./style";
 import { AxiosError, AxiosResponse } from "axios";
 import { customAxios } from "../../lib/axios";
-import { ACCESS_TOKEN_KEY } from "../../constants/token/token.constant";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ISelectTags, TagListResponse } from "../home/HomePostList";
-import { useNavigate } from "react-router-dom";
+import { ISelectTags, PostsListResponse, TagListResponse } from "../home/HomePostList";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import token from "../../lib/token";
+import Token from "../../lib/token";
+import { DetailPostResponse } from "../posts";
 
 interface IEditFormStates {
   title: string;
@@ -40,20 +40,20 @@ const TagMotion = {
   },
 };
 
-function CreateComponent() {
+function EditComponent() {
   // TODO : localToken으로 변경해야함
   const { register, handleSubmit } = useForm<IEditFormStates>();
   // const [onQuestionModal, setOnQuestionModal] = useState(false);
   const [onModal, setOnModal] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [tagData, setTagsData] = useState<TagListResponse>();
+  const [detailData, setDetailData] = useState<DetailPostResponse>();
   const navigate = useNavigate();
+  const params = useParams();
+
   const onValid = (form: IEditFormStates) => {
-    // TODO : Style 태그 버튼 중앙 정렬
-    // TODO : Style 태그 6개 이상 추가시 정렬 흐트러 지는 오류 수정
-    // TODO : Style 태그 추가시 버튼 위로 올라가는거 수정
-    customAxios("/posts", {
-      method: "post",
+    customAxios(`/posts/${params["*"]}`, {
+      method: "patch",
       headers: {
         Authorization: token.getToken("token"),
       },
@@ -101,6 +101,19 @@ function CreateComponent() {
         alert(err.message);
         console.log(err);
       });
+
+    customAxios(`/posts/${params["*"]}`, {
+      method: "get",
+      headers: {
+        Authorization: Token.getToken("token"),
+      },
+    })
+      .then((res) => {
+        const newTag = res.data.tags.map((tag) => tag.name);
+        setTags([...newTag])
+        setDetailData(res.data)
+      })
+      .catch((err) => alert(err.message));
   }, []);
   return (
     <_.Container onSubmit={handleSubmit(onValid)}>
@@ -158,6 +171,7 @@ function CreateComponent() {
       <_.Input
         placeholder="제목"
         style={{ marginTop: "24px" }}
+        defaultValue={detailData?.title}
         {...register("title")}
       />
       {/* <div style={{ display: "flex", position: "relative" }}>
@@ -188,6 +202,7 @@ function CreateComponent() {
         placeholder="본문을 입력하세요"
         as="textarea"
         height={754}
+        defaultValue={detailData?.content}
         {...register("content")}
       />
       <_.BtnContainer>
@@ -235,4 +250,4 @@ export function CheckIcon() {
   );
 }
 
-export default CreateComponent;
+export default EditComponent;

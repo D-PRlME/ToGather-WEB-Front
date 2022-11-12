@@ -6,10 +6,11 @@ import { BoardTagWrapper } from "./style";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { CheckIcon } from "../Edit";
-import { TagListResponse } from "../home/HomePostList";
+import { PostsListResponse, TagListResponse } from "../home/HomePostList";
 import { customAxios } from "../../lib/axios";
 import Token from "../../lib/token";
 import { AxiosError } from "axios";
+import { useForm } from "react-hook-form";
 
 const BoardContainerMotion = {
   hidden: {
@@ -65,17 +66,35 @@ const TagMotion = {
 };
 
 function SearchComponent() {
+  const {register, handleSubmit} = useForm()
   const [onModal, setOnModal] = useState(false);
   const [tagData, setTagsData] = useState<TagListResponse>();
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string>();
+  const [searchData, setSearchData] = useState<PostsListResponse>()
 
   const onChangeTag = (tag: string) => {
-    if (tags.includes(tag)) {
-      setTags((current) => current.filter((item) => item !== tag));
-    } else {
-      setTags((current) => [...current, tag]);
-    }
+    customAxios(`posts?tag=${tag}`, {
+      method: "get",
+      headers: {
+        Authorization: Token.getToken("token"),
+      }
+    }).then((res) => {
+      console.log(res.data);
+      setSearchData(res.data)
+    }).catch((err)=>alert(err))
+    setTags(tag);
   };
+
+  const onValidPostSearch = (form: {title:string}) => {
+    customAxios(`posts?title=${form.title}`, {
+      method:"get",
+      headers:{
+        Authorization: Token.getToken("token"),
+      },
+    }).then((res) => {
+      setSearchData(res.data);
+    })
+  }
 
   useEffect(() => {
     customAxios("posts/tag/list", {
@@ -100,6 +119,7 @@ function SearchComponent() {
         alert(err.message);
         console.log(err);
       });
+
   }, []);
 
   return (
@@ -110,6 +130,7 @@ function SearchComponent() {
             variants={TagsContainerMotion}
             initial="hidden"
             animate="visible"
+            style={{marginTop: "-25px"}}
           >
             <s.ModalBg onClick={() => setOnModal(false)} />
             <s.ModalWrapper>
@@ -133,7 +154,7 @@ function SearchComponent() {
                     key={tag.name}
                     onClick={() => onChangeTag(tag?.name)}
                   >
-                    {tags.includes(tag.name) && <CheckIcon />}
+                    {tag.name === tags && <CheckIcon />}
                     <motion.img
                       src={tag.image_url}
                       height={40}
@@ -155,13 +176,13 @@ function SearchComponent() {
           </s.ModalContainer>
         )}
       </AnimatePresence>
-      <_.Input placeholder="검색" height={24} width={785} />
+      <form onSubmit={handleSubmit(onValidPostSearch)}>
+        <_.Input placeholder="검색" height={24} width={785} {...register("title")}/>
+      </form>
       <_.TagWrapper>
-        {tags.map((tag) => (
-          <_.Tag bgColor={"#e7e7e7"} key={tag}>
-            {tags}
-          </_.Tag>
-        ))}
+        {tags && <_.Tag bgColor={"#e7e7e7"} key={tags}>
+          {tags}
+        </_.Tag>}
       </_.TagWrapper>
       <_.Btn bgColor={"#E1AD01"} onClick={() => setOnModal(true)}>
         모든 태그 보기
@@ -172,27 +193,28 @@ function SearchComponent() {
         initial="hidden"
         animate="visible"
       >
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-          <Link to="/posts" state={{ id: i }}>
-            <_.Board key={i} variants={BoardMotion}>
-              <_.BoardTitle>제목</_.BoardTitle>
+        {searchData?.post_list.map((post) => (
+          <Link to="/posts" state={{ id: post.post_id }} key={post.post_id}>
+            <_.Board variants={BoardMotion}>
+              <_.BoardTitle>{post.title}</_.BoardTitle>
               <_.BoardTagWrapper>
-                <_.BoardTag>Flutter</_.BoardTag>
-                <_.Tag>Javscript</_.Tag>
+                {post.tags.map((tag) =>
+                    <_.BoardTag>{tag.name}</_.BoardTag>
+                )}
               </_.BoardTagWrapper>
               <Line />
               <_.UnderWrapper>
                 <div>
-                  <_.Profile alt="none" />
-                  <_.UserName>유저이름</_.UserName>
+                  <_.Profile alt="none" src={post.user.profile_image_url}/>
+                  <_.UserName>{post.user.user_name}</_.UserName>
                 </div>
                 <_.UnderRightWrapper>
                   <div>
                     <HeartIcon />
-                    <_.GrayText style={{ marginLeft: "4px" }}>21</_.GrayText>
+                    <_.GrayText style={{ marginLeft: "4px" }}>{post.like_count}</_.GrayText>
                   </div>
                   <SectionLine />
-                  <_.GrayText>1시간전</_.GrayText>
+                  <_.GrayText>{post.created_at}</_.GrayText>
                 </_.UnderRightWrapper>
               </_.UnderWrapper>
             </_.Board>

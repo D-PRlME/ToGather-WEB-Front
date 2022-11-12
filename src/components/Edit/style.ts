@@ -64,7 +64,7 @@ export const Tag = styled(motion.div)`
   border-bottom: 1px solid rgba(39, 39, 39, 0.15);
 `;
 export const ModalContainer = styled(motion.div)`
-가  position: fixed;
+  position: fixed;
   left: 0;
   display: flex;
   justify-content: center;

@@ -1,7 +1,7 @@
 import * as _ from "./style";
 import { BackBtn, BackBtnContainer, Profile } from "../style";
 import SortArrowIcon from "../../../assets/icon/SortArrow";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { customAxios } from "../../../lib/axios";
 import { useEffect, useState } from "react";
@@ -22,8 +22,8 @@ interface IUserProfile extends IFormStates {
 }
 function ProfileEditComponent() {
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<IFormStates>();
   const [userProfileData, setUserProfileData] = useState<IUserProfile>();
+  const { register, handleSubmit, setValue } = useForm<IFormStates>();
 
   const onVaild = (form: IFormStates) => {
     console.log(form);
@@ -48,7 +48,7 @@ function ProfileEditComponent() {
       });
   };
 
-  const onValidImg = (data) => {
+  const onValidImg = (data: React.ChangeEvent<HTMLInputElement>) => {
     customAxios("images", {
       method: "post",
       headers: {
@@ -56,12 +56,12 @@ function ProfileEditComponent() {
         Authorization: token.getToken("token"),
       },
       data: {
-        images: data.target.value,
+        images: data.target.files[0],
       },
-    }).then(() =>
+    }).then((res) =>
       setUserProfileData((current: IUserProfile) => ({
         ...current,
-        img_src: data.target.value,
+        profile_image_url: res.data.images_url,
       }))
     );
   };
@@ -73,6 +73,10 @@ function ProfileEditComponent() {
       },
     }).then((res) => {
       setUserProfileData(res.data);
+      setValue("name", res.data.name);
+      setValue("introduce", res.data.introduce);
+      setValue("email", res.data.email);
+      setValue("positions", res.data.positions);
     });
   }, []);
   return (
@@ -85,7 +89,7 @@ function ProfileEditComponent() {
           <SortArrowIcon />
           <BackBtn>돌아가기</BackBtn>
         </BackBtnContainer>
-        <Profile alt="none" style={{ border: 1 }} />
+        <Profile alt="none" style={{ border: 1, width: "100px", height:"100px" }} src={userProfileData?.profile_image_url} />
         <_.Btn
           bgColor="#E1AD01"
           h={25}
@@ -121,9 +125,11 @@ function ProfileEditComponent() {
         <_.Btn h={45} bgColor="#E1AD01">
           저장
         </_.Btn>
-        <_.Btn h={45} bgColor="#F7F7F7">
-          계정삭제
-        </_.Btn>
+        <Link to="/mypage/delete">
+          <_.Btn h={45} bgColor="#F7F7F7">
+            계정삭제
+          </_.Btn>
+        </Link>
       </_.BtnContainer>
     </_.Container>
   );

@@ -7,7 +7,7 @@ import Token from "./lib/token";
 
 function App() {
   useEffect(()=>{
-    Token.setToken('token', 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2NjgwODA5NzIsImlhdCI6MTY2ODA3NzM3Mn0.bS83yEBF4q8AvVZLsHouWCGNCJVk8CfjTrjxt2KfGK0')
+    Token.setToken('token', 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2NjgyODcyOTksImlhdCI6MTY2ODI4MzY5OX0.1cMMOHXXWq3FeoanSBi8hDpBE0cgTYd3ei-IKN5l72g')
   },[])
   return (
     <>

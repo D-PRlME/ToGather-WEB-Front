@@ -1,20 +1,91 @@
 import * as _ from "./style"
 import SortArrowIcon from "../../assets/icon/SortArrow";
 import * as s from "../myPage/style";
+import * as m from "../Edit/style"
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { customAxios } from "../../lib/axios";
+import Token from "../../lib/token";
+import token from "../../lib/token";
+import { IProfileData } from "../myPage";
+
+const TagsContainerMotion = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
 
 function DeleteUserComponent(){
   const naviate = useNavigate();
   const [onModal, setOnModal] = useState(false);
+  const [myProfileData, setMyProfileData] = useState<IProfileData>();
+  const [password, setPassword] = useState<string>();
+  const passwordRef = useRef(null);
+
+  const onChangeInput = (data) => {
+    setPassword(data.target.value);
+  }
+  useEffect(()=>{
+    customAxios("users", {
+      method: "get",
+      headers:{
+        Authorization: token.getToken("token"),
+      },
+    })
+      .then((res)=>
+        setMyProfileData(res.data))
+      .catch((err)=>
+        alert(err.message))
+  },[])
+
+  const onDeleteUser = () => {
+    customAxios("users", {
+      method:"delete",
+      headers:{
+        Authorization: Token.getToken("token"),
+      },
+      data:{
+        "password": password,
+      }
+    }).then(()=>{
+      alert("삭제 성공")
+      naviate("/")
+    })
+  }
   return (
     <_.Container>
       <AnimatePresence>
-        {onModal &&
-          <_.ModalContainer onClick={() => setOnModal(false)}>
-
-          </_.ModalContainer>}
+        {onModal && (
+          <m.ModalContainer
+            variants={TagsContainerMotion}
+            initial="hidden"
+            animate="visible"
+          >
+            <m.ModalBg onClick={() => setOnModal(false)} />
+            <m.ModalWrapper style={{width: "450px", height: "300px", justifyContent: "space-between", display: "flex", flexDirection: "column"}}>
+              <div>
+                <_.Text weight={700} size={40} color={"black"}>
+                  계정을 삭제하시겠습니까?
+                </_.Text>
+                <_.Text weight={500} size={20} color={"black"}>
+                  모든 프로필, 프로젝트, 작성한 글이 서버에서 삭제되며, 이 작업은 되돌릴 수 없습니다.
+                </_.Text>
+              </div>
+              <_.ModalBtnWrapper>
+                <_.ModalBtn bgColor={"#E1AD01"} onClick={()=>setOnModal(false)}>취소</_.ModalBtn>
+                <_.ModalBtn bgColor={"#F7F7F7"} onClick={onDeleteUser}>진행</_.ModalBtn>
+              </_.ModalBtnWrapper>
+            </m.ModalWrapper>
+          </m.ModalContainer>
+        )}
       </AnimatePresence>
       <div>
         <s.BackBtnContainer
@@ -29,13 +100,13 @@ function DeleteUserComponent(){
       </div>
       <div>
         <div style={{display:"flex"}}>
-          <img alt="oo"/>
-          <_.Text size={33} weight={700} color={"black"}>이름</_.Text>
+          <img alt="" src={myProfileData?.profile_image_url}/>
+          <_.Text size={33} weight={700} color={"black"}>{myProfileData?.name}</_.Text>
         </div>
-        <_.Input placeholder="비밀번호"/>
+        <_.Input placeholder="비밀번호" ref={passwordRef} onChange={onChangeInput} value={password}/>
       </div>
       <div>
-        <_.Btn>
+        <_.Btn onClick={() => setOnModal(true)}>
           <_.Text size={24} weight={700} color={"white"} onClick={() => {
             setOnModal(true);
           }}>

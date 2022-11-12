@@ -30,7 +30,7 @@ const BoardMotion = {
   },
 };
 
-interface DetailPostResponse {
+export interface DetailPostResponse {
   post_id: number;
   title: string;
   user: {
@@ -58,7 +58,7 @@ function PostComponent() {
   const navigate = useNavigate();
   const params = useParams();
   const [detailData, setDetailData] = useState<DetailPostResponse>();
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLike, setIsLike] = useState(false);
   // TODO : localToken으로 변경해야함
   useEffect(() => {
     // 상세 페이지 불러오기
@@ -70,13 +70,10 @@ function PostComponent() {
     })
       .then((res) => setDetailData(res.data))
       .catch((err) => alert(err.message));
-    if (detailData?.is_liked) {
-      setIsLiked(detailData?.like_count > 0 ? true : false);
-      console.log(isLiked);
-    }
+    setIsLike(Boolean(detailData?.is_liked));
   }, []);
   const onValidLike = () => {
-    if (isLiked) {
+    if (isLike) {
       // 좋아요 삭제
       axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
         method: "delete",
@@ -84,7 +81,13 @@ function PostComponent() {
           Authorization: Token.getToken("token"),
         },
       })
-        .then(() => {})
+        .then(() => {
+          setDetailData((current) => ({
+            ...current,
+            like_count: current?.like_count - 1,
+          }))
+          setIsLike(false);
+        })
         .catch(() => alert("좋아요 취소 실패.."));
     } else {
       // 좋아요 보내기
@@ -94,7 +97,13 @@ function PostComponent() {
           Authorization: Token.getToken("token"),
         },
       })
-        .then(() => console.log("좋아요 보냄"))
+        .then(() => {
+            setDetailData((current) => ({
+            ...current,
+            like_count: current?.like_count + 1,
+          }))
+          setIsLike(true);
+        })
         .catch(() => alert("좋아요 보내기 실패.."));
     }
   };
@@ -111,6 +120,7 @@ function PostComponent() {
       })
       .catch(() => alert("삭제 실패..."));
   };
+
   return (
     <_.Container>
       <div>
@@ -188,7 +198,7 @@ function PostComponent() {
         </_.Btn>
         {detailData?.is_mine && (
           <div style={{ display: "flex" }}>
-            <_.Btn bgColor="#F7F7F7" h={45}>
+            <_.Btn bgColor="#F7F7F7" h={45} onClick={()=>navigate(`/Edit/${params["*"]}`)}>
               수정
             </_.Btn>
             <_.Btn bgColor="#FE3D3D" h={45} onClick={onValidDelete}>

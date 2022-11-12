@@ -26,7 +26,7 @@ const HomeCategory = () => {
           <_.MenuText>검색</_.MenuText>
         </_.MenuBlock>
       </Link>
-      <Link to="/edit">
+      <Link to="/create">
         <_.MenuBlock>
           <_.MenuLogo src={PostLogo} />
           <_.MenuText>글쓰기</_.MenuText>

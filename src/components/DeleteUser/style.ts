@@ -30,11 +30,16 @@ export const Btn = styled.button`
   border: 2px solid rgba(39, 39, 39, 0.15);
   border-radius: 888px;
 `
-export const ModalContainer = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
-  left: 0;
+export const ModalBtn = styled.button<{bgColor: string}>`
+  width: 50%;
+  height: 48px;
+  background-color: ${props => props.bgColor};
+  border: 2px solid rgba(39, 39, 39, 0.15);
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 24px;
 `
-
+export const ModalBtnWrapper = styled.div`
+  display: flex;
+  gap: 5px;
+`
