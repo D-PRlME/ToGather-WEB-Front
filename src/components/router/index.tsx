@@ -1,12 +1,12 @@
 import { Route, Routes as Switch } from "react-router-dom";
 
-import EditPage from "../../pages/EditPage";
+import PostsPage from "../../pages/PostPage";
 import HomePage from "../../pages/HomePage";
 import LogInPage from "../../pages/LogInPage";
 import MyPage from "../../pages/MyPage";
 import SearchPage from "../../pages/SearchPage";
 import CreatePage from "../../pages/CreatePage";
-import EditPage from "../../pages/EditPage";
+import EditPage from "../../pages/EditPage"
 
 
 const Router = () => {
@@ -14,7 +14,6 @@ const Router = () => {
     <Switch>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LogInPage />} />
-
       <Route path="/edit" element={<EditPage />} />
       <Route path="/mypage/*" element={<MyPage />}></Route>
 
