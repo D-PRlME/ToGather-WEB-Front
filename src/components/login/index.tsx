@@ -1,14 +1,4 @@
-import {
-  LoginAlertText,
-  LogInContainer,
-  LogInHeader,
-  LogInHeaderIn,
-  LogInHeaderText,
-  LoginInput,
-  LoginSubmitButton,
-  LogInText,
-  LogInWrap,
-} from "./style";
+import * as _ from "./style";
 import { IoIosArrowBack } from "react-icons/io";
 // import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -38,22 +28,22 @@ function LogIn() {
   };
   return (
     <>
-      <LogInContainer>
-        <LogInHeader>
-          <LogInHeaderIn>
-            <LogInHeaderText>
+      <_.LogInContainer>
+        <_.LogInHeader>
+          <_.LogInHeaderIn>
+            <_.LogInHeaderText>
               <IoIosArrowBack size="22px" />
               돌아가기
-            </LogInHeaderText>
-          </LogInHeaderIn>
-        </LogInHeader>
-        <LogInWrap onSubmit={handleSubmit(onValid, onInValid)}>
-          <LogInText>
+            </_.LogInHeaderText>
+          </_.LogInHeaderIn>
+        </_.LogInHeader>
+        <_.LogInWrap>
+          <_.LogInText>
             마음 맞는 팀원을 찾는
             <br /> 간단한 방법.
             <p>ToGather</p>
-          </LogInText>
-          <LoginInput
+          </_.LogInText>
+          <_.LoginInput
             type="email"
             {...register("email", {
               required: "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요",
@@ -66,7 +56,7 @@ function LogIn() {
             })}
             placeholder="이메일"
           />
-          <LoginInput
+          <_.LoginInput
             type="password"
             {...register("password", {
               required:
@@ -75,13 +65,13 @@ function LogIn() {
               maxLength: { value: 20, message: "비밀번호가 너무 길어요!" },
             })}
             placeholder="비밀번호"
-          ></LoginInput>
-          <LoginSubmitButton>로그인</LoginSubmitButton>
-          <LoginAlertText>
+          ></_.LoginInput>
+          <_.LoginSubmitButton>로그인</_.LoginSubmitButton>
+          <_.LoginAlertText>
             <strong>비밀번호 변경</strong>
-          </LoginAlertText>
-        </LogInWrap>
-      </LogInContainer>
+          </_.LoginAlertText>
+        </_.LogInWrap>
+      </_.LogInContainer>
     </>
   );
 }
