@@ -9,7 +9,7 @@ export const LogInContainer = styled.div`
   margin: 0 auto;
 `;
 
-export const LogInWrap = styled.div`
+export const LogInWrap = styled.form`
   margin: 100px 250px;
   // background-color: blue;
   width: 480px;

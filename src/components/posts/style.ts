@@ -68,7 +68,7 @@ export const Contents = styled.textarea`
   font-size: 24px;
   line-height: 29px;
   color: black;
-  width: auto;
+  width: 772px;
   resize: none;
   border: 0;
   outline: none;

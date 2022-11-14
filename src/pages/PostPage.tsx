@@ -1,14 +1,14 @@
 import { HomeContainer } from "../components/home/style";
 import HomeCategory from "../components/home/HomeCategory";
-import EditComponent from "../components/Edit/Edit";
+import PostComponent from "../components/posts";
 
-function EidtPage(){
+function PostPage(){
   return (
     <HomeContainer>
       <HomeCategory/>
-      <EditComponent/>
+      <PostComponent/>
     </HomeContainer>
   )
 }
 
-export default EidtPage;
+export default PostPage;

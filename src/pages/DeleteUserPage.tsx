@@ -1,14 +1,13 @@
 import { HomeContainer } from "../components/home/style";
 import HomeCategory from "../components/home/HomeCategory";
-import EditComponent from "../components/Edit/Edit";
+import DeleteUserComponent from "../components/DeleteUser";
 
-function EidtPage(){
+function DeleteUserPage(){
   return (
     <HomeContainer>
-      <HomeCategory/>
-      <EditComponent/>
+      <DeleteUserComponent/>
     </HomeContainer>
-  )
+  );
 }
 
-export default EidtPage;
+export default DeleteUserPage;

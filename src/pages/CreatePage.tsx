@@ -1,14 +1,14 @@
 import { HomeContainer } from "../components/home/style";
 import HomeCategory from "../components/home/HomeCategory";
-import EditComponent from "../components/Edit/Edit";
+import CreateComponent from "../components/Edit";
 
-function EidtPage(){
+function CreatePage(){
   return (
     <HomeContainer>
       <HomeCategory/>
-      <EditComponent/>
+      <CreateComponent/>
     </HomeContainer>
   )
 }
 
-export default EidtPage;
+export default CreatePage;

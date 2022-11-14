@@ -1,8 +1,12 @@
+import axios from "axios";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SortArrowIcon from "../../assets/icon/SortArrow";
 import { BackBtn, BackBtnContainer, Profile } from "../myPage/style";
 import * as _ from "./style";
+import Token from "../../lib/token";
+import { customAxios } from "../../lib/axios";
 
 const BoardContainerMotion = {
   hidden: {
@@ -25,8 +29,98 @@ const BoardMotion = {
     opacity: 1,
   },
 };
+
+export interface DetailPostResponse {
+  post_id: number;
+  title: string;
+  user: {
+    user_id: number;
+    user_name: string;
+    profile_image_url: string;
+  };
+  created_at: string;
+  tag: [
+    {
+      name: string;
+      image_url: string;
+    }
+  ];
+  content: string;
+  is_mine: boolean;
+  is_completed: boolean;
+  is_liked: number;
+  like_count: number;
+}
+
+// TODO : customaxios로 바꾸기
+// TODO ; 좋아요 기능 구현하다 말음(500 error)
 function PostComponent() {
   const navigate = useNavigate();
+  const params = useParams();
+  const [detailData, setDetailData] = useState<DetailPostResponse>();
+  const [isLike, setIsLike] = useState(false);
+  // TODO : localToken으로 변경해야함
+  useEffect(() => {
+    // 상세 페이지 불러오기
+    customAxios(`/posts/${params["*"]}`, {
+      method: "get",
+      headers: {
+        Authorization: Token.getToken("token"),
+      },
+    })
+      .then((res) => setDetailData(res.data))
+      .catch((err) => alert(err.message));
+    setIsLike(Boolean(detailData?.is_liked));
+  }, []);
+  const onValidLike = () => {
+    if (isLike) {
+      // 좋아요 삭제
+      axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
+        method: "delete",
+        headers: {
+          Authorization: Token.getToken("token"),
+        },
+      })
+        .then(() => {
+          setDetailData((current) => ({
+            ...current,
+            like_count: current?.like_count - 1,
+          }))
+          setIsLike(false);
+        })
+        .catch(() => alert("좋아요 취소 실패.."));
+    } else {
+      // 좋아요 보내기
+      axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
+        method: "post",
+        headers: {
+          Authorization: Token.getToken("token"),
+        },
+      })
+        .then(() => {
+            setDetailData((current) => ({
+            ...current,
+            like_count: current?.like_count + 1,
+          }))
+          setIsLike(true);
+        })
+        .catch(() => alert("좋아요 보내기 실패.."));
+    }
+  };
+  const onValidDelete = () => {
+    axios(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
+      method: "delete",
+      headers: {
+        Authorization: Token.getToken("token"),
+      },
+    })
+      .then(() => {
+        alert("삭제 성공!");
+        navigate("/");
+      })
+      .catch(() => alert("삭제 실패..."));
+  };
+
   return (
     <_.Container>
       <div>
@@ -38,28 +132,32 @@ function PostComponent() {
           <BackBtn>돌아가기</BackBtn>
         </BackBtnContainer>
         <_.Text weight={700} size={32} height={38} color="black">
-          제목
+          {detailData?.title}
         </_.Text>
         <_.HeaderContainer>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Profile
               htmlFor="imgFile"
               as="label"
+              src={detailData?.user.profile_image_url}
               style={{ width: "40px", height: "40px" }}
             >
               <Profile alt="none" style={{ border: 0 }} />
             </Profile>
             <input type="file" id="imgFile" style={{ display: "none" }} />
             <_.Text weight={500} size={20} height={24}>
-              이름
+              {detailData?.user.user_name}
             </_.Text>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
             <_.Text weight={500} size={20} color={"#787878"}>
-              2022-08-22 12:12
+              {detailData?.created_at}
             </_.Text>
-            <div style={{ position: "relative", display: "flex" }}>
-              <_.HeartText>21</_.HeartText>
+            <div
+              style={{ position: "relative", display: "flex" }}
+              onClick={onValidLike}
+            >
+              <_.HeartText>{detailData?.like_count}</_.HeartText>
               <Heart />
             </div>
           </div>
@@ -77,7 +175,7 @@ function PostComponent() {
               x2="772"
               y2="0.5"
               stroke="#272727"
-              stroke-opacity="0.15"
+              strokeOpacity="0.15"
             />
           </svg>
         </div>
@@ -86,26 +184,28 @@ function PostComponent() {
           initial="hidden"
           animate="visible"
         >
-          {[1, 2, 3, 4, 5].map((i) => (
-            <_.Tag key={i} variants={BoardMotion}>
-              TAG
+          {/* {detailData?.tag.map((tag) => (
+            <_.Tag key={tag.name} variants={BoardMotion}>
+              {tag.name}
             </_.Tag>
-          ))}
+          ))} */}
         </_.TagContainer>
-        <_.Contents readOnly>내용들</_.Contents>
+        <_.Contents value={detailData?.content}></_.Contents>
       </div>
       <_.BtnContainer>
         <_.Btn bgColor="#E1AD01" h={45}>
           연락하기
         </_.Btn>
-        <div style={{ display: "flex" }}>
-          <_.Btn bgColor="#F7F7F7" h={45}>
-            수정
-          </_.Btn>
-          <_.Btn bgColor="#FE3D3D" h={45}>
-            삭제
-          </_.Btn>
-        </div>
+        {detailData?.is_mine && (
+          <div style={{ display: "flex" }}>
+            <_.Btn bgColor="#F7F7F7" h={45} onClick={()=>navigate(`/Edit/${params["*"]}`)}>
+              수정
+            </_.Btn>
+            <_.Btn bgColor="#FE3D3D" h={45} onClick={onValidDelete}>
+              삭제
+            </_.Btn>
+          </div>
+        )}
       </_.BtnContainer>
     </_.Container>
   );
@@ -124,7 +224,7 @@ function Heart() {
       <path
         d="M10.9312 5.01982L12.9155 2.9978C12.9155 2.9978 16.2228 -0.372247 19.5301 2.9978C22.8374 6.36784 19.5301 9.73789 19.5301 9.73789L10.9312 18.5L2.62619 9.73789C2.62619 9.73789 -0.828082 6.21806 2.33221 2.9978C5.4925 -0.222467 8.94678 2.9978 8.94678 2.9978L10.9312 5.01982Z"
         stroke="#787878"
-        stroke-width="2"
+        strokeWidth="2"
       />
     </svg>
   );
