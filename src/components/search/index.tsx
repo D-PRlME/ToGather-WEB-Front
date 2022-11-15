@@ -66,35 +66,37 @@ const TagMotion = {
 };
 
 function SearchComponent() {
-  const {register, handleSubmit} = useForm()
+  const { register, handleSubmit } = useForm();
   const [onModal, setOnModal] = useState(false);
   const [tagData, setTagsData] = useState<TagListResponse>();
   const [tags, setTags] = useState<string>();
-  const [searchData, setSearchData] = useState<PostsListResponse>()
+  const [searchData, setSearchData] = useState<PostsListResponse>();
 
   const onChangeTag = (tag: string) => {
     customAxios(`posts?tag=${tag}`, {
       method: "get",
       headers: {
         Authorization: Token.getToken("token"),
-      }
-    }).then((res) => {
-      console.log(res.data);
-      setSearchData(res.data)
-    }).catch((err)=>alert(err))
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        setSearchData(res.data);
+      })
+      .catch((err) => alert(err));
     setTags(tag);
   };
 
-  const onValidPostSearch = (form: {title:string}) => {
+  const onValidPostSearch = (form: { title: string }) => {
     customAxios(`posts?title=${form.title}`, {
-      method:"get",
-      headers:{
+      method: "get",
+      headers: {
         Authorization: Token.getToken("token"),
       },
     }).then((res) => {
       setSearchData(res.data);
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     customAxios("posts/tag/list", {
@@ -119,7 +121,6 @@ function SearchComponent() {
         alert(err.message);
         console.log(err);
       });
-
   }, []);
 
   return (
@@ -130,7 +131,7 @@ function SearchComponent() {
             variants={TagsContainerMotion}
             initial="hidden"
             animate="visible"
-            style={{marginTop: "-25px"}}
+            style={{ marginTop: "-25px" }}
           >
             <s.ModalBg onClick={() => setOnModal(false)} />
             <s.ModalWrapper>
@@ -177,12 +178,19 @@ function SearchComponent() {
         )}
       </AnimatePresence>
       <form onSubmit={handleSubmit(onValidPostSearch)}>
-        <_.Input placeholder="검색" height={24} width={785} {...register("title")}/>
+        <_.Input
+          placeholder="검색"
+          height={24}
+          width={785}
+          {...register("title")}
+        />
       </form>
       <_.TagWrapper>
-        {tags && <_.Tag bgColor={"#e7e7e7"} key={tags}>
-          {tags}
-        </_.Tag>}
+        {tags && (
+          <_.Tag bgColor={"#e7e7e7"} key={tags}>
+            {tags}
+          </_.Tag>
+        )}
       </_.TagWrapper>
       <_.Btn bgColor={"#E1AD01"} onClick={() => setOnModal(true)}>
         모든 태그 보기
@@ -198,20 +206,22 @@ function SearchComponent() {
             <_.Board variants={BoardMotion}>
               <_.BoardTitle>{post.title}</_.BoardTitle>
               <_.BoardTagWrapper>
-                {post.tags.map((tag) =>
-                    <_.BoardTag>{tag.name}</_.BoardTag>
-                )}
+                {post.tags.map((tag) => (
+                  <_.BoardTag>{tag.name}</_.BoardTag>
+                ))}
               </_.BoardTagWrapper>
               <Line />
               <_.UnderWrapper>
                 <div>
-                  <_.Profile alt="none" src={post.user.profile_image_url}/>
+                  <_.Profile alt="none" src={post.user.profile_image_url} />
                   <_.UserName>{post.user.user_name}</_.UserName>
                 </div>
                 <_.UnderRightWrapper>
                   <div>
                     <HeartIcon />
-                    <_.GrayText style={{ marginLeft: "4px" }}>{post.like_count}</_.GrayText>
+                    <_.GrayText style={{ marginLeft: "4px" }}>
+                      {post.like_count}
+                    </_.GrayText>
                   </div>
                   <SectionLine />
                   <_.GrayText>{post.created_at}</_.GrayText>
