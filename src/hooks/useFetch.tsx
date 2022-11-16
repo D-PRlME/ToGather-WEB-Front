@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import { customAxios } from "../lib/axios";
 
 type IFetchResponse<T> = [IfetchHandler, IFetchStates<T>];
 interface IFetchStates<T> {
@@ -37,7 +37,7 @@ function useFetch<T = any>(url: string): IFetchResponse<T> {
   });
   const fetchHandler = ({ method, headers, data }: IFetchingConfig): void => {
     setState((current) => ({ ...current, loading: true }));
-    axios(url, {
+    customAxios(url, {
       method,
       headers: {
         ...headers,
