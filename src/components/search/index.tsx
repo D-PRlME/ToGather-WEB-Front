@@ -5,12 +5,12 @@ import HeartIcon from "../../assets/icon/Heart";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { CheckIcon } from "../Edit";
-import { PostsListResponse, TagListResponse } from "../home/HomePostList";
 import { customAxios } from "../../lib/axios";
 import Token from "../../lib/token";
 import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import React from "react";
+import { PostsListResponse, TagListResponse } from "../../LocalTypes";
 
 const BoardContainerMotion = {
   hidden: {
@@ -112,7 +112,7 @@ function SearchComponent() {
           })
         );
         const newTags:TagListResponse = {
-          tags: [{ ...upperTags }],
+          tags: upperTags,
         };
         setTagsData(newTags);
       })
@@ -121,7 +121,7 @@ function SearchComponent() {
         console.log(err);
       });
   }, []);
-
+  console.log(tagData)
   return (
     <_.Container>
       <AnimatePresence>

@@ -3,6 +3,7 @@ import * as _ from "./myPosts/style";
 import { useEffect, useState } from "react";
 import { customAxios } from "../../lib/axios";
 import token from "../../lib/token";
+import { IProfileData } from "../../LocalTypes";
 
 const TagContainerMotion = {
   hidden: {
@@ -27,14 +28,6 @@ const TagMotion = {
   },
 };
 
-export interface IProfileData {
-  "user_id" : number;
-  "name" : string;
-  "email" : string;
-  "profile_image_url" : string;
-  "introduce": string;
-  "positions":string[]
-}
 function MyPageComponent() {
   const [myProfileData, setMyProfileData] = useState<IProfileData>();
   const navigate = useNavigate();

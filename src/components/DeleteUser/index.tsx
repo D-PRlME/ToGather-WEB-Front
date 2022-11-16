@@ -8,7 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import { customAxios } from "../../lib/axios";
 import Token from "../../lib/token";
 import token from "../../lib/token";
-import { IProfileData } from "../myPage";
+import { IProfileData } from "../../LocalTypes";
 
 const TagsContainerMotion = {
   hidden: {
