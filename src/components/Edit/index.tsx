@@ -92,8 +92,8 @@ function CreateComponent() {
             name: tag.name.replace(".", "_").toUpperCase(),
           })
         );
-        const newTags = {
-          tags: [...upperTags],
+        const newTags:TagListResponse = {
+          tags: [{ ...upperTags }],
         };
         setTagsData(newTags);
       })

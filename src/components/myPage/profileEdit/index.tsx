@@ -49,21 +49,25 @@ function ProfileEditComponent() {
   };
 
   const onValidImg = (data: React.ChangeEvent<HTMLInputElement>) => {
-    customAxios("images", {
-      method: "post",
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: token.getToken("token"),
-      },
-      data: {
-        images: data.target.files[0],
-      },
-    }).then((res) =>
-      setUserProfileData((current: IUserProfile) => ({
-        ...current,
-        profile_image_url: res.data.images_url,
-      }))
-    );
+    if(data.target.files){
+      customAxios("images", {
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: token.getToken("token"),
+        },
+        data: {
+          images: data.target.files[0],
+        },
+      }).then((res) =>
+        setUserProfileData((current) => (
+          current && {
+            ...current,
+            profile_image_url: res.data.images_url,
+          }
+        ))
+      );
+    }
   };
   useEffect(() => {
     customAxios("users", {

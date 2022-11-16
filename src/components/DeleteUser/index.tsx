@@ -3,7 +3,7 @@ import SortArrowIcon from "../../assets/icon/SortArrow";
 import * as s from "../myPage/style";
 import * as m from "../Edit/style";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { customAxios } from "../../lib/axios";
 import Token from "../../lib/token";
@@ -30,7 +30,7 @@ function DeleteUserComponent() {
   const [password, setPassword] = useState<string>();
   const passwordRef = useRef(null);
 
-  const onChangeInput = (data) => {
+  const onChangeInput = (data: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(data.target.value);
   };
   useEffect(() => {
