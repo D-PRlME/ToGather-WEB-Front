@@ -4,12 +4,11 @@ import * as s from "../myPage/style";
 import * as m from "../Edit/style";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { customAxios } from "../../lib/axios";
 import Token from "../../lib/token";
 import token from "../../lib/token";
 import { IProfileData } from "../myPage";
-import React from "react";
 
 const TagsContainerMotion = {
   hidden: {
