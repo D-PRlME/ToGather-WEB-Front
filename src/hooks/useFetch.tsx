@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { customAxios } from "../lib/axios";
 
-type IFetchResponse<T> = [IfetchHandler, IFetchStates<T>];
-interface IFetchStates<T> {
+type IFetchResponse<T> = [IFetchHandler, IFetchStates<T>];
+export interface IFetchStates<T> {
   data?: T;
   loading?: boolean;
   error?: object;
 }
 interface IFetchingConfig {
-  method: string;
+  method: "get" | "post" | "patch" | "delete" | "put";
   headers?: {
     [key: string]: any;
   };
@@ -17,7 +17,7 @@ interface IFetchingConfig {
   };
 }
 
-type IfetchHandler = (config: IFetchingConfig) => void;
+type IFetchHandler = (config: IFetchingConfig) => void;
 
 /**
  * loading, error, data를 반환하는 Fetch Hook
@@ -29,15 +29,15 @@ type IfetchHandler = (config: IFetchingConfig) => void;
  * @return {error} error : error
  */
 
-function useFetch<T = any>(url: string): IFetchResponse<T> {
+async function useFetch<T = any>(url: string): Promise<IFetchResponse<T>> {
   const [state, setState] = useState<IFetchStates<T>>({
     data: undefined,
     loading: false,
     error: undefined,
   });
-  const fetchHandler = ({ method, headers, data }: IFetchingConfig): void => {
+  const fetchHandler: IFetchHandler = async ({ method, headers, data }) => {
     setState((current) => ({ ...current, loading: true }));
-    customAxios(url, {
+    await customAxios(url, {
       method,
       headers: {
         ...headers,
