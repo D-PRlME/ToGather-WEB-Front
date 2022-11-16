@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import QuestionIcon from "../../assets/icon/question";
 import * as _ from "./style";
 import { AxiosError, AxiosResponse } from "axios";
 import { customAxios } from "../../lib/axios";
