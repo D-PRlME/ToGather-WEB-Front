@@ -86,14 +86,14 @@ function EditComponent() {
       },
     })
       .then((res) => {
-        const upperTags = res.data.tags.map(
-          (tag: { image_url: string; name: string }) => ({
+        const upperTags:{image_url: string, name: string} = res.data.tags.map(
+          (tag: {image_url: string, name: string}) => ({
             image_url: tag.image_url,
             name: tag.name.replace(".", "_").toUpperCase(),
           })
         );
-        const newTags = {
-          tags: [...upperTags],
+        const newTags: TagListResponse = {
+          tags: [{ ...upperTags }],
         };
         setTagsData(newTags);
       })
@@ -109,7 +109,7 @@ function EditComponent() {
       },
     })
       .then((res) => {
-        const newTag = res.data.tags.map((tag) => tag.name);
+        const newTag = res.data.tags.map((tag: {image_url: string, name: string}) => tag.name);
         setTags([...newTag])
         setDetailData(res.data)
       })

@@ -82,10 +82,12 @@ function PostComponent() {
         },
       })
         .then(() => {
-          setDetailData((current) => ({
-            ...current,
-            like_count: current?.like_count - 1,
-          }))
+          setDetailData((current) => (
+              current && {
+                ...current,
+                like_count: current.like_count - 1,
+              }
+              ))
           setIsLike(false);
         })
         .catch(() => alert("좋아요 취소 실패.."));
@@ -98,10 +100,13 @@ function PostComponent() {
         },
       })
         .then(() => {
-            setDetailData((current) => ({
-            ...current,
-            like_count: current?.like_count + 1,
-          }))
+            setDetailData((current) => (
+                current && {
+                  ...current,
+                  like_count: current?.like_count + 1,
+                }
+              )
+            )
           setIsLike(true);
         })
         .catch(() => alert("좋아요 보내기 실패.."));
@@ -139,10 +144,9 @@ function PostComponent() {
             <Profile
               htmlFor="imgFile"
               as="label"
-              src={detailData?.user.profile_image_url}
               style={{ width: "40px", height: "40px" }}
             >
-              <Profile alt="none" style={{ border: 0 }} />
+              <Profile alt="none" style={{ border: 0 }} src={detailData?.user?.profile_image_url}/>
             </Profile>
             <input type="file" id="imgFile" style={{ display: "none" }} />
             <_.Text weight={500} size={20} height={24}>
