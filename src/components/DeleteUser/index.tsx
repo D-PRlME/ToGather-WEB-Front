@@ -5,10 +5,8 @@ import * as m from "../Edit/style";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { customAxios } from "../../lib/axios";
-import Token from "../../lib/token";
-import token from "../../lib/token";
-import { IProfileData } from "../../LocalTypes";
+import { IProfileData, PostsListResponse } from "../../LocalTypes";
+import useFetch from "../../hooks/useFetch";
 
 const TagsContainerMotion = {
   hidden: {
@@ -23,38 +21,36 @@ const TagsContainerMotion = {
 };
 
 function DeleteUserComponent() {
-  const naviate = useNavigate();
+  // State
   const [onModal, setOnModal] = useState(false);
-  const [myProfileData, setMyProfileData] = useState<IProfileData>();
   const [password, setPassword] = useState<string>();
+
+  // Hook
   const passwordRef = useRef(null);
+  const navigate = useNavigate();
+
+  // API
+  const [GETuserPost] = useFetch<IProfileData>("users");
+  const [DELETEuser] = useFetch("users");
 
   const onChangeInput = (data: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(data.target.value);
   };
   useEffect(() => {
-    customAxios("users", {
+    GETuserPost({
       method: "get",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
-    })
-      .then((res) => setMyProfileData(res.data))
-      .catch((err) => alert(err.message));
+    });
   }, []);
 
   const onDeleteUser = () => {
-    customAxios("users", {
+    DELETEuser({
       method: "delete",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
       data: {
-        password: password,
+        password,
       },
     }).then(() => {
       alert("삭제 성공");
-      naviate("/");
+      navigate("/");
     });
   };
   return (
@@ -102,7 +98,7 @@ function DeleteUserComponent() {
       </AnimatePresence>
       <div>
         <s.BackBtnContainer
-          onClick={() => naviate(-1)}
+          onClick={() => navigate(-1)}
           style={{ marginLeft: 0 }}
         >
           <SortArrowIcon />

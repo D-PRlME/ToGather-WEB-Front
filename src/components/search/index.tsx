@@ -66,7 +66,7 @@ const TagMotion = {
 };
 
 function SearchComponent() {
-  const { register, handleSubmit } = useForm<{title: string}>();
+  const { register, handleSubmit } = useForm<{ title: string }>();
   const [onModal, setOnModal] = useState(false);
   const [tagData, setTagsData] = useState<TagListResponse>();
   const [tags, setTags] = useState<string>();
@@ -86,7 +86,7 @@ function SearchComponent() {
     setTags(tag);
   };
 
-  const onValidPostSearch = (form: {title: string }) => {
+  const onValidPostSearch = (form: { title: string }) => {
     customAxios(`posts?title=${form.title}`, {
       method: "get",
       headers: {
@@ -111,7 +111,7 @@ function SearchComponent() {
             name: tag.name.replace(".", "_").toUpperCase(),
           })
         );
-        const newTags:TagListResponse = {
+        const newTags: TagListResponse = {
           tags: upperTags,
         };
         setTagsData(newTags);
@@ -120,8 +120,7 @@ function SearchComponent() {
         alert(err.message);
         console.log(err);
       });
-  }, []);
-  console.log(tagData)
+  }, [searchData]);
   return (
     <_.Container>
       <AnimatePresence>

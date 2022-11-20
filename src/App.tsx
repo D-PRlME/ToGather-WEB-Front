@@ -6,9 +6,6 @@ import token from "./lib/token";
 import Token from "./lib/token";
 
 function App() {
-  useEffect(()=>{
-    Token.setToken('token', 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2NjgzNDc0OTYsImlhdCI6MTY2ODM0Mzg5Nn0.oo2TuLmikpu7CwR-AmS-GOiStW7yBRRqYRPb17FSsoo')
-  },[])
   return (
     <>
       <GlobalStyle />
