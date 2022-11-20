@@ -1,8 +1,8 @@
 import * as _ from "./style";
 import { IoIosArrowBack } from "react-icons/io";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import React from "react";
 
 interface ILogin {
@@ -11,7 +11,7 @@ interface ILogin {
 }
 
 function LogIn() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -19,10 +19,17 @@ function LogIn() {
   } = useForm<ILogin>();
 
   const onValid = async (data: ILogin) => {
-    const res = await axios.post("http://52.55.240.35:8080/users/auth", data, {
-      withCredentials: true, // CORS 처리 옵션
-    });
-    console.log(res);
+    await axios
+      .post("http://52.55.240.35:8080/users/auth", data, {
+        withCredentials: true, // CORS 처리 옵션
+      })
+      .then((res: AxiosResponse) => {
+        localStorage.setItem("access_token", res.data.access_token);
+        alert("로그인 성공!");
+      })
+      .catch((err) => {
+        alert("로그인 실패... " + err.message);
+      });
   };
   const onInValid = () => {
     console.log("실패", errors);
@@ -32,7 +39,7 @@ function LogIn() {
       <_.LogInContainer>
         <_.LogInHeader>
           <_.LogInHeaderIn>
-            <_.LogInHeaderText>
+            <_.LogInHeaderText onClick={() => navigate(-1)}>
               <IoIosArrowBack size="22px" />
               돌아가기
             </_.LogInHeaderText>
