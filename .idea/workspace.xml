@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d58d89ca-ca34-4d2c-be2f-e1aebbd781b0" name="변경" comment="Style : 자잘한 스타일 수정">
-      <change afterPath="$PROJECT_DIR$/src/hooks/useTagsModal.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/PostPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Edit/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Edit/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Edit/style.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Edit/style.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/HomePostList/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomePostList/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/HomePostList/style.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomePostList/style.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/myPage/myPosts/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/myPage/myPosts/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/myPage/style.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/myPage/style.ts" afterDir="false" />
+    <list default="true" id="d58d89ca-ca34-4d2c-be2f-e1aebbd781b0" name="변경" comment="Fix : 메소드 타입 유니언 타입으로 변경">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DeleteUser/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DeleteUser/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/myPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/myPage/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/search/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/search/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useFetch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useFetch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/axios/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/axios/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,8 +21,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -77,6 +75,10 @@
       <option name="presentableId" value="Default" />
       <updated>1667726758461</updated>
       <workItem from="1667726761936" duration="9307000" />
+      <workItem from="1668618358037" duration="1348000" />
+      <workItem from="1668619718657" duration="2370000" />
+      <workItem from="1668647821894" duration="1594000" />
+      <workItem from="1668769292186" duration="1637000" />
     </task>
     <task id="LOCAL-00001" summary="Style : 이미지 변경 버튼에 file input으로 수정">
       <created>1667733775802</created>
@@ -106,7 +108,35 @@
       <option name="project" value="LOCAL" />
       <updated>1667733854818</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Feat : 타입 LocalType에 저장">
+      <created>1668619544802</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1668619544802</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fix : 파일 정리">
+      <created>1668619669961</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1668619669961</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fix : customAxios로 변경">
+      <created>1668619954365</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1668619954365</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fix : 메소드 타입 유니언 타입으로 변경">
+      <created>1668620926516</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1668620926516</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -128,6 +158,10 @@
     <MESSAGE value="Style : 페이지 파일 경로 수정" />
     <MESSAGE value="Feat : Search 페이지 추가" />
     <MESSAGE value="Style : 자잘한 스타일 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="Style : 자잘한 스타일 수정" />
+    <MESSAGE value="Feat : 타입 LocalType에 저장" />
+    <MESSAGE value="Fix : 파일 정리" />
+    <MESSAGE value="Fix : customAxios로 변경" />
+    <MESSAGE value="Fix : 메소드 타입 유니언 타입으로 변경" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix : 메소드 타입 유니언 타입으로 변경" />
   </component>
 </project>
