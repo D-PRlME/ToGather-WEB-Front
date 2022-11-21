@@ -69,39 +69,40 @@ const SignUp = () => {
             // placeholder="이메일"
             type="email"
             {...register("email", {
-              required: "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요",
+              required: "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요*",
               pattern: {
                 value:
-                  /^[a-zA-Z0-9+-\_.]+@[d-sD-s0-9-]+\.[h-sH-S0-9-.]+\.[k-rK-R0-9-.]+$/,
+                  // /^[a-zA-Z0-9+-\_.]+@[d-sD-s0-9-]+\.[h-sH-S0-9-.]+\.[k-rK-R0-9-.]+$/,
+                  // /(\W|^)dsm\hs\kr(\W|$)/,
+                  /^[a-zA-Z0-9+-\_.]+@dsm.hs.kr$/,
                 message: "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요",
               },
             })}
             placeholder="이메일"
           />
           <ExplainText>
-            {errors.name?.type === "required" &&
-              "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요."}
+            {/* {errors.name?.type === "required" &&
+              "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요."} */}
             {/* {errors.firstName?.type === "maxLength" && errors.firstName.message} */}
-            dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요.
-            {/* {errors?.email?.message} */}
+            {/* dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요. */}
+            {errors?.email?.message}
           </ExplainText>
           <SignupInput
             placeholder="비밀번호"
             type="password"
             {...register("pw", {
               required:
-                "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다 ",
+                "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다**",
               pattern: {
-                value:
-                  /^^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/,
+                value: /^(?=.*\d)(?=.*[a-z])(?=.*[!@#])[\da-zA-Z!@#]{8,}$/,
                 message:
                   "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다 ",
               },
             })}
           />
           <ExplainText>
-            8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다
-            {/* {errors?.pw?.message} */}
+            {/* 8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다 */}
+            {errors?.pw?.message}
           </ExplainText>
           <SignupInput
             {...register("name", {
