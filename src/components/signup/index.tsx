@@ -1,8 +1,8 @@
-import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import API from "../../utils/api";
 import { LogInHeader, LogInHeaderIn, LogInHeaderText } from "../login/style";
 import {
   ExplainText,
@@ -13,29 +13,39 @@ import {
   Title,
 } from "./style";
 
-interface ISignUp {
-  email: string;
+interface IAuthForm {
   name: string;
-  password: string;
+  email: string;
+  pw: string;
+  pwConfirm: string;
 }
 
-function SignUp() {
-  const navigate = useNavigate();
+const SignUp = () => {
   const {
     register,
+    formState: { errors },
     handleSubmit,
-    formState: { isSubmitting, isDirty, errors },
-  } = useForm<ISignUp>();
+    // setError,
+  } = useForm<IAuthForm>({ mode: "onChange" });
 
-  const onValid = async (data: ISignUp) => {
-    const res = await axios.post("http://52.55.240.35:8080/users", data, {
-      withCredentials: true, // CORS 처리 옵션
-    });
-    console.log(res);
-    // console.log("aaa");
+  const onValid = (data: IAuthForm) => {
+    console.log(data);
+    const userData = {
+      name: data.name,
+      email: data.email,
+      pw: data.pw,
+    };
 
-    navigate("/");
+    API.post("/users", userData)
+      .then((response) => {
+        if (response.status === 200) {
+          const authEmail = { email: userData.email };
+          console.log(authEmail);
+        }
+      })
+      .catch((error) => console.log(error.response));
   };
+
   const onInValid = () => {
     console.log("실패");
   };
@@ -47,7 +57,7 @@ function SignUp() {
           <LogInHeaderIn>
             <LogInHeaderText>
               <IoIosArrowBack size="22px" />
-              돌아가기
+              <Link to="/">돌아가기</Link>
             </LogInHeaderText>
           </LogInHeaderIn>
         </LogInHeader>
@@ -56,63 +66,63 @@ function SignUp() {
             <p>ToGather</p> 시작하기
           </Title>
           <SignupInput
-            aria-invalid={
-              !isDirty ? undefined : errors.email ? "true" : "false"
-            }
+            // placeholder="이메일"
+            type="email"
             {...register("email", {
               required: "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요",
               pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: "이메일 형식에 맞지 않습니다.",
-              },
-              minLength: {
-                value: 10,
+                value:
+                  /^[a-zA-Z0-9+-\_.]+@[d-sD-s0-9-]+\.[h-sH-S0-9-.]+\.[k-rK-R0-9-.]+$/,
                 message: "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요",
               },
-              maxLength: { value: 40, message: "메일이 너무 길어요!" },
             })}
             placeholder="이메일"
           />
           <ExplainText>
-            {errors.email && <small role="alert">{errors.email.message}</small>}
+            {errors.name?.type === "required" &&
+              "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요."}
+            {/* {errors.firstName?.type === "maxLength" && errors.firstName.message} */}
+            dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요.
+            {/* {errors?.email?.message} */}
           </ExplainText>
           <SignupInput
-            aria-invalid={
-              !isDirty ? undefined : errors.password ? "true" : "false"
-            }
-            {...register("password", {
+            placeholder="비밀번호"
+            type="password"
+            {...register("pw", {
               required:
-                "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다",
-              minLength: {
-                value: 8,
-                message: "8자리 이상 비밀번호를 사용하세요.",
-              },
-              maxLength: {
-                value: 20,
-                message: "20자리 이하 비밀번호를 사용하세요.",
+                "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다 ",
+              pattern: {
+                value:
+                  /^^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/,
+                message:
+                  "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다 ",
               },
             })}
-            type="password"
           />
           <ExplainText>
-            {errors.password && (
-              <small role="alert">{errors.password.message}</small>
-            )}
+            8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다
+            {/* {errors?.pw?.message} */}
           </ExplainText>
           <SignupInput
-            type="name"
             {...register("name", {
-              required: "이름은 필수 항목입니다",
-              minLength: { value: 1, message: "이름이 너무 짧아요!" },
-              maxLength: { value: 10, message: "이름이 너무 길어요!" },
+              required: "이름을 입력해주세요",
+              minLength: {
+                value: 2,
+                message: "2글자 이상 입력해주세요",
+              },
+              pattern: {
+                value: /^[A-za-z0-9가-힣]{2,8}$/,
+                message: "8자 이내로 입력",
+              },
             })}
             placeholder="이름"
+            type="name"
           />
           <NextBtn>다음</NextBtn>
         </SignupWrap>
       </SignupContainer>
     </>
   );
-}
+};
 
 export default SignUp;

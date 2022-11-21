@@ -48,6 +48,7 @@ export const SignupInput = styled.input`
 
 export const ExplainText = styled.p`
   /* margin: ; */
+  /* color: red; */
   margin: 0 0 10px 30px;
 `;
 
