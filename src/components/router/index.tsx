@@ -18,7 +18,6 @@ const Router = () => {
       <Route path="/login" element={<LogInPage />} />
       <Route path="/edit" element={<EditPage />} />
       <Route path="/mypage/*" element={<MyPage />}></Route>
-
       <Route path="/create" element={<CreatePage />} />
       <Route path="/edit/*" element={<EditPage />} />
       {/*TODO : 라우터 하나로 통일해야함*/}

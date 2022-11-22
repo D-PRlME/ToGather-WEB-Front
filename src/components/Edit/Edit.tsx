@@ -4,11 +4,10 @@ import { AxiosError, AxiosResponse } from "axios";
 import { customAxios } from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ISelectTags, PostsListResponse, TagListResponse } from "../home/HomePostList";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import token from "../../lib/token";
 import Token from "../../lib/token";
-import { DetailPostResponse } from "../posts";
+import { DetailPostResponse, ISelectTags, TagListResponse } from "../../LocalTypes";
 
 interface IEditFormStates {
   title: string;
