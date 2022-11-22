@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { customAxios } from "../lib/axios";
-import { AxiosResponse } from "axios";
+import { AxiosPromise, AxiosResponse } from "axios";
+import { resolve } from "node:path/win32";
 
 type IFetchResponse<T> = [IFetchHandler, IFetchStates<T>];
 export interface IFetchStates<T> {
@@ -18,7 +19,7 @@ interface IFetchingConfig {
   };
 }
 
-type IFetchHandler = (config: IFetchingConfig) => Promise<AxiosResponse>;
+type IFetchHandler = (config: IFetchingConfig) => AxiosPromise;
 
 /**
  * loading, error, data를 반환하는 Fetch Hook
@@ -30,26 +31,32 @@ type IFetchHandler = (config: IFetchingConfig) => Promise<AxiosResponse>;
  * @return {error} error : error
  */
 
-async function useFetch<T = any>(url: string): IFetchResponse<T> {
+function useFetch<T = any>(url: string): IFetchResponse<T> {
   const [state, setState] = useState<IFetchStates<T>>({
     data: undefined,
     loading: false,
     error: undefined,
   });
   const fetchHandler: IFetchHandler = async ({ method, headers, data }) => {
-    customAxios(url, {
+    setState((current) => ({ ...current, loading: true }));
+    return new Promise((resolve, reject) => {
+      customAxios(url, {
         method,
         headers: {
           ...headers,
         },
         data: JSON.stringify(data),
       })
-        .then((response) =>
+        .then((response) => {
           setState((prev) => ({ ...prev, data: response.data }))
-        )
-        .catch((error) => setState((current) => ({ ...current, error: error })))
+          resolve(response.data)
+        })
+        .catch((error) => {
+          setState((current) => ({ ...current, error: error }))
+          reject(error)
+        })
         .finally(() => setState((current) => ({ ...current, loading: false })));
-    setState((current) => ({ ...current, loading: true }));
+    })
   };
   return [fetchHandler, { ...state }];
 }
