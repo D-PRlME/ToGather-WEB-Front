@@ -30,21 +30,15 @@ const BoardMotion = {
   },
 };
 
-// TODO : customaxios로 바꾸기
-// TODO ; 좋아요 기능 구현하다 말음(500 error)
 function PostComponent() {
   const navigate = useNavigate();
   const params = useParams();
   const [detailData, setDetailData] = useState<DetailPostResponse>();
   const [isLike, setIsLike] = useState(false);
-  // TODO : localToken으로 변경해야함
   useEffect(() => {
     // 상세 페이지 불러오기
-    customAxios(`/posts/${params["*"]}`, {
+    customAxios(`posts/${params["*"]}`, {
       method: "get",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     })
       .then((res) => setDetailData(res.data))
       .catch((err) => alert(err.message));
@@ -53,49 +47,41 @@ function PostComponent() {
   const onValidLike = () => {
     if (isLike) {
       // 좋아요 삭제
-      axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
+      customAxios(`posts/like/${params["*"]}`, {
         method: "delete",
-        headers: {
-          Authorization: Token.getToken("token"),
-        },
       })
         .then(() => {
-          setDetailData((current) => (
+          setDetailData(
+            (current) =>
               current && {
                 ...current,
                 like_count: current.like_count - 1,
               }
-              ))
+          );
           setIsLike(false);
         })
         .catch(() => alert("좋아요 취소 실패.."));
     } else {
       // 좋아요 보내기
-      axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
+      customAxios(`posts/like/${params["*"]}`, {
         method: "post",
-        headers: {
-          Authorization: Token.getToken("token"),
-        },
       })
         .then(() => {
-            setDetailData((current) => (
-                current && {
-                  ...current,
-                  like_count: current?.like_count + 1,
-                }
-              )
-            )
+          setDetailData(
+            (current) =>
+              current && {
+                ...current,
+                like_count: current?.like_count + 1,
+              }
+          );
           setIsLike(true);
         })
         .catch(() => alert("좋아요 보내기 실패.."));
     }
   };
   const onValidDelete = () => {
-    axios(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
+    customAxios(`posts/${params["*"]}`, {
       method: "delete",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     })
       .then(() => {
         alert("삭제 성공!");
@@ -124,7 +110,11 @@ function PostComponent() {
               as="label"
               style={{ width: "40px", height: "40px" }}
             >
-              <Profile alt="none" style={{ border: 0 }} src={detailData?.user?.profile_image_url}/>
+              <Profile
+                alt="none"
+                style={{ border: 0 }}
+                src={detailData?.user?.profile_image_url}
+              />
             </Profile>
             <input type="file" id="imgFile" style={{ display: "none" }} />
             <_.Text weight={500} size={20} height={24}>
@@ -180,7 +170,11 @@ function PostComponent() {
         </_.Btn>
         {detailData?.is_mine && (
           <div style={{ display: "flex" }}>
-            <_.Btn bgColor="#F7F7F7" h={45} onClick={()=>navigate(`/Edit/${params["*"]}`)}>
+            <_.Btn
+              bgColor="#F7F7F7"
+              h={45}
+              onClick={() => navigate(`/Edit/${params["*"]}`)}
+            >
               수정
             </_.Btn>
             <_.Btn bgColor="#FE3D3D" h={45} onClick={onValidDelete}>

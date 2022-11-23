@@ -56,6 +56,7 @@ export const QuestionModal = styled(motion.div)`
   align-items: center;
 `;
 export const Tag = styled(motion.div)`
+  position: relative;
   height: 80px;
   background-color: rgba(0, 0, 0, 0);
   display: flex;
@@ -133,6 +134,7 @@ export const SelectTag = styled.div`
   color: white;
   display: flex;
   align-items: center;
+  justify-content: center;
   font-weight: 500;
   font-size: 20px;
   line-height: 24px;
