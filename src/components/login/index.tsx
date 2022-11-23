@@ -24,8 +24,9 @@ function LogIn() {
         withCredentials: true, // CORS 처리 옵션
       })
       .then((res: AxiosResponse) => {
-        localStorage.setItem("access_token", res.data.access_token);
+        localStorage.setItem("token", res.data.access_token);
         alert("로그인 성공!");
+        navigate("/");
       })
       .catch((err) => {
         alert("로그인 실패... " + err.message);
