@@ -1,12 +1,12 @@
 import axios from "axios";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SortArrowIcon from "../../assets/icon/SortArrow";
 import { BackBtn, BackBtnContainer, Profile } from "../myPage/style";
 import * as _ from "./style";
 import Token from "../../lib/token";
 import { customAxios } from "../../lib/axios";
+import { DetailPostResponse } from "../../LocalTypes";
 
 const BoardContainerMotion = {
   hidden: {
@@ -29,28 +29,6 @@ const BoardMotion = {
     opacity: 1,
   },
 };
-
-export interface DetailPostResponse {
-  post_id: number;
-  title: string;
-  user: {
-    user_id: number;
-    user_name: string;
-    profile_image_url: string;
-  };
-  created_at: string;
-  tag: [
-    {
-      name: string;
-      image_url: string;
-    }
-  ];
-  content: string;
-  is_mine: boolean;
-  is_completed: boolean;
-  is_liked: number;
-  like_count: number;
-}
 
 // TODO : customaxios로 바꾸기
 // TODO ; 좋아요 기능 구현하다 말음(500 error)
