@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { customAxios } from "../../lib/axios";
 import token from "../../lib/token";
 import Modal from "../modal/Modal";
+import { Container, ProfileContainer } from "./myPosts/style";
 
 const TagContainerMotion = {
   hidden: {
@@ -75,9 +76,13 @@ function MyPageComponent() {
   };
   return (
     <>
-      {isOpenModal && <Modal onClickToggleModal={onClickToggleModal}></Modal>}
-      <_.Container>
-        <_.ProfileContainer>
+      {isOpenModal && (
+        <Modal onClickToggleModal={onClickToggleModal}>
+          <button onClick={onLogOut}>로그아웃</button>
+        </Modal>
+      )}
+      <Container>
+        <ProfileContainer>
           <div style={{ display: "flex" }}>
             <_.Profile alt="none" />
             <_.ProfileTextContainer>
@@ -89,18 +94,19 @@ function MyPageComponent() {
               </_.Text>
             </_.ProfileTextContainer>
           </div>
-          <_.Btn color="#f7f7f7" onClick={onClickToggleModal}>
+          <_.Btn color="#f7f7f7">
             <_.Text
               weight={500}
               size={24}
               height={29}
               color="black"
-              onClick={onLogOut}
+              onClick={onClickToggleModal}
+              // onClick={onLogOut}
             >
               로그아웃
             </_.Text>
           </_.Btn>
-        </_.ProfileContainer>
+        </ProfileContainer>
         <_.TagContainer
           variants={TagContainerMotion}
           initial="hidden"
@@ -140,7 +146,7 @@ function MyPageComponent() {
             </_.Text>
           </_.Btn>
         </_.BtnContainer>
-      </_.Container>
+      </Container>
     </>
   );
 }
