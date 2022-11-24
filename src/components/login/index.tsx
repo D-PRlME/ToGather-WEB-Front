@@ -1,8 +1,10 @@
+import React from "react";
 import * as _ from "./style";
 import { IoIosArrowBack } from "react-icons/io";
 // import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 interface ILogin {
   email: string;
@@ -67,9 +69,18 @@ function LogIn() {
             placeholder="비밀번호"
           ></_.LoginInput>
           <_.LoginSubmitButton>로그인</_.LoginSubmitButton>
-          <_.LoginAlertText>
-            <strong>비밀번호 변경</strong>
-          </_.LoginAlertText>
+          <_.LoginAlertTextWrap>
+            <_.LoginAlertText>
+              <strong>
+                <Link to="/">비밀번호 변경</Link>
+              </strong>
+            </_.LoginAlertText>
+            <_.LoginAlertText>
+              <strong>
+                <Link to="/signup">회원가입</Link>
+              </strong>
+            </_.LoginAlertText>
+          </_.LoginAlertTextWrap>
         </_.LogInWrap>
       </_.LogInContainer>
     </>

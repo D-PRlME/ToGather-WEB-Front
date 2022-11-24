@@ -81,6 +81,11 @@ export const LoginSubmitButton = styled.button`
   font-weight: bold;
 `;
 
+export const LoginAlertTextWrap = styled.div`
+  color: #787878;
+  display: flex;
+`;
+
 export const LoginAlertText = styled.p`
   font-size: 16px;
   margin: 0px auto;
