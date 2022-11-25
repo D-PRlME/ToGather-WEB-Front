@@ -5,6 +5,9 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { Eye } from "../../assets/logo/index";
+// import Eye from "../../assets/logo/eye.svg";
+// import IoEyeOutline from "react-icons/io";
 
 interface ILogin {
   email: string;
@@ -35,7 +38,7 @@ function LogIn() {
           <_.LogInHeaderIn>
             <_.LogInHeaderText>
               <IoIosArrowBack size="22px" />
-              돌아가기
+              <Link to="/">돌아가기</Link>
             </_.LogInHeaderText>
           </_.LogInHeaderIn>
         </_.LogInHeader>
@@ -67,14 +70,18 @@ function LogIn() {
               maxLength: { value: 20, message: "비밀번호가 너무 길어요!" },
             })}
             placeholder="비밀번호"
-          ></_.LoginInput>
+          >
+            {/* <_.HideAndShowEye src={Eye}></_.HideAndShowEye> */}
+          </_.LoginInput>
+          <img src={Eye} alt="" />
           <_.LoginSubmitButton>로그인</_.LoginSubmitButton>
           <_.LoginAlertTextWrap>
             <_.LoginAlertText>
               <strong>
                 <Link to="/">비밀번호 변경</Link>
               </strong>
-            </_.LoginAlertText>
+            </_.LoginAlertText>{" "}
+            쌤한테 나 화장실 좀 다녀온다고 말해주라
             <_.LoginAlertText>
               <strong>
                 <Link to="/signup">회원가입</Link>

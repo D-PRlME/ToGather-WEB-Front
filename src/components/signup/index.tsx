@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosArrowBack } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { Eye } from "../../assets/logo/index";
 import API from "../../utils/api";
 import { LogInHeader, LogInHeaderIn, LogInHeaderText } from "../login/style";
 import {
   ExplainText,
   NextBtn,
+  PasswordInput,
+  // PasswordHide,
+  // PasswordHide,
+  PasswordInputWrap,
+  PWHideAndShow,
   SignupContainer,
   SignupInput,
   SignupWrap,
   Title,
 } from "./style";
-
+// import { AiOutlineEye } from "react-icons/ai";
+// import Eye from "../../assets/logo/eye.svg";
 interface IAuthForm {
   name: string;
   email: string;
@@ -48,6 +55,11 @@ const SignUp = () => {
 
   const onInValid = () => {
     console.log("실패");
+  };
+  const [hidePassword, setHidePassword] = useState(true);
+
+  const toggleHidePassword = () => {
+    setHidePassword(!hidePassword);
   };
 
   return (
@@ -87,19 +99,22 @@ const SignUp = () => {
             {/* dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요. */}
             {errors?.email?.message}
           </ExplainText>
-          <SignupInput
-            placeholder="비밀번호"
-            type="password"
-            {...register("pw", {
-              required:
-                "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다**",
-              pattern: {
-                value: /^(?=.*\d)(?=.*[a-z])(?=.*[!@#])[\da-zA-Z!@#]{8,}$/,
-                message:
-                  "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다 ",
-              },
-            })}
-          />
+          <PasswordInputWrap>
+            <PasswordInput
+              placeholder="비밀번호"
+              type={hidePassword ? "password" : "text"}
+              {...register("pw", {
+                required:
+                  "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다**",
+                pattern: {
+                  value: /^(?=.*\d)(?=.*[a-z])(?=.*[!@#])[\da-zA-Z!@#]{8,}$/,
+                  message:
+                    "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다 ",
+                },
+              })}
+            ></PasswordInput>
+            <PWHideAndShow src={Eye} alt="" onClick={toggleHidePassword} />
+          </PasswordInputWrap>
           <ExplainText>
             {/* 8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다 */}
             {errors?.pw?.message}

@@ -50,6 +50,7 @@ export const LogInText = styled.div`
 `;
 
 export const LoginInput = styled.input`
+  background-color: ${palette.gray[200]};
   width: 430px;
   height: 53px;
   padding: 20px 14px;
@@ -98,3 +99,5 @@ export const LoginAlertText = styled.p`
     cursor: pointer;
   }
 `;
+
+export const HideAndShowEye = styled.img``;

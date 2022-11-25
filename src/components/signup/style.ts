@@ -34,12 +34,58 @@ export const SignupInput = styled.input`
   font-size: 20px;
   display: flex;
   align-items: center;
+  background-color: ${palette.gray[200]};
   margin: 0 auto;
   /* margin-bottom: 16px; */
 
   box-sizing: border-box;
+  /* border: none; */
   border: 1px solid #dbdde5;
+  /* border-right: none; */
   border-radius: 6px;
+
+  /* &:focus {
+    border: 1px solid ${palette.main};
+  } */
+`;
+
+export const PasswordInput = styled.input`
+  width: 430px;
+  height: 53px;
+  padding: 20px 14px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  background-color: ${palette.gray[200]};
+  margin: 0 auto;
+  /* margin-bottom: 16px; */
+
+  box-sizing: border-box;
+  /* border: none; */
+  border: 1px solid #dbdde5;
+  border-right: none;
+  border-radius: 6px;
+
+  /* &:focus {
+    border: 1px solid ${palette.main};
+  } */
+`;
+export const PWHideAndShow = styled.img`
+  background-color: ${palette.gray[200]};
+  border: none;
+`;
+
+export const PasswordInputWrap = styled.div`
+  display: flex;
+  width: 436px;
+  height: 53px;
+  border-radius: 5px;
+  border: solid 1px rgba(0, 0, 0, 0.3);
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  opacity: 1;
 
   &:focus {
     border: 1px solid ${palette.main};
@@ -58,10 +104,10 @@ export const NextBtn = styled.button`
   margin-left: 25px;
   margin-top: 60px;
   border-radius: 10px;
-  border: 1px solid ${palette.gray[200]};
+  border: 1px solid ${palette.gray[300]};
   color: #333;
   font-size: 24px;
   cursor: pointer;
-  background-color: ${palette.gray};
+  background-color: ${palette.gray[200]};
   font-weight: bold;
 `;
