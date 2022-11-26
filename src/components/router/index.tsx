@@ -9,6 +9,7 @@ import SearchPage from "../../pages/SearchPage";
 import CreatePage from "../../pages/CreatePage";
 import EditPage from "../../pages/EditPage";
 import React from "react";
+import AuthMailPage from "../../pages/AuthMail";
 
 const Router = () => {
   return (
@@ -16,6 +17,7 @@ const Router = () => {
       <Route path="/" element={<HomePage />} />
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/login" element={<LogInPage />} />
+      <Route path="/auth" element={<AuthMailPage />} />
       <Route path="/edit" element={<EditPage />} />
       <Route path="/mypage/*" element={<MyPage />}></Route>
 
