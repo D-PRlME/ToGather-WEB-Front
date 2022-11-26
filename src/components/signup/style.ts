@@ -35,6 +35,7 @@ export const SignupInput = styled.input`
   display: flex;
   align-items: center;
   margin: 0 auto;
+  /* color: red; */
   /* margin-bottom: 16px; */
 
   box-sizing: border-box;
@@ -42,7 +43,7 @@ export const SignupInput = styled.input`
   border-radius: 6px;
 
   &:focus {
-    border: 1px solid ${palette.main};
+    border: 1px solid ${palette.red};
   }
 `;
 

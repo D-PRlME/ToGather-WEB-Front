@@ -11,6 +11,7 @@ import { customAxios } from "../../lib/axios";
 import Token from "../../lib/token";
 import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
+import React from "react";
 
 const BoardContainerMotion = {
   hidden: {

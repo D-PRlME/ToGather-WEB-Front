@@ -3,6 +3,7 @@ import { IoIosArrowBack } from "react-icons/io";
 // import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import React from "react";
 
 interface ILogin {
   email: string;
@@ -37,7 +38,7 @@ function LogIn() {
             </_.LogInHeaderText>
           </_.LogInHeaderIn>
         </_.LogInHeader>
-        <_.LogInWrap>
+        <_.LogInWrap onSubmit={handleSubmit(onValid, onInValid)}>
           <_.LogInText>
             마음 맞는 팀원을 찾는
             <br /> 간단한 방법.
