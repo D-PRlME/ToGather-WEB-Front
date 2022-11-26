@@ -78,7 +78,6 @@ const SignUp = () => {
             <p>ToGather</p> 시작하기
           </Title>
           <SignupInput
-            // placeholder="이메일"
             type="email"
             {...register("email", {
               required: "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요*",
@@ -92,13 +91,7 @@ const SignUp = () => {
             })}
             placeholder="이메일"
           />
-          <ExplainText>
-            {/* {errors.name?.type === "required" &&
-              "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요."} */}
-            {/* {errors.firstName?.type === "maxLength" && errors.firstName.message} */}
-            {/* dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요. */}
-            {errors?.email?.message}
-          </ExplainText>
+          <ExplainText color="red">{errors?.email?.message}</ExplainText>
           <PasswordInputWrap>
             <PasswordInput
               placeholder="비밀번호"

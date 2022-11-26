@@ -44,56 +44,54 @@ export const SignupInput = styled.input`
   /* border-right: none; */
   border-radius: 6px;
 
-  /* &:focus {
-    border: 1px solid ${palette.main};
-  } */
+  &:focus {
+    border: none;
+  }
 `;
-
+export const PasswordInputWrap = styled.div`
+  display: flex;
+  width: 436px;
+  height: 53px;
+  border-radius: 5px;
+  margin-left: 25px;
+  border: 1px solid #dbdde5;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  opacity: 1;
+  background-color: ${palette.gray[200]};
+  &:focus {
+    border: 1px solid ${palette.main};
+  }
+`;
 export const PasswordInput = styled.input`
-  width: 430px;
+  width: 400px;
   height: 53px;
   padding: 20px 14px;
   font-size: 20px;
   display: flex;
   align-items: center;
   background-color: ${palette.gray[200]};
-  margin: 0 auto;
-  /* margin-bottom: 16px; */
 
   box-sizing: border-box;
-  /* border: none; */
-  border: 1px solid #dbdde5;
-  border-right: none;
-  border-radius: 6px;
+  border: none;
 
-  /* &:focus {
-    border: 1px solid ${palette.main};
-  } */
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+
+  &:focus {
+    outline: none;
+  }
 `;
 export const PWHideAndShow = styled.img`
   background-color: ${palette.gray[200]};
   border: none;
-`;
-
-export const PasswordInputWrap = styled.div`
-  display: flex;
-  width: 436px;
-  height: 53px;
-  border-radius: 5px;
-  border: solid 1px rgba(0, 0, 0, 0.3);
-  /* display: flex; */
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-  opacity: 1;
-
-  &:focus {
-    border: 1px solid ${palette.main};
-  }
+  /* margin-left:; */
 `;
 
 export const ExplainText = styled.p`
   /* margin: ; */
+  /* ${(props) => (props.color ? "red" : "red")} */
   /* color: red; */
   margin: 0 0 10px 30px;
 `;
