@@ -34,7 +34,7 @@ function SignUp() {
     console.log(res);
     // console.log("aaa");
 
-    navigate("/");
+    navigate("/auth");
   };
   const onInValid = () => {
     console.log("실패");
