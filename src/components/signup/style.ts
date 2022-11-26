@@ -50,7 +50,7 @@ export const SignupInput = styled.input`
 `;
 export const PasswordInputWrap = styled.div`
   display: flex;
-  width: 436px;
+  width: 430px;
   height: 53px;
   border-radius: 5px;
   margin-left: 25px;
@@ -65,7 +65,7 @@ export const PasswordInputWrap = styled.div`
   }
 `;
 export const PasswordInput = styled.input`
-  width: 400px;
+  width: 436px;
   height: 53px;
   padding: 20px 14px;
   font-size: 20px;
@@ -86,6 +86,7 @@ export const PasswordInput = styled.input`
 export const PWHideAndShow = styled.img`
   background-color: ${palette.gray[200]};
   border: none;
+  padding: 14px;
   /* margin-left:; */
 `;
 
