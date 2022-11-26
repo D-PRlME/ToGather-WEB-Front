@@ -46,7 +46,7 @@ const TagMotion = {
 
 function EditComponent() {
   // TODO : localToken으로 변경해야함
-  const { register, handleSubmit } = useForm<IEditFormStates>();
+  const { register, handleSubmit, setValue } = useForm<IEditFormStates>();
   // const [onQuestionModal, setOnQuestionModal] = useState(false);
   const [onModal, setOnModal] = useState(false);
   const [tags, setTags] = useState<string[]>([]);

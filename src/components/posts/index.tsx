@@ -138,26 +138,29 @@ function PostComponent() {
                 flexDirection: "column",
               }}
             >
-              <div>
-                <_.Text weight={700} size={40} color={"black"}>
+              <div style={{display: "flex", "flexDirection":"column", "gap":"10px"}}>
+                <_.Text weight={700} size={40} height={40} color={"black"}>
                   계정을 삭제하시겠습니까?
                 </_.Text>
-                <_.Text weight={500} size={20} color={"black"}>
+                <_.Text weight={500} size={20} height={20} color={"black"}>
                   모든 프로필, 프로젝트, 작성한 글이 서버에서 삭제되며, 이
                   작업은 되돌릴 수 없습니다.
                 </_.Text>
               </div>
-              <m.ModalWrapper>
+              <div style={{"display":"flex", "justifyContent":"center", gap:"10px"}}>
                 <m.ModalBtn
-                  style={{"backgroundColor":"#E1AD01"}}
+                  style={{"backgroundColor":"#E1AD01", "width":"45%", zIndex:1}}
                   onClick={() => setOnModal(false)}
                 >
                   취소
                 </m.ModalBtn>
-                <m.ModalBg style={{"backgroundColor":"#F7F7F7"}} onClick={onValidDelete}>
-                  진행
-                </m.ModalBg>
-              </m.ModalWrapper>
+                <m.ModalBtn
+                  style={{"backgroundColor":"white", "width": "45%", zIndex:1}}
+                  onClick={onValidDelete}
+                >
+                  삭제
+                </m.ModalBtn>
+              </div>
             </m.ModalWrapper>
           </m.ModalContainer>
         )}
@@ -285,7 +288,7 @@ function PostComponent() {
             >
               수정
             </_.Btn>
-            <_.Btn bgColor="#FE3D3D" h={45} onClick={onValidDelete}>
+            <_.Btn bgColor="#FE3D3D" h={45} onClick={() => setOnModal(true)}>
               삭제
             </_.Btn>
           </div>
