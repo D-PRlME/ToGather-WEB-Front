@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { customAxios } from "../lib/axios";
-import { AxiosPromise, AxiosResponse } from "axios";
+import { AxiosError, AxiosPromise, AxiosResponse } from "axios";
 
 type IFetchResponse<T> = [IFetchHandler, IFetchStates<T>];
 export interface IFetchStates<T> {
@@ -52,11 +52,11 @@ function useFetch<T = any>(url: string): IFetchResponse<T> {
         headers: {
           ...headers,
         },
-        data: JSON.stringify(data),
+        data,
       })
         .then((response) => {
           setState((prev) => ({ ...prev, data: response.data }));
-          resolve(response.data);
+          resolve(response);
         })
         .catch((error) => {
           setState((current) => ({ ...current, error: error }));

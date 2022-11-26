@@ -1,12 +1,24 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SortArrowIcon from "../../assets/icon/SortArrow";
 import { BackBtn, BackBtnContainer, Profile } from "../myPage/style";
 import * as _ from "./style";
-import Token from "../../lib/token";
+import * as m from "../Edit/style";
 import { customAxios } from "../../lib/axios";
 import { DetailPostResponse } from "../../LocalTypes";
+import { AnimatePresence } from "framer-motion";
+
+const TagsContainerMotion = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 const BoardContainerMotion = {
   hidden: {
@@ -35,6 +47,7 @@ function PostComponent() {
   const params = useParams();
   const [detailData, setDetailData] = useState<DetailPostResponse>();
   const [isLike, setIsLike] = useState(false);
+  const [onModal, setOnModal] = useState(false);
   useEffect(() => {
     // 상세 페이지 불러오기
     customAxios(`posts/${params["*"]}`, {
@@ -92,6 +105,47 @@ function PostComponent() {
 
   return (
     <_.Container>
+      <AnimatePresence>
+        {onModal && (
+          <m.ModalContainer
+            variants={TagsContainerMotion}
+            initial="hidden"
+            animate="visible"
+          >
+            <m.ModalBg onClick={() => setOnModal(false)} />
+            <m.ModalWrapper
+              style={{
+                width: "450px",
+                height: "300px",
+                justifyContent: "space-between",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <div>
+                <_.Text weight={700} size={40} color={"black"}>
+                  계정을 삭제하시겠습니까?
+                </_.Text>
+                <_.Text weight={500} size={20} color={"black"}>
+                  모든 프로필, 프로젝트, 작성한 글이 서버에서 삭제되며, 이
+                  작업은 되돌릴 수 없습니다.
+                </_.Text>
+              </div>
+              <m.ModalBtnWrapper>
+                <m.ModalBtn
+                  bgColor={"#E1AD01"}
+                  onClick={() => setOnModal(false)}
+                >
+                  취소
+                </m.ModalBtn>
+                <m.ModalBg style={{"backgroundColor":"#F7F7F7"}} onClick={onValidDelete}>
+                  진행
+                </m.ModalBg>
+              </m.ModalBtnWrapper>
+            </m.ModalWrapper>
+          </m.ModalContainer>
+        )}
+      </AnimatePresence>
       <div>
         <BackBtnContainer
           onClick={() => navigate(-1)}
@@ -106,17 +160,10 @@ function PostComponent() {
         <_.HeaderContainer>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Profile
-              htmlFor="imgFile"
-              as="label"
-              style={{ width: "40px", height: "40px" }}
-            >
-              <Profile
-                alt="none"
-                style={{ border: 0 }}
-                src={detailData?.user?.profile_image_url}
-              />
-            </Profile>
-            <input type="file" id="imgFile" style={{ display: "none" }} />
+              alt="none"
+              style={{ border: 0 }}
+              src={detailData?.user?.profile_image_url}
+            />
             <_.Text weight={500} size={20} height={24}>
               {detailData?.user.user_name}
             </_.Text>

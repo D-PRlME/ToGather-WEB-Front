@@ -54,7 +54,7 @@ function MyPageComponent() {
     <_.Container>
       <_.ProfileContainer>
         <div style={{ display: "flex" }}>
-          <_.Profile alt="none" />
+          <_.Profile alt="none" src={myProfileData?.profile_image_url}/>
           <_.ProfileTextContainer>
             <_.Text weight={700} size={28} height={33}>
               {myProfileData?.name}

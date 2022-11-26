@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d58d89ca-ca34-4d2c-be2f-e1aebbd781b0" name="변경" comment="Fix : 메소드 타입 유니언 타입으로 변경">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DeleteUser/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DeleteUser/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/myPage/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/myPage/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/search/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/search/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useFetch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useFetch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/axios/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/axios/index.ts" afterDir="false" />
-    </list>
+    <list default="true" id="d58d89ca-ca34-4d2c-be2f-e1aebbd781b0" name="변경" comment="Fix : 메소드 타입 유니언 타입으로 변경" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -79,6 +71,7 @@
       <workItem from="1668619718657" duration="2370000" />
       <workItem from="1668647821894" duration="1594000" />
       <workItem from="1668769292186" duration="1637000" />
+      <workItem from="1669253738037" duration="4000" />
     </task>
     <task id="LOCAL-00001" summary="Style : 이미지 변경 버튼에 file input으로 수정">
       <created>1667733775802</created>

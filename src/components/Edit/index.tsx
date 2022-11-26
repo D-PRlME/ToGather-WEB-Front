@@ -48,7 +48,7 @@ function CreateComponent() {
       data: {
         title: form.title,
         content: form.content,
-        tag: tags,
+        tags: tags,
       },
     })
       .then(() => {

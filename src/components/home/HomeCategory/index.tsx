@@ -5,24 +5,23 @@ import HomeLogo from "../../../assets/logo/home";
 import SearchLogo from "../../../assets/logo/search";
 import PostLogo from "../../../assets/logo/post";
 import ProfileLogo from "../../../assets/logo/profile";
-import { Link, useLocation, useMatch } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
 import { IUserProfile } from "../../../LocalTypes";
 
 const HomeCategory = () => {
   const { pathname } = useLocation();
-  const [GETuser, { data }] = useFetch("users");
-  const [userData, setUserData] = useState<IUserProfile>();
+  const [GETuser, {data}] = useFetch("users");
+
   useEffect(() => {
     GETuser({
       method: "get",
-    }).then(() => {
-      setUserData(data);
-    });
-  }, [data]);
+    })
+  },[pathname])
+
   return (
     <>
-      {!userData && (
+      {!data && (
         <_.ModalContainer>
           <_.ModalBg />
           <_.ModalWrapper>
@@ -87,7 +86,7 @@ const HomeCategory = () => {
           </_.MenuBlock>
         </Link>
         <Link to="/mypage/home">
-          <_.ProfileBlock>
+          <_.ProfileBlock isHere={pathname === "/mypage/home"}>
             <ProfileLogo />
             <_.MenuText>나</_.MenuText>
           </_.ProfileBlock>

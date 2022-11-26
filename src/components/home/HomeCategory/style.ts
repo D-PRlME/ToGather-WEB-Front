@@ -52,14 +52,21 @@ export const MenuLogo = styled.svg`
   // margin-bottom: 60px;
 `;
 
-export const ProfileBlock = styled.div`
+export const ProfileBlock = styled.div<{isHere: boolean}>`
   display: flex;
   align-items: center;
   margin: 500px 5px 5px;
+  padding-left: 9px;
   width: 236px;
   height: 50px;
   gap: 12px;
   border-radius: 8px;
+  background: ${props => props.isHere ? "#f2f2f2" : "white"};
+  border-radius: 8px;
+  color: ${props => props.isHere ? "#E1AD01" : "black"};
+  path {
+    fill: ${props => props.isHere ? "#E1AD01" : "black"};
+  }
 `;
 
 export const HomePageLogo = styled.img`
