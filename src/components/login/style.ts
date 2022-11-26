@@ -72,7 +72,7 @@ export const LoginInput = styled.input`
 export const LoginSubmitButton = styled.button`
   width: 430px;
   height: 53px;
-  margin-left: 25px;
+  margin: 25px 25px 0 25px;
   border-radius: 10px;
   border: 1px solid ${palette.main};
   color: #333;
@@ -89,7 +89,7 @@ export const LoginAlertTextWrap = styled.div`
 
 export const LoginAlertText = styled.p`
   font-size: 16px;
-  margin: 0px auto;
+  margin: 0 auto;
   color: #2b2b2b;
   margin-top: 24px;
   text-align: center;
