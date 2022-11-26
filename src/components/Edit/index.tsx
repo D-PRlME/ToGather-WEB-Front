@@ -1,20 +1,12 @@
 import { useForm } from "react-hook-form";
-import QuestionIcon from "../../assets/icon/question";
 import * as _ from "./style";
 import { AxiosError, AxiosResponse } from "axios";
 import { customAxios } from "../../lib/axios";
-import { ACCESS_TOKEN_KEY } from "../../constants/token/token.constant";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ISelectTags, TagListResponse } from "../home/HomePostList";
 import { useNavigate } from "react-router-dom";
 import token from "../../lib/token";
-
-interface IEditFormStates {
-  title: string;
-  content: string;
-  tags: ISelectTags; //TODO: 후의 변경해야함
-}
+import { IEditFormStates, TagListResponse } from "../../LocalTypes";
 
 const TagsContainerMotion = {
   hidden: {
@@ -92,8 +84,8 @@ function CreateComponent() {
             name: tag.name.replace(".", "_").toUpperCase(),
           })
         );
-        const newTags = {
-          tags: [...upperTags],
+        const newTags:TagListResponse = {
+          tags: [{ ...upperTags }],
         };
         setTagsData(newTags);
       })

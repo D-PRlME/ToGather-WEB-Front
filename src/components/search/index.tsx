@@ -2,16 +2,15 @@ import * as _ from "./style";
 import * as s from "../Edit/style";
 import { Link } from "react-router-dom";
 import HeartIcon from "../../assets/icon/Heart";
-import { BoardTagWrapper } from "./style";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { CheckIcon } from "../Edit";
-import { PostsListResponse, TagListResponse } from "../home/HomePostList";
 import { customAxios } from "../../lib/axios";
 import Token from "../../lib/token";
 import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import React from "react";
+import { PostsListResponse, TagListResponse } from "../../LocalTypes";
 
 const BoardContainerMotion = {
   hidden: {
@@ -67,7 +66,7 @@ const TagMotion = {
 };
 
 function SearchComponent() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<{ title: string }>();
   const [onModal, setOnModal] = useState(false);
   const [tagData, setTagsData] = useState<TagListResponse>();
   const [tags, setTags] = useState<string>();
@@ -81,7 +80,6 @@ function SearchComponent() {
       },
     })
       .then((res) => {
-        console.log(res.data);
         setSearchData(res.data);
       })
       .catch((err) => alert(err));
@@ -113,8 +111,8 @@ function SearchComponent() {
             name: tag.name.replace(".", "_").toUpperCase(),
           })
         );
-        const newTags = {
-          tags: [...upperTags],
+        const newTags: TagListResponse = {
+          tags: upperTags,
         };
         setTagsData(newTags);
       })
@@ -122,8 +120,7 @@ function SearchComponent() {
         alert(err.message);
         console.log(err);
       });
-  }, []);
-
+  }, [searchData]);
   return (
     <_.Container>
       <AnimatePresence>

@@ -4,8 +4,8 @@ import HeartIcon from "../../../assets/icon/Heart";
 import SortArrowIcon from "../../../assets/icon/SortArrow";
 import { customAxios } from "../../../lib/axios";
 import Token from "../../../lib/token";
-import { PostsListResponse } from "../../home/HomePostList";
 import * as _ from "../style";
+import { PostsListResponse } from "../../../LocalTypes";
 
 const BoardContainerMotion = {
   hidden: {

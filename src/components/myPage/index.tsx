@@ -6,6 +6,8 @@ import { customAxios } from "../../lib/axios";
 import token from "../../lib/token";
 import Modal from "../modal/Modal";
 import { Container, ProfileContainer } from "./myPosts/style";
+import { IProfileData } from "../../LocalTypes";
+import useFetch from "../../hooks/useFetch";
 
 const TagContainerMotion = {
   hidden: {
@@ -29,6 +31,7 @@ const TagMotion = {
     opacity: 1,
   },
 };
+
 
 export interface IProfileData {
   user_id: number;
@@ -64,6 +67,26 @@ function MyPageComponent() {
       headers: {
         Authorization: token.getToken("token"),
       },
+
+function MyPageComponent() {
+  const navigate = useNavigate();
+  const [GETuser, {data:myProfileData}] = useFetch<IProfileData>("users")
+  const [DELETEuser] = useFetch("users")
+  useEffect(()=>{
+    GETuser({
+      method: "get"
+    }).then(()=>{}).catch((err)=>console.error(err))
+  },[])
+
+  const onLogOut = () => {
+    DELETEuser({
+      method: "delete"
+    }).then(()=>{
+      alert("로그아웃 완료")
+      token.setToken("access_token", "");
+      navigate("/");
+    }).catch((err)=>{
+      alert("로그아웃 실패... " + err.message)
     })
       .then(() => {
         alert("로그아웃 완료");

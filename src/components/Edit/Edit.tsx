@@ -4,11 +4,10 @@ import { AxiosError, AxiosResponse } from "axios";
 import { customAxios } from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ISelectTags, PostsListResponse, TagListResponse } from "../home/HomePostList";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import token from "../../lib/token";
 import Token from "../../lib/token";
-import { DetailPostResponse } from "../posts";
+import { DetailPostResponse, ISelectTags, TagListResponse } from "../../LocalTypes";
 
 interface IEditFormStates {
   title: string;
@@ -86,14 +85,14 @@ function EditComponent() {
       },
     })
       .then((res) => {
-        const upperTags = res.data.tags.map(
-          (tag: { image_url: string; name: string }) => ({
+        const upperTags:{image_url: string, name: string} = res.data.tags.map(
+          (tag: {image_url: string, name: string}) => ({
             image_url: tag.image_url,
             name: tag.name.replace(".", "_").toUpperCase(),
           })
         );
-        const newTags = {
-          tags: [...upperTags],
+        const newTags: TagListResponse = {
+          tags: [{ ...upperTags }],
         };
         setTagsData(newTags);
       })
@@ -109,7 +108,7 @@ function EditComponent() {
       },
     })
       .then((res) => {
-        const newTag = res.data.tags.map((tag) => tag.name);
+        const newTag = res.data.tags.map((tag: {image_url: string, name: string}) => tag.name);
         setTags([...newTag])
         setDetailData(res.data)
       })
