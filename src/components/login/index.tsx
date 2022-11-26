@@ -81,7 +81,6 @@ function LogIn() {
                 <Link to="/">비밀번호 변경</Link>
               </strong>
             </_.LoginAlertText>{" "}
-            쌤한테 나 화장실 좀 다녀온다고 말해주라
             <_.LoginAlertText>
               <strong>
                 <Link to="/signup">회원가입</Link>
