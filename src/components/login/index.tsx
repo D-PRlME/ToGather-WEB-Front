@@ -1,9 +1,18 @@
+import React, { useState } from "react";
 import * as _ from "./style";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios, { AxiosResponse } from "axios";
-import React from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { Eye } from "../../assets/logo/index";
+import {
+  PasswordInput,
+  PasswordInputWrap,
+  PWHideAndShow,
+} from "../signup/style";
+// import Eye from "../../assets/logo/eye.svg";
+// import IoEyeOutline from "react-icons/io";
 
 interface ILogin {
   email: string;
@@ -11,7 +20,12 @@ interface ILogin {
 }
 
 function LogIn() {
-  const navigate = useNavigate();
+  const [hidePassword, setHidePassword] = useState(true);
+
+  const toggleHidePassword = () => {
+    setHidePassword(!hidePassword);
+  };
+  // const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -42,7 +56,7 @@ function LogIn() {
           <_.LogInHeaderIn>
             <_.LogInHeaderText onClick={() => navigate(-1)}>
               <IoIosArrowBack size="22px" />
-              돌아가기
+              <Link to="/">돌아가기</Link>
             </_.LogInHeaderText>
           </_.LogInHeaderIn>
         </_.LogInHeader>
@@ -65,20 +79,35 @@ function LogIn() {
             })}
             placeholder="이메일"
           />
-          <_.LoginInput
-            type="password"
-            {...register("password", {
-              required:
-                "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다",
-              minLength: { value: 8, message: "비밀번호가 너무 짧아요!" },
-              maxLength: { value: 20, message: "비밀번호가 너무 길어요!" },
-            })}
-            placeholder="비밀번호"
-          ></_.LoginInput>
+          <PasswordInputWrap>
+            <PasswordInput
+              placeholder="비밀번호"
+              type={hidePassword ? "password" : "text"}
+              {...register("password", {
+                required:
+                  "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다**",
+                pattern: {
+                  value: /^(?=.*\d)(?=.*[a-z])(?=.*[!@#])[\da-zA-Z!@#]{8,}$/,
+                  message:
+                    "8자리 이상, 숫자, 영어 소문자, 특수문자를 포함해야 합니다 ",
+                },
+              })}
+            ></PasswordInput>
+            <PWHideAndShow src={Eye} alt="" onClick={toggleHidePassword} />
+          </PasswordInputWrap>
           <_.LoginSubmitButton>로그인</_.LoginSubmitButton>
-          <_.LoginAlertText>
-            <strong>비밀번호 변경</strong>
-          </_.LoginAlertText>
+          <_.LoginAlertTextWrap>
+            <_.LoginAlertText>
+              <strong>
+                <Link to="/">비밀번호 변경</Link>
+              </strong>
+            </_.LoginAlertText>{" "}
+            <_.LoginAlertText>
+              <strong>
+                <Link to="/signup">회원가입</Link>
+              </strong>
+            </_.LoginAlertText>
+          </_.LoginAlertTextWrap>
         </_.LogInWrap>
       </_.LogInContainer>
     </>
