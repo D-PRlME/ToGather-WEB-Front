@@ -50,7 +50,7 @@ export interface DetailPostResponse {
     profile_image_url: string;
   };
   created_at: string;
-  tag: [
+  tags: [
     {
       name: string;
       image_url: string;
