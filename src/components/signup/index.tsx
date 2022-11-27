@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosArrowBack } from "react-icons/io";
 import { Link } from "react-router-dom";
@@ -32,6 +32,7 @@ const SignUp = () => {
     register,
     formState: { errors },
     handleSubmit,
+    watch
     // setError,
   } = useForm<IAuthForm>({ mode: "onChange" });
 
@@ -57,10 +58,16 @@ const SignUp = () => {
     console.log("실패");
   };
   const [hidePassword, setHidePassword] = useState(true);
+  const [isAllEnter, setIsAllEnter] = useState(false);
 
   const toggleHidePassword = () => {
     setHidePassword(!hidePassword);
   };
+
+  const onChange = useCallback(() => {
+    if(watch().email && watch().name && watch().pw) setIsAllEnter(true);
+    else setIsAllEnter(false);
+  },[])
 
   return (
     <>
@@ -73,12 +80,13 @@ const SignUp = () => {
             </LogInHeaderText>
           </LogInHeaderIn>
         </LogInHeader>
-        <SignupWrap onSubmit={handleSubmit(onValid, onInValid)}>
+        <SignupWrap onSubmit={handleSubmit(onValid, onInValid)} onChange={onChange}>
           <Title>
             <p>ToGather</p> 시작하기
           </Title>
           <SignupInput
             type="email"
+            isError={Boolean(errors?.email?.message)}
             {...register("email", {
               required: "dsm.hs.kr 도메인을 사용하는 이메일을 사용하세요*",
               pattern: {
@@ -92,7 +100,7 @@ const SignUp = () => {
             placeholder="이메일"
           />
           <ExplainText color="red">{errors?.email?.message}</ExplainText>
-          <PasswordInputWrap>
+          <PasswordInputWrap isError={Boolean(errors?.pw?.message)}>
             <PasswordInput
               placeholder="비밀번호"
               type={hidePassword ? "password" : "text"}
@@ -113,6 +121,7 @@ const SignUp = () => {
             {errors?.pw?.message}
           </ExplainText>
           <SignupInput
+            isError={Boolean(errors?.name?.message)}
             {...register("name", {
               required: "이름을 입력해주세요",
               minLength: {
@@ -127,7 +136,7 @@ const SignUp = () => {
             placeholder="이름"
             type="name"
           />
-          <NextBtn>다음</NextBtn>
+          <NextBtn isAllEnter={isAllEnter}>다음</NextBtn>
         </SignupWrap>
       </SignupContainer>
     </>
