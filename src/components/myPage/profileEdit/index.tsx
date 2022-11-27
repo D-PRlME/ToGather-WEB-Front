@@ -5,8 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { customAxios } from "../../../lib/axios";
 import { useEffect, useState } from "react";
-import Token from "../../../lib/token";
-import token from "../../../lib/token";
 import { IFormStates, IUserProfile } from "../../../LocalTypes";
 
 function ProfileEditComponent() {
@@ -18,12 +16,9 @@ function ProfileEditComponent() {
     console.log(form);
     customAxios("users", {
       method: "patch",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
       data: {
         name: form.name,
-        profile_image_url: "http://asdaqwad/lfkgjaglvsla.jpg",
+        profile_image_url: userProfileData?.profile_image_url,
         introduce: form.introduce,
         positions: ["FRONTEND", "BACKEND"],
       },
@@ -43,28 +38,26 @@ function ProfileEditComponent() {
         method: "post",
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: token.getToken("token"),
         },
         data: {
           images: data.target.files[0],
         },
-      }).then((res) =>
+      }).then((res) =>{
+        console.log(res)
         setUserProfileData((current) => (
           current && {
             ...current,
-            profile_image_url: res.data.images_url,
+            profile_image_url: res.data.images_url[0],
           }
         ))
-      );
+      });
     }
   };
   useEffect(() => {
     customAxios("users", {
       method: "get",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     }).then((res) => {
+      console.log(res)
       setUserProfileData(res.data);
       setValue("name", res.data.name);
       setValue("introduce", res.data.introduce);
@@ -76,7 +69,7 @@ function ProfileEditComponent() {
     <_.Container onSubmit={handleSubmit(onVaild)}>
       <_.Container style={{ padding: 0 }}>
         <BackBtnContainer
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/mypage/home")}
           style={{ marginLeft: 0 }}
         >
           <SortArrowIcon />

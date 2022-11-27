@@ -1,10 +1,8 @@
 export interface TagListResponse {
-  tags: [
-    {
-      name: string;
-      image_url: string;
-    }
-  ];
+  tags: {
+    name: string;
+    image_url: string;
+  }[];
 }
 export interface IDetailPost {
   post_id: number;
@@ -52,7 +50,7 @@ export interface DetailPostResponse {
     profile_image_url: string;
   };
   created_at: string;
-  tag: [
+  tags: [
     {
       name: string;
       image_url: string;
@@ -65,12 +63,12 @@ export interface DetailPostResponse {
   like_count: number;
 }
 export interface IProfileData {
-  "user_id" : number;
-  "name" : string;
-  "email" : string;
-  "profile_image_url" : string;
-  "introduce": string;
-  "positions":string[]
+  user_id: number;
+  name: string;
+  email: string;
+  profile_image_url: string;
+  introduce: string;
+  positions: string[];
 }
 
 interface IFormStates {

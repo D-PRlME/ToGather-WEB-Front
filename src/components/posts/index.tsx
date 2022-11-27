@@ -1,12 +1,24 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SortArrowIcon from "../../assets/icon/SortArrow";
 import { BackBtn, BackBtnContainer, Profile } from "../myPage/style";
 import * as _ from "./style";
-import Token from "../../lib/token";
+import * as m from "../Edit/style";
 import { customAxios } from "../../lib/axios";
-import { DetailPostResponse } from "../../LocalTypes";
+import { DetailPostResponse, IProfileData } from "../../LocalTypes";
+import { AnimatePresence } from "framer-motion";
+
+const TagsContainerMotion = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 const BoardContainerMotion = {
   hidden: {
@@ -29,73 +41,73 @@ const BoardMotion = {
     opacity: 1,
   },
 };
-
-// TODO : customaxios로 바꾸기
-// TODO ; 좋아요 기능 구현하다 말음(500 error)
 function PostComponent() {
   const navigate = useNavigate();
   const params = useParams();
   const [detailData, setDetailData] = useState<DetailPostResponse>();
+  const [userProfileData, setUserProfileData] = useState<IProfileData>();
   const [isLike, setIsLike] = useState(false);
-  // TODO : localToken으로 변경해야함
+  const [onModal, setOnModal] = useState(false);
+  const [onProfileModal, setProfileModal] = useState(false);
+
   useEffect(() => {
     // 상세 페이지 불러오기
-    customAxios(`/posts/${params["*"]}`, {
+    customAxios(`posts/${params["*"]}`, {
       method: "get",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     })
       .then((res) => setDetailData(res.data))
       .catch((err) => alert(err.message));
     setIsLike(Boolean(detailData?.is_liked));
   }, []);
+
+  useEffect(() => {
+    if(detailData){
+      customAxios(`users/${detailData.user.user_id}`, {
+        method: "get"
+      })
+        .then((res) => setUserProfileData(res.data))
+        .catch((err) => console.log(err.message));
+    }
+    
+  }, [detailData])
   const onValidLike = () => {
     if (isLike) {
       // 좋아요 삭제
-      axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
+      customAxios(`posts/like/${params["*"]}`, {
         method: "delete",
-        headers: {
-          Authorization: Token.getToken("token"),
-        },
       })
         .then(() => {
-          setDetailData((current) => (
+          setDetailData(
+            (current) =>
               current && {
                 ...current,
                 like_count: current.like_count - 1,
               }
-              ))
+          );
           setIsLike(false);
         })
         .catch(() => alert("좋아요 취소 실패.."));
     } else {
       // 좋아요 보내기
-      axios(process.env.REACT_APP_BaseUrl + `/posts/like/${params["*"]}`, {
+      customAxios(`posts/like/${params["*"]}`, {
         method: "post",
-        headers: {
-          Authorization: Token.getToken("token"),
-        },
       })
         .then(() => {
-            setDetailData((current) => (
-                current && {
-                  ...current,
-                  like_count: current?.like_count + 1,
-                }
-              )
-            )
+          setDetailData(
+            (current) =>
+              current && {
+                ...current,
+                like_count: current?.like_count + 1,
+              }
+          );
           setIsLike(true);
         })
         .catch(() => alert("좋아요 보내기 실패.."));
     }
   };
   const onValidDelete = () => {
-    axios(process.env.REACT_APP_BaseUrl + `/posts/${params["*"]}`, {
+    customAxios(`posts/${params["*"]}`, {
       method: "delete",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     })
       .then(() => {
         alert("삭제 성공!");
@@ -104,8 +116,100 @@ function PostComponent() {
       .catch(() => alert("삭제 실패..."));
   };
 
+  const onClickProfile = () => {
+    setProfileModal(true)
+  }
   return (
     <_.Container>
+      <AnimatePresence>
+        {onModal && (
+          <m.ModalContainer
+            variants={TagsContainerMotion}
+            initial="hidden"
+            animate="visible"
+          >
+            <m.ModalBg onClick={() => setOnModal(false)} />
+            <m.ModalWrapper
+              style={{
+                width: "450px",
+                height: "300px",
+                justifyContent: "space-between",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <div style={{display: "flex", "flexDirection":"column", "gap":"10px"}}>
+                <_.Text weight={700} size={40} height={40} color={"black"}>
+                  계정을 삭제하시겠습니까?
+                </_.Text>
+                <_.Text weight={500} size={20} height={20} color={"black"}>
+                  모든 프로필, 프로젝트, 작성한 글이 서버에서 삭제되며, 이
+                  작업은 되돌릴 수 없습니다.
+                </_.Text>
+              </div>
+              <div style={{"display":"flex", "justifyContent":"center", gap:"10px"}}>
+                <m.ModalBtn
+                  style={{"backgroundColor":"#E1AD01", "width":"45%", zIndex:1}}
+                  onClick={() => setOnModal(false)}
+                >
+                  취소
+                </m.ModalBtn>
+                <m.ModalBtn
+                  style={{"backgroundColor":"white", "width": "45%", zIndex:1}}
+                  onClick={onValidDelete}
+                >
+                  삭제
+                </m.ModalBtn>
+              </div>
+            </m.ModalWrapper>
+          </m.ModalContainer>
+        )}
+        {onProfileModal && (
+          <m.ModalContainer
+            variants={TagsContainerMotion}
+            initial="hidden"
+            animate="visible"
+          >
+            <m.ModalBg onClick={() => setProfileModal(false)} />
+            <m.ModalWrapper
+              style={{
+                width: "470px",
+                height: "338px",
+                justifyContent: "flex-start",
+                display: "flex",
+                flexDirection: "column",
+                gap: "15px"
+              }}
+            >
+              <div 
+                onClick={() => setProfileModal(false)}
+                style={{"position":"absolute", "top": "20px", "zIndex": "2", "right": "20px"}}
+              >
+                <ExitIcon/>
+              </div>
+              <div style={{display: "flex"}}>
+                <Profile
+                  alt="none"
+                  style={{ border: 0, height: 70, width: 70 }}
+                  src={detailData?.user?.profile_image_url}
+                />
+                <div style={{display:"flex", "flexDirection":"column", "justifyContent":"center", gap: "20px"}}>
+                  <_.Text size={25} weight={700}>{userProfileData?.name}</_.Text>
+                  <_.Text size={24} weight={700} color={"gray"}>{userProfileData?.email}</_.Text>
+                </div>
+              </div>
+              <_.TagContainer>
+                {userProfileData?.positions?.map((position) => (
+                  <_.Tag>{position}</_.Tag>
+                ))}
+              </_.TagContainer>
+              <_.Text size={24} weight={500} style={{marginTop: "15px"}}>
+                {userProfileData?.introduce}
+              </_.Text>
+            </m.ModalWrapper>
+          </m.ModalContainer>
+        )}
+      </AnimatePresence>
       <div>
         <BackBtnContainer
           onClick={() => navigate(-1)}
@@ -118,15 +222,12 @@ function PostComponent() {
           {detailData?.title}
         </_.Text>
         <_.HeaderContainer>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center" }} onClick={onClickProfile}>
             <Profile
-              htmlFor="imgFile"
-              as="label"
-              style={{ width: "40px", height: "40px" }}
-            >
-              <Profile alt="none" style={{ border: 0 }} src={detailData?.user?.profile_image_url}/>
-            </Profile>
-            <input type="file" id="imgFile" style={{ display: "none" }} />
+              alt="none"
+              style={{ border: 0 }}
+              src={detailData?.user?.profile_image_url}
+            />
             <_.Text weight={500} size={20} height={24}>
               {detailData?.user.user_name}
             </_.Text>
@@ -136,7 +237,7 @@ function PostComponent() {
               {detailData?.created_at}
             </_.Text>
             <div
-              style={{ position: "relative", display: "flex" }}
+              style={{ position: "relative", display: "flex", "zIndex":-1 }}
               onClick={onValidLike}
             >
               <_.HeartText>{detailData?.like_count}</_.HeartText>
@@ -166,11 +267,11 @@ function PostComponent() {
           initial="hidden"
           animate="visible"
         >
-          {/* {detailData?.tag.map((tag) => (
+          {detailData?.tags?.map((tag) => (
             <_.Tag key={tag.name} variants={BoardMotion}>
               {tag.name}
             </_.Tag>
-          ))} */}
+          ))}
         </_.TagContainer>
         <_.Contents value={detailData?.content}></_.Contents>
       </div>
@@ -180,10 +281,14 @@ function PostComponent() {
         </_.Btn>
         {detailData?.is_mine && (
           <div style={{ display: "flex" }}>
-            <_.Btn bgColor="#F7F7F7" h={45} onClick={()=>navigate(`/Edit/${params["*"]}`)}>
+            <_.Btn
+              bgColor="#F7F7F7"
+              h={45}
+              onClick={() => navigate(`/Edit/${params["*"]}`)}
+            >
               수정
             </_.Btn>
-            <_.Btn bgColor="#FE3D3D" h={45} onClick={onValidDelete}>
+            <_.Btn bgColor="#FE3D3D" h={45} onClick={() => setOnModal(true)}>
               삭제
             </_.Btn>
           </div>
@@ -210,5 +315,20 @@ function Heart() {
       />
     </svg>
   );
+}
+
+function ExitIcon(){
+  return (
+    <svg 
+      width="32" 
+      height="32" 
+      viewBox="0 0 32 32" 
+      fill="none" 
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="32" height="32" rx="16" fill="#D9D9D9"/>
+      <path d="M9 9L23 23M9 23L23 9" stroke="#727272" strokeWidth="3" strokeLinecap="round" strokeLinejoin="bevel"/>
+  </svg>
+  )
 }
 export default PostComponent;

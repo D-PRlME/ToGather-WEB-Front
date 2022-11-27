@@ -7,7 +7,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
 import token from "../../lib/token";
 import Token from "../../lib/token";
-import { DetailPostResponse, ISelectTags, TagListResponse } from "../../LocalTypes";
+import {
+  DetailPostResponse,
+  ISelectTags,
+  TagListResponse,
+} from "../../LocalTypes";
+import useFetch from "../../hooks/useFetch";
 
 interface IEditFormStates {
   title: string;
@@ -41,7 +46,7 @@ const TagMotion = {
 
 function EditComponent() {
   // TODO : localToken으로 변경해야함
-  const { register, handleSubmit } = useForm<IEditFormStates>();
+  const { register, handleSubmit, setValue } = useForm<IEditFormStates>();
   // const [onQuestionModal, setOnQuestionModal] = useState(false);
   const [onModal, setOnModal] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
@@ -50,19 +55,21 @@ function EditComponent() {
   const navigate = useNavigate();
   const params = useParams();
 
+  const [PATCHpost] = useFetch(`posts/${params["*"]}`);
+
   const onValid = (form: IEditFormStates) => {
-    customAxios(`/posts/${params["*"]}`, {
+    PATCHpost({
       method: "patch",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
       data: {
         title: form.title,
         content: form.content,
-        tags: tags,
+        tag: tags,
+      },
+      options: {
+        newUrl: `posts/${detailData?.post_id}`,
       },
     })
-      .then((response: AxiosResponse) => {
+      .then(() => {
         navigate("/");
       })
       .catch((error: AxiosError) => {
@@ -80,20 +87,18 @@ function EditComponent() {
   useEffect(() => {
     customAxios("posts/tag/list", {
       method: "get",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
     })
       .then((res) => {
-        const upperTags:{image_url: string, name: string} = res.data.tags.map(
-          (tag: {image_url: string, name: string}) => ({
+        const upperTags = res.data.tags.map(
+          (tag: { image_url: string; name: string }) => ({
             image_url: tag.image_url,
             name: tag.name.replace(".", "_").toUpperCase(),
           })
         );
         const newTags: TagListResponse = {
-          tags: [{ ...upperTags }],
+          tags: [...upperTags],
         };
+        console.log(detailData);
         setTagsData(newTags);
       })
       .catch((err: AxiosError) => {
@@ -101,16 +106,15 @@ function EditComponent() {
         console.log(err);
       });
 
-    customAxios(`/posts/${params["*"]}`, {
+    customAxios(`posts/${params["*"]}`, {
       method: "get",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     })
       .then((res) => {
-        const newTag = res.data.tags.map((tag: {image_url: string, name: string}) => tag.name);
-        setTags([...newTag])
-        setDetailData(res.data)
+        const newTag = res.data.tags.map(
+          (tag: { image_url: string; name: string }) => tag.name
+        );
+        setTags([...newTag]);
+        setDetailData(res.data);
       })
       .catch((err) => alert(err.message));
   }, []);
@@ -235,7 +239,13 @@ function EditComponent() {
 
 export function CheckIcon() {
   return (
-    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}>
+    <div
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        position: "absolute",
+        borderRadius: "10px",
+      }}
+    >
       <svg
         width="29"
         height="29"

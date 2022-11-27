@@ -52,9 +52,9 @@ export const Tag = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 84px;
   height: 28px;
-  padding: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
   background-color: tomato;
   background: #e7e7e7;
   border: 1px solid rgba(39, 39, 39, 0.15);

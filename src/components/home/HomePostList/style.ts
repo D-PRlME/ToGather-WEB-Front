@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const HomePostSkillHeader = styled.div`
   display: flex;
   align-items: center;
-  width: 785px;
+  width: auto;
   height: 100px;
   margin-left: 20px;
   padding-left: 20px;
@@ -38,6 +38,7 @@ export const Skill = styled.div`
 export const SkillLogo = styled.img`
   width: 50px;
   height: 50px;
+  border-radius: 10px;
 `;
 
 export const SkillText = styled.div`

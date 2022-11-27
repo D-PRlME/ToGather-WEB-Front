@@ -30,7 +30,7 @@ function DeleteUserComponent() {
   const navigate = useNavigate();
 
   // API
-  const [GETuserPost] = useFetch<IProfileData>("users");
+  const [GETuserPost, {data: myProfileData}] = useFetch<IProfileData>("users");
   const [DELETEuser] = useFetch("users");
 
   const onChangeInput = (data: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,8 +112,8 @@ function DeleteUserComponent() {
         </_.Text>
       </div>
       <div>
-        <div style={{ display: "flex" }}>
-          <img alt="" src={myProfileData?.profile_image_url} />
+        <div style={{"display":"flex", "justifyContent":"center", "width":"756px", "marginBottom":"24px"}}>
+          <img alt="" src={myProfileData?.profile_image_url} height={40} />
           <_.Text size={33} weight={700} color={"black"}>
             {myProfileData?.name}
           </_.Text>
@@ -125,7 +125,7 @@ function DeleteUserComponent() {
           value={password}
         />
       </div>
-      <div>
+      <div style={{"alignSelf":"center", "width":"20rem"}}>
         <_.Btn onClick={() => setOnModal(true)}>
           <_.Text
             size={24}
