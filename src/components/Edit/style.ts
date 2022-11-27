@@ -67,6 +67,7 @@ export const Tag = styled(motion.div)`
 export const ModalContainer = styled(motion.div)`
   position: fixed;
   left: 0;
+  top:0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -120,6 +121,7 @@ export const ModalBtn = styled.div`
   background: #f7f7f7;
   border: 2px solid rgba(39, 39, 39, 0.15);
   border-radius: 6px;
+  font-weight: bolder;
   z-index: -1;
 `;
 export const SelectTag = styled.div`

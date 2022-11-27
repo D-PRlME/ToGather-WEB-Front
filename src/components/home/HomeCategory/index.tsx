@@ -11,7 +11,7 @@ import { IUserProfile } from "../../../LocalTypes";
 
 const HomeCategory = () => {
   const { pathname } = useLocation();
-  const [GETuser, {data}] = useFetch("users");
+  const [GETuser, {error}] = useFetch("users");
 
   useEffect(() => {
     GETuser({
@@ -21,7 +21,7 @@ const HomeCategory = () => {
 
   return (
     <>
-      {!data && (
+      {error && (
         <_.ModalContainer>
           <_.ModalBg />
           <_.ModalWrapper>
