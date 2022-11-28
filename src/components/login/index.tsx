@@ -3,7 +3,7 @@ import * as _ from "./style";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Link } from "react-router-dom";
 import { Eye } from "../../assets/logo/index";
 import {
@@ -31,7 +31,7 @@ function LogIn() {
     handleSubmit,
     formState: { errors },
   } = useForm<ILogin>();
-
+  const navigate = useNavigate();
   const onValid = async (data: ILogin) => {
     await axios
       .post("http://52.55.240.35:8080/users/auth", data, {

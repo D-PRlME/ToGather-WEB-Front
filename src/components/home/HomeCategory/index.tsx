@@ -11,11 +11,13 @@ import { IUserProfile } from "../../../LocalTypes";
 
 const HomeCategory = () => {
   const { pathname } = useLocation();
-  const [GETuser, {error}] = useFetch("users");
-
+  const [GETuser] = useFetch("users");
+  const [error, setError] = useState(false);
   useEffect(() => {
     GETuser({
       method: "get",
+    }).catch((err) => {
+      setError(err)
     })
   },[pathname])
 

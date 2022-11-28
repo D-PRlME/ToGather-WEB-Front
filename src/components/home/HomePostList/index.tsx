@@ -8,32 +8,6 @@ import token from "../../../lib/token";
 import { customAxios } from "../../../lib/axios";
 import { PostsListResponse, TagListResponse } from "../../../LocalTypes";
 
-const BoardContainerMotion = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const BoardMotion = {
-  hidden: {
-    x: 100,
-    opacity: 0,
-  },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      bounce: 0.2,
-    },
-  },
-};
-
 function Loading() {
   return <h1>로딩중입니다....</h1>;
 }
@@ -87,14 +61,10 @@ const HomePostList = () => {
           ))}
         </Suspense>
       </_.HomePostSkillHeader>
-      <s.BoardContainer
-        variants={BoardContainerMotion}
-        initial="hidden"
-        animate="visible"
-      >
+      <s.BoardContainer>
         {postsData?.post_list.map((post) => (
           <Link to={`/posts/${post.post_id}`} key={post.post_id}>
-            <s.Board variants={BoardMotion}>
+            <s.Board>
               <s.BoardTitle>{post.title}</s.BoardTitle>
               <s.TagWrapper>
                 {post.tags.map((tag) => (

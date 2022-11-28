@@ -41,7 +41,7 @@ const SignUp = () => {
     const userData = {
       name: data.name,
       email: data.email,
-      pw: data.pw,
+      password: data.pw,
     };
 
     API.post("/users", userData)

@@ -7,6 +7,8 @@ import LogInPage from "../../pages/LogInPage";
 import MyPage from "../../pages/MyPage";
 import SearchPage from "../../pages/SearchPage";
 import CreatePage from "../../pages/CreatePage";
+import AuthMail from "../AuthMail/index"
+import PostPage from "../../pages/PostPage"
 // import EditPage from "../../pages/EditPage";
 import React from "react";
 
@@ -22,6 +24,7 @@ const Router = () => {
       <Route path="/create" element={<CreatePage />} />
       {/* <Route path="/edit/*" element={<EditPage />} /> */}
       {/*TODO : 라우터 하나로 통일해야함*/}
+      <Route path="/posts/*" element={<PostPage/>}/>
       <Route path="/mypage/*" element={<MyPage />} />
       {/* <Route path="/posts/*" element={<PostsPage />} /> */}
       <Route path="/search" element={<SearchPage />} />

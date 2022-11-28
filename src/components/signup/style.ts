@@ -27,7 +27,7 @@ export const Title = styled.div`
   }
 `;
 
-export const SignupInput = styled.input`
+export const SignupInput = styled.input<{isError?:boolean}>`
   width: 430px;
   height: 53px;
   padding: 20px 14px;
@@ -41,7 +41,7 @@ export const SignupInput = styled.input`
 
   box-sizing: border-box;
   /* border: none; */
-  border: 1px solid #dbdde5;
+  border: 1px solid ${props => props.isError ? "red" : "#dbdde5"};
   /* border-right: none; */
   border-radius: 6px;
 
@@ -49,13 +49,13 @@ export const SignupInput = styled.input`
     border: none;
   }
 `;
-export const PasswordInputWrap = styled.div`
+export const PasswordInputWrap = styled.div<{isError?:boolean}>`
   display: flex;
   width: 430px;
   height: 53px;
   border-radius: 5px;
   margin-left: 25px;
-  border: 1px solid #dbdde5;
+  border: 1px solid ${props => props.isError ? "red" : "#dbdde5"};
   justify-content: center;
   align-items: center;
   z-index: 1;
@@ -75,9 +75,8 @@ export const PasswordInput = styled.input`
   background-color: ${palette.gray[200]};
 
   box-sizing: border-box;
-  border: none;
 
-  border-right: none;
+  border: none;
   border-radius: 6px 0 0 6px;
 
   &:focus {
@@ -98,7 +97,7 @@ export const ExplainText = styled.p`
   margin: 0 0 10px 30px;
 `;
 
-export const NextBtn = styled.button`
+export const NextBtn = styled.button<{isAllEnter?:boolean}>`
   width: 430px;
   height: 53px;
   margin-left: 25px;
@@ -108,6 +107,6 @@ export const NextBtn = styled.button`
   color: #333;
   font-size: 24px;
   cursor: pointer;
-  background-color: ${palette.gray[200]};
+  background-color: ${props => props.isAllEnter ? "#E1AD01" : palette.gray[200]};
   font-weight: bold;
 `;

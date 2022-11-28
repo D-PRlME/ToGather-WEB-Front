@@ -6,7 +6,6 @@ import { customAxios } from "../../lib/axios";
 import token from "../../lib/token";
 import Modal from "../modal/Modal";
 import { Container, ProfileContainer } from "./myPosts/style";
-import { IProfileData } from "../../LocalTypes";
 import useFetch from "../../hooks/useFetch";
 
 const TagContainerMotion = {
@@ -53,9 +52,6 @@ function MyPageComponent() {
   useEffect(() => {
     customAxios("users", {
       method: "get",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
     })
       .then((res) => setMyProfileData(res.data))
       .catch((err) => alert(err.message));
@@ -64,39 +60,8 @@ function MyPageComponent() {
   const onLogOut = () => {
     customAxios("users/logout", {
       method: "delete",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
-
-function MyPageComponent() {
-  const navigate = useNavigate();
-  const [GETuser, {data:myProfileData}] = useFetch<IProfileData>("users")
-  const [DELETEuser] = useFetch("users")
-  useEffect(()=>{
-    GETuser({
-      method: "get"
-    }).then(()=>{}).catch((err)=>console.error(err))
-  },[])
-
-  const onLogOut = () => {
-    DELETEuser({
-      method: "delete"
-    }).then(()=>{
-      alert("로그아웃 완료")
-      token.setToken("access_token", "");
-      navigate("/");
-    }).catch((err)=>{
-      alert("로그아웃 실패... " + err.message)
     })
-      .then(() => {
-        alert("로그아웃 완료");
-        token.setToken("token", "");
-        navigate("/");
-      })
-      .catch((err) => {
-        alert("로그아웃 실패... " + err.message);
-      });
-  };
+  }
   return (
     <>
       {isOpenModal && (
@@ -107,7 +72,7 @@ function MyPageComponent() {
       <Container>
         <ProfileContainer>
           <div style={{ display: "flex" }}>
-            <_.Profile alt="none" />
+            <_.Profile alt="none" src={myProfileData?.profile_image_url}/>
             <_.ProfileTextContainer>
               <_.Text weight={700} size={28} height={33}>
                 {myProfileData?.name}
