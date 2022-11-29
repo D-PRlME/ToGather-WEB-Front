@@ -69,4 +69,5 @@ export const Btn = styled(motion.button)`
   justify-content: left;
   align-items: center;
   padding-left: 12px;
+  font-weight: 700;
 `;

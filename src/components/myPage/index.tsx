@@ -1,12 +1,14 @@
 import React, { useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as _ from "./myPosts/style";
+import * as m from "../Edit/style";
 import { useEffect, useState } from "react";
 import { customAxios } from "../../lib/axios";
 import token from "../../lib/token";
 import Modal from "../modal/Modal";
 import { Container, ProfileContainer } from "./myPosts/style";
 import useFetch from "../../hooks/useFetch";
+import { AnimatePresence } from "framer-motion";
 
 const TagContainerMotion = {
   hidden: {
@@ -31,6 +33,17 @@ const TagMotion = {
   },
 };
 
+const TagsContainerMotion = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 export interface IProfileData {
   user_id: number;
@@ -60,19 +73,60 @@ function MyPageComponent() {
   const onLogOut = () => {
     customAxios("users/logout", {
       method: "delete",
-    })
-  }
+    });
+  };
   return (
     <>
-      {isOpenModal && (
-        <Modal onClickToggleModal={onClickToggleModal}>
-          <button onClick={onLogOut}>로그아웃</button>
-        </Modal>
-      )}
+      <AnimatePresence>
+        {isOpenModal && (
+          <m.ModalContainer
+            variants={TagsContainerMotion}
+            initial="hidden"
+            animate="visible"
+          >
+            <m.ModalBg onClick={() => setOpenModal(false)} />
+            <m.ModalWrapper
+              style={{
+                width: "400px",
+                height: "120px",
+                justifyContent: "space-between",
+              }}
+            >
+              <_.Text size={32} weight={700} height={50}>
+                로그아웃 할까요?
+              </_.Text>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "20px",
+                  justifyContent: "center",
+                }}
+              >
+                <_.Btn
+                  style={{ justifyContent: "center", width: "50%" }}
+                  onClick={() => setOpenModal(false)}
+                >
+                  취소
+                </_.Btn>
+                <_.Btn
+                  style={{
+                    backgroundColor: "#E1AD01",
+                    justifyContent: "center",
+                    width: "50%",
+                  }}
+                  onClick={onLogOut}
+                >
+                  로그아웃
+                </_.Btn>
+              </div>
+            </m.ModalWrapper>
+          </m.ModalContainer>
+        )}
+      </AnimatePresence>
       <Container>
         <ProfileContainer>
           <div style={{ display: "flex" }}>
-            <_.Profile alt="none" src={myProfileData?.profile_image_url}/>
+            <_.Profile alt="none" src={myProfileData?.profile_image_url} />
             <_.ProfileTextContainer>
               <_.Text weight={700} size={28} height={33}>
                 {myProfileData?.name}
