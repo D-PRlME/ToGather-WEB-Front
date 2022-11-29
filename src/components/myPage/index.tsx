@@ -171,9 +171,11 @@ function MyPageComponent() {
             </_.Btn>
           </Link>
           <_.Btn>
-            <_.Text weight={500} height={28.8} size={24}>
-              비밀번호 변경
-            </_.Text>
+            <Link to="/pwchange">
+              <_.Text weight={500} height={28.8} size={24}>
+                비밀번호 변경
+              </_.Text>
+            </Link>
           </_.Btn>
           <Link to="/mypage/posts">
             <_.Btn>
