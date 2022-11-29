@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosArrowBack } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye } from "../../assets/logo/index";
 import API from "../../utils/api";
 import { LogInHeader, LogInHeaderIn, LogInHeaderText } from "../login/style";
@@ -36,22 +36,28 @@ const SignUp = () => {
     // setError,
   } = useForm<IAuthForm>({ mode: "onChange" });
 
+  const naviagte = useNavigate();
   const onValid = (data: IAuthForm) => {
-    console.log(data);
-    const userData = {
+    naviagte("/email", {state:{
       name: data.name,
       email: data.email,
       password: data.pw,
-    };
+    }})
+    // console.log(data);
+    // const userData = {
+    //   name: data.name,
+    //   email: data.email,
+    //   password: data.pw,
+    // };
 
-    API.post("/users", userData)
-      .then((response) => {
-        if (response.status === 200) {
-          const authEmail = { email: userData.email };
-          console.log(authEmail);
-        }
-      })
-      .catch((error) => console.log(error.response));
+    // API.post("/users", userData)
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       const authEmail = { email: userData.email };
+    //       console.log(authEmail);
+    //     }
+    //   })
+    //   .catch((error) => console.log(error.response));
   };
 
   const onInValid = () => {
@@ -136,6 +142,9 @@ const SignUp = () => {
             placeholder="이름"
             type="name"
           />
+          <ExplainText>
+            {errors?.name?.message}
+          </ExplainText>
           <NextBtn isAllEnter={isAllEnter}>다음</NextBtn>
         </SignupWrap>
       </SignupContainer>

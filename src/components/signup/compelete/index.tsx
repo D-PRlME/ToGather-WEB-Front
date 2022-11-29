@@ -9,6 +9,7 @@ import {
   Title,
 } from "./style";
 import CompeleteIcon from "../../../assets/logo/compelete.svg";
+import { Link } from "react-router-dom";
 
 const SignupCompelete = () => {
   return (
@@ -27,7 +28,9 @@ const SignupCompelete = () => {
             가입이 <p>완료되었어요</p>
           </Title>
           <CompeleteIconWrap src={CompeleteIcon} />
-          <CompeleteBtn>완료</CompeleteBtn>
+          <Link to="/">
+            <CompeleteBtn>완료</CompeleteBtn>
+            </Link>
         </CompeleteWrap>
       </CompeleteContainer>
     </>

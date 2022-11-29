@@ -7,8 +7,9 @@ import LogInPage from "../../pages/LogInPage";
 import MyPage from "../../pages/MyPage";
 import SearchPage from "../../pages/SearchPage";
 import CreatePage from "../../pages/CreatePage";
-import AuthMail from "../AuthMail/index"
+import EmailPage from "../signup/email/index"
 import PostPage from "../../pages/PostPage"
+import SignupCompelete from "../signup/compelete/index"
 // import EditPage from "../../pages/EditPage";
 import React from "react";
 
@@ -18,7 +19,8 @@ const Router = () => {
       <Route path="/" element={<HomePage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LogInPage />} />
-
+      <Route path="/email" element={<EmailPage/>}/>
+      <Route path="/email/ok" element={<SignupCompelete/>}/>
       {/* <Route path="/edit" element={<EditPage />} /> */}
       <Route path="/mypage/*" element={<MyPage />}></Route>
       <Route path="/create" element={<CreatePage />} />

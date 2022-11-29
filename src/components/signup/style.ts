@@ -6,19 +6,22 @@ export const SignupContainer = styled.div`
   height: 900px;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: auto auto
 `;
 
 export const SignupWrap = styled.form`
+  display: flex;
+  flex-direction: column;
   margin: 100px 250px;
   width: 480px;
-  height: 475px;
+  height: 505px;
   border-radius: 16px;
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
+  position: relative;
 `;
 
 export const Title = styled.div`
-  padding: 16px;
+  padding: 20px;
   font-size: 40px;
   font-weight: 700;
   p {
@@ -94,14 +97,16 @@ export const ExplainText = styled.p`
   /* margin: ; */
   /* ${(props) => (props.color ? "red" : "red")} */
   /* color: red; */
-  margin: 0 0 10px 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-top: 0;
 `;
 
 export const NextBtn = styled.button<{isAllEnter?:boolean}>`
   width: 430px;
   height: 53px;
   margin-left: 25px;
-  margin-top: 60px;
+  margin-top: 20px;
   border-radius: 10px;
   border: 1px solid ${palette.gray[300]};
   color: #333;
@@ -109,4 +114,6 @@ export const NextBtn = styled.button<{isAllEnter?:boolean}>`
   cursor: pointer;
   background-color: ${props => props.isAllEnter ? "#E1AD01" : palette.gray[200]};
   font-weight: bold;
+  position: absolute;
+  bottom: 30px;
 `;

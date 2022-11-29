@@ -54,7 +54,7 @@ function LogIn() {
       <_.LogInContainer>
         <_.LogInHeader>
           <_.LogInHeaderIn>
-            <_.LogInHeaderText onClick={() => navigate(-1)}>
+            <_.LogInHeaderText onClick={() => navigate("/")}>
               <IoIosArrowBack size="22px" />
               <Link to="/">돌아가기</Link>
             </_.LogInHeaderText>
@@ -98,14 +98,10 @@ function LogIn() {
           <_.LoginSubmitButton>로그인</_.LoginSubmitButton>
           <_.LoginAlertTextWrap>
             <_.LoginAlertText>
-              <strong>
-                <Link to="/">비밀번호 변경</Link>
-              </strong>
+              <Link to="/" style={{"color": "#787878"}}>비밀번호 변경</Link>
             </_.LoginAlertText>{" "}
             <_.LoginAlertText>
-              <strong>
-                <Link to="/signup">회원가입</Link>
-              </strong>
+              <Link to="/signup" style={{"color": "#787878"}}>회원가입</Link>
             </_.LoginAlertText>
           </_.LoginAlertTextWrap>
         </_.LogInWrap>
