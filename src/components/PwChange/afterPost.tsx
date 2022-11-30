@@ -5,24 +5,25 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { customAxios } from "../../lib/axios";
+import { MailImg } from "../signup/email";
 import axios from "axios";
 
-export default function PwChangeHome() {
-  const {register, handleSubmit,watch} = useForm<{email:string}>()
+export default function AfterPostComponent() {
+  const {register, handleSubmit,watch} = useForm<{code:string}>()
   const navigate = useNavigate();
   const [isAllEnter, setIsAllEnter] = useState(false);
   const onChange = () => {
-    if(watch().email) setIsAllEnter(true);
+    if(watch().code) setIsAllEnter(true);
     else setIsAllEnter(false);
   }
-  const onValid = (form: {email:string}) => {
-    axios(process.env.REACT_APP_BaseUrl + "/users/mail", {
+  const onValid = (form: {code:string}) => {
+    axios(process.env.REACT_APP_BaseUrl + "/users/mail/verify", {
       method: "post",
       data:{
-        email:form.email
+        email:form.code
       }
     }).then(() => {
-      navigate("/pwchange/ok")
+      navigate("/pwchange/change")
     })
   }
   return (
@@ -32,7 +33,7 @@ export default function PwChangeHome() {
           <LogInHeaderIn>
             <LogInHeaderText>
               <IoIosArrowBack size="22px" />
-              <Link to="/">돌아가기</Link>
+              <Link to="/pwchange">돌아가기</Link>
             </LogInHeaderText>
           </LogInHeaderIn>
         </LogInHeader>
@@ -41,9 +42,12 @@ export default function PwChangeHome() {
             비밀번호 변경
           </s.Title>
           <s.ExplainText style={{ fontWeight: 700 }}>
-            인증번호를 수신하기 위한 이메일 주소가 필요합니다
+            전송된 6자리 인증 번호를 입력해 주세요. 인증 번호는 5분 후에 만료됩니다
           </s.ExplainText>
-          <s.SignupInput {...register("email", {required: true})} placeholder="이메일"/>
+          <s.SignupInput {...register("code")} placeholder="인증번호"/>
+          <div style={{ alignSelf:"center", "marginTop":"30px"}}>
+            <MailImg/>
+          </div>
           <s.NextBtn isAllEnter={isAllEnter}>다음</s.NextBtn>
         </s.SignupWrap>
       </s.SignupContainer>

@@ -3,8 +3,6 @@ import * as _ from "./style";
 import * as s from "../../myPage/style";
 import { Link } from "react-router-dom";
 import HeartIcon from "../../../assets/icon/Heart";
-import axios from "axios";
-import token from "../../../lib/token";
 import { customAxios } from "../../../lib/axios";
 import { PostsListResponse, TagListResponse } from "../../../LocalTypes";
 
@@ -18,11 +16,8 @@ const HomePostList = () => {
 
   const tagOnValid = (tags: string) => {
     const copyTags = tags.replace(".", "_").toUpperCase();
-    axios(process.env.REACT_APP_BaseUrl + "/posts/tag", {
+    customAxios("posts/tag", {
       method: "get",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
       params: {
         tag: copyTags,
       },
@@ -31,9 +26,6 @@ const HomePostList = () => {
   useEffect(() => {
     customAxios("posts/tag/list", {
       method: "get",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
     })
       .then((res) => setTagsData(res.data))
       .catch((err) => {
@@ -41,9 +33,6 @@ const HomePostList = () => {
       });
     customAxios("posts", {
       method: "GET",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
     })
       .then((res) => setPostsData(res.data))
       .catch((err) => alert(err.message));

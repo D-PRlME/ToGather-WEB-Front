@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { customAxios } from "../../../lib/axios";
+import axios from "axios";
 
 function EmailPage(){
     const {register, handleSubmit, watch} = useForm<{auth: string}>()
@@ -13,7 +14,7 @@ function EmailPage(){
     const navigate = useNavigate();
 
     const onValid = (form: {auth:string}) => {
-        customAxios("users/mail/verify", {
+        axios(process.env.REACT_APP_BaseUrl + "/users/mail/verify", {
             method: "post",
             data:{
                 email: location.state.email,
@@ -85,7 +86,7 @@ function EmailPage(){
     );
 }
 
-function MailImg(){
+export function MailImg(){
     return (
         <svg 
             width="150" 

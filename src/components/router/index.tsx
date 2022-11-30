@@ -10,7 +10,9 @@ import CreatePage from "../../pages/CreatePage";
 import EmailPage from "../signup/email/index";
 import PostPage from "../../pages/PostPage";
 import SignupCompelete from "../signup/compelete/index";
-import PwChangeComponent from "../PwChange/index";
+import PwChangeHome from "../PwChange/index";
+import AfterPostComponent from "../PwChange/afterPost"
+import PwChangeComponent from "../PwChange/pwchange/index"
 // import EditPage from "../../pages/EditPage";
 import React from "react";
 
@@ -22,7 +24,9 @@ const Router = () => {
       <Route path="/login" element={<LogInPage />} />
       <Route path="/email" element={<EmailPage />} />
       <Route path="/email/ok" element={<SignupCompelete />} />
-      <Route path="/pwchange" element={<PwChangeComponent />} />
+      <Route path="/pwchange" element={<PwChangeHome />} />
+      <Route path="/pwchange/ok" element={<AfterPostComponent/>}/>
+      <Route path="/pwchange/change" element={<PwChangeComponent/>}/>
       {/* <Route path="/edit" element={<EditPage />} /> */}
       <Route path="/mypage/*" element={<MyPage />}></Route>
       <Route path="/create" element={<CreatePage />} />
