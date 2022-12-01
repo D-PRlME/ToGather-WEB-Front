@@ -3,7 +3,7 @@ import * as _ from "./style";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Link } from "react-router-dom";
 import { Eye } from "../../assets/logo/index";
 import {
@@ -31,7 +31,7 @@ function LogIn() {
     handleSubmit,
     formState: { errors },
   } = useForm<ILogin>();
-
+  const navigate = useNavigate();
   const onValid = async (data: ILogin) => {
     await axios
       .post("http://52.55.240.35:8080/users/auth", data, {
@@ -40,6 +40,7 @@ function LogIn() {
       .then((res: AxiosResponse) => {
         localStorage.setItem("token", res.data.access_token);
         alert("로그인 성공!");
+        window.location.reload();
         navigate(-1);
       })
       .catch((err) => {
@@ -54,7 +55,7 @@ function LogIn() {
       <_.LogInContainer>
         <_.LogInHeader>
           <_.LogInHeaderIn>
-            <_.LogInHeaderText onClick={() => navigate(-1)}>
+            <_.LogInHeaderText onClick={() => navigate("/")}>
               <IoIosArrowBack size="22px" />
               <Link to="/">돌아가기</Link>
             </_.LogInHeaderText>
@@ -98,14 +99,10 @@ function LogIn() {
           <_.LoginSubmitButton>로그인</_.LoginSubmitButton>
           <_.LoginAlertTextWrap>
             <_.LoginAlertText>
-              <strong>
-                <Link to="/">비밀번호 변경</Link>
-              </strong>
+              <Link to="/" style={{"color": "#787878"}}>비밀번호 변경</Link>
             </_.LoginAlertText>{" "}
             <_.LoginAlertText>
-              <strong>
-                <Link to="/signup">회원가입</Link>
-              </strong>
+              <Link to="/signup" style={{"color": "#787878"}}>회원가입</Link>
             </_.LoginAlertText>
           </_.LoginAlertTextWrap>
         </_.LogInWrap>

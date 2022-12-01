@@ -67,7 +67,7 @@ export const Tag = styled(motion.div)`
 export const ModalContainer = styled(motion.div)`
   position: fixed;
   left: 0;
-  top:0;
+  top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,6 +83,8 @@ export const ModalBg = styled.div`
   backdrop-filter: blur(6px);
 `;
 export const ModalWrapper = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
   position: relative;
   width: 470px;
   height: 622px;
@@ -91,7 +93,6 @@ export const ModalWrapper = styled(motion.div)`
   border-radius: 16px;
   z-index: 1;
   padding: 20px;
-  justify-content: space-between;
 `;
 export const Text = styled.div<{
   weight: number;

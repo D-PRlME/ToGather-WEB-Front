@@ -16,7 +16,7 @@ export const HomePostSkillHeader = styled.div`
 `;
 
 export const HomePostListContainer = styled.div`
-  width: auto;
+  width: 783px;
   height: 900px;
   display: flex;
   flex-direction: column;

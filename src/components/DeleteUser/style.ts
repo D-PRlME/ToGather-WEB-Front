@@ -22,6 +22,7 @@ export const Input = styled.input`
   padding-left: 10px;
   font-size: 24px;
   font-weight: 500;
+  padding-left: 20px;
 `
 export const Btn = styled.button`
   width: 121px;

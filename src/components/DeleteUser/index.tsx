@@ -123,6 +123,7 @@ function DeleteUserComponent() {
           ref={passwordRef}
           onChange={onChangeInput}
           value={password}
+          type="password"
         />
       </div>
       <div style={{"alignSelf":"center", "width":"20rem"}}>

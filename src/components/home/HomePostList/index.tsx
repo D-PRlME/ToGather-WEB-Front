@@ -3,36 +3,8 @@ import * as _ from "./style";
 import * as s from "../../myPage/style";
 import { Link } from "react-router-dom";
 import HeartIcon from "../../../assets/icon/Heart";
-import axios from "axios";
-import token from "../../../lib/token";
 import { customAxios } from "../../../lib/axios";
 import { PostsListResponse, TagListResponse } from "../../../LocalTypes";
-
-const BoardContainerMotion = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const BoardMotion = {
-  hidden: {
-    x: 100,
-    opacity: 0,
-  },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      bounce: 0.2,
-    },
-  },
-};
 
 function Loading() {
   return <h1>로딩중입니다....</h1>;
@@ -44,11 +16,8 @@ const HomePostList = () => {
 
   const tagOnValid = (tags: string) => {
     const copyTags = tags.replace(".", "_").toUpperCase();
-    axios(process.env.REACT_APP_BaseUrl + "/posts/tag", {
+    customAxios("posts/tag", {
       method: "get",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
       params: {
         tag: copyTags,
       },
@@ -57,9 +26,6 @@ const HomePostList = () => {
   useEffect(() => {
     customAxios("posts/tag/list", {
       method: "get",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
     })
       .then((res) => setTagsData(res.data))
       .catch((err) => {
@@ -67,9 +33,6 @@ const HomePostList = () => {
       });
     customAxios("posts", {
       method: "GET",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
     })
       .then((res) => setPostsData(res.data))
       .catch((err) => alert(err.message));
@@ -87,14 +50,10 @@ const HomePostList = () => {
           ))}
         </Suspense>
       </_.HomePostSkillHeader>
-      <s.BoardContainer
-        variants={BoardContainerMotion}
-        initial="hidden"
-        animate="visible"
-      >
+      <s.BoardContainer>
         {postsData?.post_list.map((post) => (
           <Link to={`/posts/${post.post_id}`} key={post.post_id}>
-            <s.Board variants={BoardMotion}>
+            <s.Board>
               <s.BoardTitle>{post.title}</s.BoardTitle>
               <s.TagWrapper>
                 {post.tags.map((tag) => (

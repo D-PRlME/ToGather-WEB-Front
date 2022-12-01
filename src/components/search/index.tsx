@@ -73,11 +73,8 @@ function SearchComponent() {
   const [searchData, setSearchData] = useState<PostsListResponse>();
 
   const onChangeTag = (tag: string) => {
-    customAxios(`posts?tag=${tag}`, {
+    customAxios(`posts/tag?tag=${tag}`, {
       method: "get",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     })
       .then((res) => {
         setSearchData(res.data);
@@ -87,11 +84,8 @@ function SearchComponent() {
   };
 
   const onValidPostSearch = (form: { title: string }) => {
-    customAxios(`posts?title=${form.title}`, {
+    customAxios(`posts/title?sort=id%2Cdesc&title=${form.title}`, {
       method: "get",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     }).then((res) => {
       setSearchData(res.data);
     });
@@ -100,9 +94,6 @@ function SearchComponent() {
   useEffect(() => {
     customAxios("posts/tag/list", {
       method: "get",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     })
       .then((res) => {
         const upperTags = res.data.tags.map(
@@ -210,7 +201,7 @@ function SearchComponent() {
               </_.BoardTagWrapper>
               <Line />
               <_.UnderWrapper>
-                <div>
+                <div style={{display:"flex", "alignItems":"center"}}>
                   <_.Profile alt="none" src={post.user.profile_image_url} />
                   <_.UserName>{post.user.user_name}</_.UserName>
                 </div>
