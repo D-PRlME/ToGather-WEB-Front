@@ -16,7 +16,7 @@ export default function PwChangeComponent() {
     else setIsAllEnter(false);
   }
   const onValid = (form: {oldPw:string, newPw:string}) => {
-    axios(process.env.REACT_APP_BaseUrl + "/users/password", {
+    customAxios("users/password", {
       method: "patch",
       data:{
         "old_password":form.oldPw,
@@ -25,6 +25,8 @@ export default function PwChangeComponent() {
     }).then(() => {
         alert("비밀번호 변경 성공!")
       navigate("/")
+    }).catch(() => {
+      alert("비밀번호 변경 실패.....")
     })
   }
   return (

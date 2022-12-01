@@ -74,6 +74,9 @@ function MyPageComponent() {
     customAxios("users/logout", {
       method: "delete",
     });
+    localStorage.setItem("token", "");
+    window.location.reload();
+    navigate("/")
   };
   return (
     <>

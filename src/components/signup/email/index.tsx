@@ -12,7 +12,7 @@ function EmailPage(){
     const [isAllEnter, setIsAllEnter] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
-
+    
     const onValid = (form: {auth:string}) => {
         axios(process.env.REACT_APP_BaseUrl + "/users/mail/verify", {
             method: "post",

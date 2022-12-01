@@ -1,7 +1,7 @@
 import * as s from "../signup/style";
 import { IoIosArrowBack } from "react-icons/io";
 import { LogInHeader, LogInHeaderIn, LogInHeaderText } from "../login/style";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { customAxios } from "../../lib/axios";
@@ -11,6 +11,7 @@ import axios from "axios";
 export default function AfterPostComponent() {
   const {register, handleSubmit,watch} = useForm<{code:string}>()
   const navigate = useNavigate();
+  const location = useLocation();
   const [isAllEnter, setIsAllEnter] = useState(false);
   const onChange = () => {
     if(watch().code) setIsAllEnter(true);
@@ -20,7 +21,8 @@ export default function AfterPostComponent() {
     axios(process.env.REACT_APP_BaseUrl + "/users/mail/verify", {
       method: "post",
       data:{
-        email:form.code
+        email: location.state.email,
+        auth_code: form.code
       }
     }).then(() => {
       navigate("/pwchange/change")

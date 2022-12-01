@@ -40,6 +40,7 @@ function LogIn() {
       .then((res: AxiosResponse) => {
         localStorage.setItem("token", res.data.access_token);
         alert("로그인 성공!");
+        window.location.reload();
         navigate(-1);
       })
       .catch((err) => {

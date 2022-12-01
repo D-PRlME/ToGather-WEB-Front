@@ -16,13 +16,13 @@ export default function PwChangeHome() {
     else setIsAllEnter(false);
   }
   const onValid = (form: {email:string}) => {
-    axios(process.env.REACT_APP_BaseUrl + "/users/mail", {
+    customAxios("users/mail", {
       method: "post",
       data:{
         email:form.email
       }
     }).then(() => {
-      navigate("/pwchange/ok")
+      navigate("/pwchange/ok", {state: {email: form.email}})
     })
   }
   return (
