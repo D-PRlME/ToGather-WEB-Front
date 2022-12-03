@@ -3,13 +3,10 @@ import SortArrowIcon from "../../assets/icon/SortArrow";
 import * as s from "../myPage/style";
 import * as m from "../Edit/style";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { customAxios } from "../../lib/axios";
-import Token from "../../lib/token";
-import token from "../../lib/token";
-import { IProfileData } from "../myPage";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import { IProfileData, PostsListResponse } from "../../LocalTypes";
+import useFetch from "../../hooks/useFetch";
 
 const TagsContainerMotion = {
   hidden: {
@@ -24,38 +21,36 @@ const TagsContainerMotion = {
 };
 
 function DeleteUserComponent() {
-  const naviate = useNavigate();
+  // State
   const [onModal, setOnModal] = useState(false);
-  const [myProfileData, setMyProfileData] = useState<IProfileData>();
   const [password, setPassword] = useState<string>();
-  const passwordRef = useRef(null);
 
-  const onChangeInput = (data) => {
+  // Hook
+  const passwordRef = useRef(null);
+  const navigate = useNavigate();
+
+  // API
+  const [GETuserPost, {data: myProfileData}] = useFetch<IProfileData>("users");
+  const [DELETEuser] = useFetch("users");
+
+  const onChangeInput = (data: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(data.target.value);
   };
   useEffect(() => {
-    customAxios("users", {
+    GETuserPost({
       method: "get",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
-    })
-      .then((res) => setMyProfileData(res.data))
-      .catch((err) => alert(err.message));
+    });
   }, []);
 
   const onDeleteUser = () => {
-    customAxios("users", {
+    DELETEuser({
       method: "delete",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
       data: {
-        password: password,
+        password,
       },
     }).then(() => {
       alert("삭제 성공");
-      naviate("/");
+      navigate("/");
     });
   };
   return (
@@ -103,7 +98,7 @@ function DeleteUserComponent() {
       </AnimatePresence>
       <div>
         <s.BackBtnContainer
-          onClick={() => naviate(-1)}
+          onClick={() => navigate(-1)}
           style={{ marginLeft: 0 }}
         >
           <SortArrowIcon />
@@ -117,8 +112,8 @@ function DeleteUserComponent() {
         </_.Text>
       </div>
       <div>
-        <div style={{ display: "flex" }}>
-          <img alt="" src={myProfileData?.profile_image_url} />
+        <div style={{"display":"flex", "justifyContent":"center", "width":"756px", "marginBottom":"24px"}}>
+          <img alt="" src={myProfileData?.profile_image_url} height={40} />
           <_.Text size={33} weight={700} color={"black"}>
             {myProfileData?.name}
           </_.Text>
@@ -128,9 +123,10 @@ function DeleteUserComponent() {
           ref={passwordRef}
           onChange={onChangeInput}
           value={password}
+          type="password"
         />
       </div>
-      <div>
+      <div style={{"alignSelf":"center", "width":"20rem"}}>
         <_.Btn onClick={() => setOnModal(true)}>
           <_.Text
             size={24}

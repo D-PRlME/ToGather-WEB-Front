@@ -4,8 +4,8 @@ import HeartIcon from "../../../assets/icon/Heart";
 import SortArrowIcon from "../../../assets/icon/SortArrow";
 import { customAxios } from "../../../lib/axios";
 import Token from "../../../lib/token";
-import { PostsListResponse } from "../../home/HomePostList";
 import * as _ from "../style";
+import { PostsListResponse } from "../../../LocalTypes";
 
 const BoardContainerMotion = {
   hidden: {
@@ -40,9 +40,6 @@ function MyPostsComponent() {
   useEffect(() => {
     customAxios("posts/my", {
       method: "get",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     }).then((res) => {
       setMyPostsData(res.data);
     });
@@ -69,8 +66,8 @@ function MyPostsComponent() {
               </_.TagWrapper>
               <Line />
               <_.UnderWrapper>
-                <div>
-                  <_.Profile alt="none" />
+                <div style={{display: "flex", "alignItems": "center"}}>
+                  <_.Profile alt="none" src={post.user.profile_image_url}/>
                   <_.UserName>{post.user.user_name}</_.UserName>
                 </div>
                 <_.UnderRightWrapper>

@@ -1,20 +1,13 @@
 import { useForm } from "react-hook-form";
-import QuestionIcon from "../../assets/icon/question";
 import * as _ from "./style";
 import { AxiosError, AxiosResponse } from "axios";
 import { customAxios } from "../../lib/axios";
-import { ACCESS_TOKEN_KEY } from "../../constants/token/token.constant";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ISelectTags, TagListResponse } from "../home/HomePostList";
 import { useNavigate } from "react-router-dom";
 import token from "../../lib/token";
-
-interface IEditFormStates {
-  title: string;
-  content: string;
-  tags: ISelectTags; //TODO: 후의 변경해야함
-}
+import { IEditFormStates, TagListResponse } from "../../LocalTypes";
+import useFetch from "../../hooks/useFetch";
 
 const TagsContainerMotion = {
   hidden: {
@@ -41,29 +34,24 @@ const TagMotion = {
 };
 
 function CreateComponent() {
-  // TODO : localToken으로 변경해야함
   const { register, handleSubmit } = useForm<IEditFormStates>();
   // const [onQuestionModal, setOnQuestionModal] = useState(false);
   const [onModal, setOnModal] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [tagData, setTagsData] = useState<TagListResponse>();
+
+  const [POSTpost] = useFetch("posts");
   const navigate = useNavigate();
   const onValid = (form: IEditFormStates) => {
-    // TODO : Style 태그 버튼 중앙 정렬
-    // TODO : Style 태그 6개 이상 추가시 정렬 흐트러 지는 오류 수정
-    // TODO : Style 태그 추가시 버튼 위로 올라가는거 수정
-    customAxios("/posts", {
+    POSTpost({
       method: "post",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
       data: {
         title: form.title,
         content: form.content,
         tags: tags,
       },
     })
-      .then((response: AxiosResponse) => {
+      .then(() => {
         navigate("/");
       })
       .catch((error: AxiosError) => {
@@ -81,9 +69,6 @@ function CreateComponent() {
   useEffect(() => {
     customAxios("posts/tag/list", {
       method: "get",
-      headers: {
-        Authorization: token.getToken("token"),
-      },
     })
       .then((res) => {
         const upperTags = res.data.tags.map(
@@ -92,7 +77,7 @@ function CreateComponent() {
             name: tag.name.replace(".", "_").toUpperCase(),
           })
         );
-        const newTags = {
+        const newTags: TagListResponse = {
           tags: [...upperTags],
         };
         setTagsData(newTags);
@@ -198,6 +183,7 @@ function CreateComponent() {
           style={{
             display: "flex",
             flexDirection: "column",
+            alignItems: "flex-end",
           }}
         >
           <div style={{ display: "flex", gap: "10px" }}>
@@ -221,10 +207,16 @@ function CreateComponent() {
 
 export function CheckIcon() {
   return (
-    <div style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}>
+    <div
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        position: "absolute",
+        borderRadius: "10px",
+      }}
+    >
       <svg
-        width="29"
-        height="29"
+        width="40"
+        height="36"
         viewBox="0 0 28 28"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

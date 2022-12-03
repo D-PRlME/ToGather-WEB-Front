@@ -50,6 +50,7 @@ export const LogInText = styled.div`
 `;
 
 export const LoginInput = styled.input`
+  background-color: ${palette.gray[200]};
   width: 430px;
   height: 53px;
   padding: 20px 14px;
@@ -71,7 +72,7 @@ export const LoginInput = styled.input`
 export const LoginSubmitButton = styled.button`
   width: 430px;
   height: 53px;
-  margin-left: 25px;
+  margin: 25px 25px 0 25px;
   border-radius: 10px;
   border: 1px solid ${palette.main};
   color: #333;
@@ -81,9 +82,14 @@ export const LoginSubmitButton = styled.button`
   font-weight: bold;
 `;
 
+export const LoginAlertTextWrap = styled.div`
+  color: #787878;
+  display: flex;
+`;
+
 export const LoginAlertText = styled.p`
   font-size: 16px;
-  margin: 0px auto;
+  margin: 0 auto;
   color: #2b2b2b;
   margin-top: 24px;
   text-align: center;
@@ -93,3 +99,5 @@ export const LoginAlertText = styled.p`
     cursor: pointer;
   }
 `;
+
+export const HideAndShowEye = styled.img``;

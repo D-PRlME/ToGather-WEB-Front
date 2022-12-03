@@ -2,16 +2,15 @@ import * as _ from "./style";
 import * as s from "../Edit/style";
 import { Link } from "react-router-dom";
 import HeartIcon from "../../assets/icon/Heart";
-import { BoardTagWrapper } from "./style";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { CheckIcon } from "../Edit";
-import { PostsListResponse, TagListResponse } from "../home/HomePostList";
 import { customAxios } from "../../lib/axios";
 import Token from "../../lib/token";
 import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import React from "react";
+import { PostsListResponse, TagListResponse } from "../../LocalTypes";
 
 const BoardContainerMotion = {
   hidden: {
@@ -67,21 +66,17 @@ const TagMotion = {
 };
 
 function SearchComponent() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<{ title: string }>();
   const [onModal, setOnModal] = useState(false);
   const [tagData, setTagsData] = useState<TagListResponse>();
   const [tags, setTags] = useState<string>();
   const [searchData, setSearchData] = useState<PostsListResponse>();
 
   const onChangeTag = (tag: string) => {
-    customAxios(`posts?tag=${tag}`, {
+    customAxios(`posts/tag?tag=${tag}`, {
       method: "get",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     })
       .then((res) => {
-        console.log(res.data);
         setSearchData(res.data);
       })
       .catch((err) => alert(err));
@@ -89,11 +84,8 @@ function SearchComponent() {
   };
 
   const onValidPostSearch = (form: { title: string }) => {
-    customAxios(`posts?title=${form.title}`, {
+    customAxios(`posts/title?sort=id%2Cdesc&title=${form.title}`, {
       method: "get",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     }).then((res) => {
       setSearchData(res.data);
     });
@@ -102,9 +94,6 @@ function SearchComponent() {
   useEffect(() => {
     customAxios("posts/tag/list", {
       method: "get",
-      headers: {
-        Authorization: Token.getToken("token"),
-      },
     })
       .then((res) => {
         const upperTags = res.data.tags.map(
@@ -113,8 +102,8 @@ function SearchComponent() {
             name: tag.name.replace(".", "_").toUpperCase(),
           })
         );
-        const newTags = {
-          tags: [...upperTags],
+        const newTags: TagListResponse = {
+          tags: upperTags,
         };
         setTagsData(newTags);
       })
@@ -122,8 +111,7 @@ function SearchComponent() {
         alert(err.message);
         console.log(err);
       });
-  }, []);
-
+  }, [searchData]);
   return (
     <_.Container>
       <AnimatePresence>
@@ -213,7 +201,7 @@ function SearchComponent() {
               </_.BoardTagWrapper>
               <Line />
               <_.UnderWrapper>
-                <div>
+                <div style={{display:"flex", "alignItems":"center"}}>
                   <_.Profile alt="none" src={post.user.profile_image_url} />
                   <_.UserName>{post.user.user_name}</_.UserName>
                 </div>
